@@ -16,28 +16,33 @@ const projects: Project[] = [
     number: "00",
   },
   {
+    title: "Lumina Studio",
+    description:
+      "A full AI image studio - text-to-image, image-to-image, character fusion, and a built-in prompt builder. Powered by multiple AI models.",
+    tags: ["AI Tool", "Web App"],
+    href: "https://lumina.clydeabenojar.site",
+    external: true,
+    image: "/images/projects/lumina.png",
+    number: "01",
+  },
+  {
+    title: "La Purisima Resort",
+    description:
+      "Landing page for a resort and events venue in Jaro, Leyte - covering event hall rental, room accommodations, and swimming pool bookings.",
+    tags: ["Landing Page", "Business Website"],
+    href: "https://lapurisima.clydeabenojar.site",
+    external: true,
+    image: "/images/projects/lapurisima.png",
+    number: "02",
+  },
+  {
     title: "Song Generator",
     description:
       "An AI-powered songwriting tool that turns prompts, moods, and genre choices into usable lyrical starting points.",
     tags: ["AI", "Web App"],
     href: "/song-generator",
     image: "/images/project-song-generator.svg",
-  },
-  {
-    title: "Image Generator",
-    description:
-      "A creative interface for generating image concepts, previewing variations, and keeping prompt ideas organized.",
-    tags: ["AI", "Web App"],
-    href: "/image-generator",
-    image: "/images/project-image-generator.svg",
-  },
-  {
-    title: "Business Websites",
-    description:
-      "Clean, responsive websites for local businesses that make services easy to understand and contact paths obvious.",
-    tags: ["Website", "Brand"],
-    href: "/work/business-websites",
-    image: "/images/project-business-websites.svg",
+    number: "03",
   },
 ];
 
