@@ -1,0 +1,13 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0D0D0F"/>
+  <rect x="82" y="78" width="1036" height="474" rx="24" fill="#161618" stroke="#2A2A2E"/>
+  <circle cx="138" cy="128" r="10" fill="#FF5F56"/>
+  <circle cx="174" cy="128" r="10" fill="#FFBD2E"/>
+  <circle cx="210" cy="128" r="10" fill="#27C93F"/>
+  <text x="150" y="242" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="28">// AI-assisted Web Builder</text>
+  <text x="150" y="332" fill="#F4F4F5" font-family="JetBrains Mono, monospace" font-size="64" font-weight="700">Hi, I'm Clyde.</text>
+  <text x="150" y="402" fill="#A78BFA" font-family="JetBrains Mono, monospace" font-size="30">&gt; clyde.ship_product()</text>
+  <text x="150" y="474" fill="#9A9AA2" font-family="JetBrains Mono, monospace" font-size="26">clydeabenojar.site</text>
+  <path d="M920 210L982 315L920 420" stroke="#7C3AED" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M832 210L770 315L832 420" stroke="#7C3AED" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
