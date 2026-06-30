@@ -12,7 +12,7 @@ const projects: Project[] = [
     tags: ["Web App", "AI-assisted"],
     href: "https://konstru.clydeabenojar.site",
     external: true,
-    image: "/images/projects/konstru.png",
+    image: "/images/Konstru.png",
     number: "00",
   },
   {
@@ -22,7 +22,7 @@ const projects: Project[] = [
     tags: ["AI Tool", "Web App"],
     href: "https://lumina.clydeabenojar.site",
     external: true,
-    image: "/images/projects/lumina.png",
+    image: "/images/lumina.png",
     number: "01",
   },
   {
@@ -32,16 +32,17 @@ const projects: Project[] = [
     tags: ["Landing Page", "Business Website"],
     href: "https://lapurisima.clydeabenojar.site",
     external: true,
-    image: "/images/projects/lapurisima.png",
+    image: "/images/Lapurisima.png",
     number: "02",
   },
   {
-    title: "Song Generator",
+    title: "Song Automation Tool",
     description:
-      "An AI-powered songwriting tool that turns prompts, moods, and genre choices into usable lyrical starting points.",
-    tags: ["AI", "Web App"],
-    href: "/song-generator",
-    image: "/images/project-song-generator.svg",
+      "Write the story or theme of your song - the tool handles the rest. Fully automated lyrics writing, QA against a checklist, song generation via AI, and a final glitch-check pass.",
+    tags: ["AI Tool", "Automation"],
+    href: "/song-generator/",
+    external: false,
+    image: "/images/Songautomation.png",
     number: "03",
   },
 ];

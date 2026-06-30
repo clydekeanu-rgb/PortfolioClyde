@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Song Pipeline</title>
+<style>
+:root{
+  --bg:#f2f2f7;--surface:rgba(255,255,255,0.92);--border:rgba(60,60,67,0.13);
+  --text:#1c1c1e;--text2:#3a3a3c;--muted:#8e8e93;
+  --blue:#007aff;--green:#34c759;--red:#ff3b30;
+  --orange:#ff9500;--purple:#af52de;--teal:#32ade6;
+  --r:16px;--rsm:12px;
+  --sh:0 2px 14px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── NAV BAR ── */
+.bar{background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;height:52px;}
+.bar-l{display:flex;align-items:center;gap:10px;}
+.app-ic{width:32px;height:32px;background:linear-gradient(145deg,#ff6b6b,#ff2d55);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 2px 8px rgba(255,45,85,0.3);}
+.app-name{font-size:16px;font-weight:700;letter-spacing:-0.4px;}
+.bar-r{display:flex;align-items:center;gap:6px;}
+.s-pill{font-size:12px;font-weight:500;padding:4px 11px;border-radius:20px;background:rgba(142,142,147,0.15);color:var(--muted);transition:all 0.3s;}
+.s-pill.active{background:rgba(255,149,0,0.15);color:var(--orange);}
+.s-pill.done{background:rgba(52,199,89,0.15);color:var(--green);}
+
+/* TAB NAV */
+.tabs{display:flex;gap:2px;}
+.tab-btn{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;font-family:inherit;border:none;cursor:pointer;transition:all 0.18s;background:transparent;color:var(--muted);}
+.tab-btn.active{background:var(--blue);color:white;box-shadow:0 2px 8px rgba(0,122,255,0.28);}
+.tab-btn:hover:not(.active){background:rgba(142,142,147,0.12);}
+
+/* PIPE */
+.pipe{background:rgba(255,255,255,0.7);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;}
+.pipe::-webkit-scrollbar{display:none;}
+.pip{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;flex-shrink:0;color:var(--muted);transition:all 0.25s;}
+.pip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pip.active{background:rgba(0,122,255,0.1);color:var(--blue);}
+.pip.done{background:rgba(52,199,89,0.1);color:var(--green);}
+.pip.error{background:rgba(255,59,48,0.1);color:var(--red);}
+.psep{color:var(--border);font-size:13px;flex-shrink:0;}
+#concurrencyInfo{margin-left:auto;font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap;}
+
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:flex;}
+
+/* ── BOARD PAGE ── */
+#page-board{flex-direction:column;height:calc(100vh - 52px);}
+.main{display:grid;grid-template-columns:290px 1fr;flex:1;overflow:hidden;}
+
+/* FORM */
+.fp{background:var(--bg);border-right:1px solid var(--border);overflow-y:auto;padding:14px 13px;scrollbar-width:none;}
+.fp::-webkit-scrollbar{display:none;}
+.shdr{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;padding:0 4px;margin:16px 0 6px;}
+.shdr:first-child{margin-top:0;}
+.igrp{background:var(--surface);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:10px;}
+.irow{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:9px;min-height:44px;}
+.irow:last-child{border-bottom:none;}
+.rlbl{font-size:13px;color:var(--text);flex-shrink:0;min-width:78px;}
+.irow input,.irow textarea{flex:1;background:transparent;border:none;outline:none;font-size:13px;color:var(--muted);font-family:inherit;text-align:right;}
+.irow textarea{text-align:left;resize:none;min-height:56px;padding-top:2px;line-height:1.5;}
+.irow input::placeholder,.irow textarea::placeholder{color:#c7c7cc;}
+.gcard{background:var(--surface);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);margin-bottom:10px;}
+.gchips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;background:rgba(142,142,147,0.12);color:var(--muted);cursor:pointer;border:none;font-family:inherit;transition:all 0.15s;}
+.chip.sel{background:var(--blue);color:white;box-shadow:0 2px 8px rgba(0,122,255,0.3);}
+.ios-btn{width:100%;padding:12px;background:var(--blue);color:white;font-size:14px;font-weight:600;font-family:inherit;border:none;border-radius:var(--r);cursor:pointer;margin-top:10px;letter-spacing:-0.2px;box-shadow:0 4px 14px rgba(0,122,255,0.25);transition:transform 0.1s,opacity 0.2s;}
+.ios-btn:active{transform:scale(0.98);}
+.ios-btn:disabled{opacity:0.38;cursor:not-allowed;transform:none;}
+
+/* KANBAN */
+.kanban{overflow-x:auto;overflow-y:hidden;padding:14px 13px;display:flex;gap:10px;align-items:flex-start;background:var(--bg);}
+.col{flex-shrink:0;width:196px;display:flex;flex-direction:column;}
+.col-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 4px 5px;flex-shrink:0;}
+.col-body{display:flex;flex-direction:column;gap:7px;overflow-y:auto;max-height:calc(100vh - 155px);padding-bottom:8px;padding-right:2px;scrollbar-width:thin;scrollbar-color:rgba(142,142,147,0.2) transparent;align-items:stretch;}
+.col-body::-webkit-scrollbar{width:3px;}
+.col-body::-webkit-scrollbar-thumb{background:rgba(142,142,147,0.2);border-radius:3px;}
+.col-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.col-cnt{font-size:11px;font-weight:700;color:white;background:var(--muted);min-width:17px;height:17px;border-radius:9px;padding:0 5px;display:flex;align-items:center;justify-content:center;transition:background 0.3s;}
+.col-cnt.cb{background:var(--blue);}
+.col-cnt.co{background:var(--orange);}
+.col-cnt.cg{background:var(--green);}
+.col-cnt.cp{background:var(--purple);}
+
+/* CARDS */
+.kcard{background:var(--surface);border-radius:var(--rsm);box-shadow:var(--sh);border:1px solid var(--border);padding:10px 11px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;animation:cardIn 0.28s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;user-select:none;flex-shrink:0;min-height:78px;}
+.kcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--muted);transition:background 0.3s;}
+.kcard.st-queued::before{background:var(--muted);}
+.kcard.st-running::before{background:var(--orange);}
+.kcard.st-done::before{background:var(--green);}
+.kcard.st-error::before{background:var(--red);}
+.kcard.st-approval::before{background:var(--blue);}
+.kcard.st-hold::before{background:var(--purple);}
+.kcard.st-delivered::before{background:var(--green);}
+.kcard:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(0,0,0,0.09);}
+.kcard.dragging{opacity:0.35;transform:scale(0.95);}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+.kcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;margin-bottom:3px;}
+.kcard-title{font-size:12px;font-weight:600;letter-spacing:-0.2px;flex:1;line-height:1.3;}
+.kcard-pause{width:19px;height:19px;border-radius:5px;background:rgba(142,142,147,0.1);border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);transition:all 0.15s;}
+.kcard-pause:hover{background:rgba(175,82,222,0.15);color:var(--purple);}
+.kcard-email{font-size:10px;color:var(--muted);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kcard-foot{display:flex;align-items:center;justify-content:space-between;}
+.kbadge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.kb-run{background:rgba(255,149,0,0.14);color:var(--orange);}
+.kb-done{background:rgba(52,199,89,0.14);color:var(--green);}
+.kb-err{background:rgba(255,59,48,0.14);color:var(--red);}
+.kb-ap{background:rgba(0,122,255,0.14);color:var(--blue);}
+.kb-hold{background:rgba(175,82,222,0.14);color:var(--purple);}
+.kb-queued{background:rgba(142,142,147,0.14);color:var(--muted);}
+.kb-del{background:rgba(52,199,89,0.14);color:var(--green);}
+.kcard-time{font-size:9.5px;color:var(--muted);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin-sm{width:9px;height:9px;border:1.5px solid rgba(255,149,0,0.3);border-top-color:var(--orange);border-radius:50%;animation:spin 0.6s linear infinite;display:inline-block;margin-right:3px;vertical-align:middle;}
+.empty-card{background:var(--surface);border-radius:var(--rsm);border:2px dashed rgba(142,142,147,0.2);padding:18px 12px;text-align:center;color:var(--muted);}
+.empty-ico{font-size:20px;margin-bottom:4px;opacity:0.4;}
+.empty-txt{font-size:11px;line-height:1.5;}
+.col.drag-target .col-body{outline:2px dashed var(--blue);border-radius:var(--rsm);}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(28,28,30,0.92);color:white;padding:9px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.32);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn 0.18s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--bg);border-radius:24px 24px 0 0;width:100%;max-width:680px;max-height:91vh;overflow-y:auto;animation:slideUp 0.28s cubic-bezier(0.34,1.2,0.64,1);scrollbar-width:none;}
+.modal::-webkit-scrollbar{display:none;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-handle{width:34px;height:4px;background:rgba(142,142,147,0.28);border-radius:2px;margin:11px auto 0;}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px 9px;}
+.modal-title{font-size:17px;font-weight:700;letter-spacing:-0.4px;}
+.modal-close{width:26px;height:26px;border-radius:50%;background:rgba(142,142,147,0.15);border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.modal-body{padding:0 18px 30px;}
+.msec{margin-bottom:16px;}
+.msec-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:7px;}
+.mgrp{background:white;border-radius:var(--rsm);overflow:hidden;box-shadow:var(--sh);}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 13px;border-bottom:1px solid var(--border);font-size:13px;}
+.mrow:last-child{border-bottom:none;}
+.mrow-k{color:var(--muted);}
+.mrow-v{color:var(--text);font-weight:500;text-align:right;max-width:62%;word-break:break-all;}
+.mrow-full{padding:10px 13px;font-size:13px;line-height:1.6;color:var(--text2);border-bottom:1px solid var(--border);}
+.mrow-full:last-child{border-bottom:none;}
+.lyrics-box{background:white;border-radius:var(--rsm);padding:13px;box-shadow:var(--sh);font-size:13px;line-height:1.8;color:var(--text2);white-space:pre-wrap;}
+.ltag{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-top:10px;margin-bottom:2px;display:block;}
+.qa-wrap{background:white;border-radius:var(--rsm);overflow:hidden;box-shadow:var(--sh);}
+.qarow{display:flex;gap:9px;padding:9px 13px;border-bottom:1px solid var(--border);font-size:12px;}
+.qarow:last-child{border-bottom:none;}
+.qaico{font-size:13px;flex-shrink:0;}
+.qac{flex:1;line-height:1.4;}
+.qachk{font-weight:600;color:var(--text);font-size:12px;}
+.qanote{color:var(--muted);font-size:11px;margin-top:1px;}
+.suno-box{background:rgba(0,122,255,0.06);border-radius:9px;padding:10px 12px;font-size:12px;line-height:1.6;color:var(--blue);margin-bottom:10px;}
+audio{width:100%;border-radius:9px;margin-top:6px;}
+.task-box{background:rgba(142,142,147,0.1);border-radius:8px;padding:7px 10px;font-size:11px;color:var(--muted);word-break:break-all;margin-top:6px;}
+.email-preview{background:rgba(52,199,89,0.06);border:1px solid rgba(52,199,89,0.2);border-radius:10px;padding:11px 13px;font-size:12px;line-height:1.7;color:var(--text2);margin-top:6px;}
+.email-preview-label{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+.ap-wrap{background:white;border-radius:var(--rsm);overflow:hidden;box-shadow:var(--sh);margin-bottom:12px;}
+.chkrow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.chkrow:last-child{border-bottom:none;}
+.ios-chk{width:20px;height:20px;border-radius:50%;border:2px solid rgba(142,142,147,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.18s;background:white;}
+.ios-chk.on{background:var(--green);border-color:var(--green);}
+.ios-chk.on::after{content:'✓';color:white;font-size:11px;font-weight:700;}
+.chklbl{font-size:13px;color:var(--text);flex:1;line-height:1.4;}
+.ap-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.abtn{padding:12px;border-radius:var(--rsm);font-size:14px;font-weight:600;font-family:inherit;border:none;cursor:pointer;transition:transform 0.1s,opacity 0.2s;}
+.abtn:active{transform:scale(0.97);}
+.abtn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.abtn-yes{background:var(--green);color:white;box-shadow:0 3px 10px rgba(52,199,89,0.25);}
+.abtn-no{background:rgba(255,59,48,0.09);color:var(--red);}
+.route-opt{display:flex;align-items:center;gap:11px;padding:12px 13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s;}
+.route-opt:last-child{border-bottom:none;}
+.route-opt:active{background:rgba(0,0,0,0.03);}
+.route-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.route-info{flex:1;}
+.route-title{font-size:14px;font-weight:600;color:var(--text);}
+.route-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.log-wrap{display:flex;flex-direction:column;}
+.log-row{display:flex;gap:9px;align-items:flex-start;padding:7px 0;position:relative;}
+.log-row:not(:last-child)::after{content:'';position:absolute;left:6px;top:21px;bottom:0;width:1.5px;background:var(--border);}
+.log-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0;margin-top:1px;z-index:1;border:1.5px solid currentColor;}
+.log-dot.blue{background:rgba(0,122,255,0.15);color:var(--blue);}
+.log-dot.green{background:rgba(52,199,89,0.15);color:var(--green);}
+.log-dot.orange{background:rgba(255,149,0,0.15);color:var(--orange);}
+.log-dot.red{background:rgba(255,59,48,0.15);color:var(--red);}
+.log-dot.purple{background:rgba(175,82,222,0.15);color:var(--purple);}
+.log-content{flex:1;}
+.log-event{font-size:12px;font-weight:600;color:var(--text);margin-bottom:1px;}
+.log-detail{font-size:11px;color:var(--muted);line-height:1.4;}
+.log-time{font-size:10px;color:var(--muted);flex-shrink:0;padding-top:1px;}
+.res-wrap{text-align:center;padding:18px 0;}
+.res-em{font-size:38px;margin-bottom:9px;}
+.res-title{font-size:18px;font-weight:700;letter-spacing:-0.4px;margin-bottom:5px;}
+.res-sub{font-size:13px;color:var(--muted);line-height:1.5;}
+.link-btn{display:inline-block;margin-top:12px;padding:8px 16px;background:var(--blue);color:white;border-radius:20px;font-size:13px;font-weight:600;font-family:inherit;border:none;cursor:pointer;}
+
+/* ── SETTINGS PAGE ── */
+#page-settings{flex-direction:column;height:calc(100vh - 52px);}
+.settings-lock{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.lock-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);padding:32px;width:320px;text-align:center;}
+.lock-icon{font-size:40px;margin-bottom:12px;}
+.lock-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+.lock-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.lock-input{width:100%;padding:12px 16px;border-radius:var(--rsm);border:1.5px solid var(--border);font-size:16px;font-family:inherit;outline:none;text-align:center;letter-spacing:0.2em;background:var(--bg);}
+.lock-input:focus{border-color:var(--blue);}
+.lock-err{font-size:12px;color:var(--red);margin-top:8px;min-height:16px;}
+.lock-btn{width:100%;padding:12px;background:var(--blue);color:white;font-size:15px;font-weight:600;font-family:inherit;border:none;border-radius:var(--rsm);cursor:pointer;margin-top:12px;box-shadow:0 4px 12px rgba(0,122,255,0.25);}
+
+.settings-body{flex:1;overflow-y:auto;padding:20px 24px;scrollbar-width:none;max-width:860px;margin:0 auto;width:100%;}
+.settings-body::-webkit-scrollbar{display:none;}
+.s-section{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:18px;overflow:hidden;}
+.s-section-hdr{padding:14px 18px 0;display:flex;align-items:center;justify-content:space-between;}
+.s-section-title{font-size:15px;font-weight:700;color:var(--text);}
+.s-section-sub{font-size:12px;color:var(--muted);margin-top:2px;padding:0 18px 14px;}
+.s-field{padding:12px 18px;border-top:1px solid var(--border);}
+.s-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;}
+.s-textarea{width:100%;padding:10px 13px;border-radius:var(--rsm);border:1.5px solid var(--border);font-size:13px;font-family:inherit;outline:none;resize:vertical;min-height:110px;line-height:1.6;color:var(--text);background:var(--bg);transition:border-color 0.2s;}
+.s-textarea:focus{border-color:var(--blue);}
+.s-input{width:100%;padding:10px 13px;border-radius:var(--rsm);border:1.5px solid var(--border);font-size:13px;font-family:inherit;outline:none;color:var(--text);background:var(--bg);transition:border-color 0.2s;}
+.s-input:focus{border-color:var(--blue);}
+.s-input.mono{font-family:'SF Mono',monospace;font-size:12px;letter-spacing:0.02em;}
+
+/* GENRE MANAGER */
+.genre-list{display:flex;flex-direction:column;gap:8px;padding:0 18px 14px;}
+.genre-item{background:var(--bg);border-radius:var(--rsm);border:1px solid var(--border);overflow:hidden;}
+.genre-item-hdr{display:flex;align-items:center;gap:10px;padding:10px 13px;cursor:pointer;}
+.genre-item-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
+.genre-item-toggle{font-size:11px;color:var(--muted);}
+.genre-item-body{padding:0 13px 12px;display:none;}
+.genre-item-body.open{display:block;}
+.genre-item-body textarea{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:inherit;outline:none;resize:vertical;min-height:70px;line-height:1.6;color:var(--text);background:white;transition:border-color 0.2s;}
+.genre-item-body textarea:focus{border-color:var(--blue);}
+.genre-item-actions{display:flex;gap:8px;margin-top:8px;}
+.genre-del-btn{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,59,48,0.08);color:var(--red);border:none;cursor:pointer;font-family:inherit;}
+.add-genre-row{display:flex;gap:8px;padding:0 18px 14px;}
+.add-genre-input{flex:1;padding:9px 12px;border-radius:var(--rsm);border:1.5px solid var(--border);font-size:13px;font-family:inherit;outline:none;background:var(--bg);}
+.add-genre-input:focus{border-color:var(--blue);}
+.add-genre-btn{padding:9px 16px;border-radius:var(--rsm);background:var(--blue);color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;}
+
+.save-bar{position:sticky;bottom:0;background:rgba(248,248,252,0.92);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.save-status{font-size:12px;color:var(--muted);}
+.save-status.saved{color:var(--green);}
+.save-btn{padding:10px 24px;background:var(--blue);color:white;font-size:14px;font-weight:600;border:none;border-radius:var(--rsm);cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(0,122,255,0.25);}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:rgba(142,142,147,0.3);border-radius:4px;}
+@media(max-width:860px){.main{grid-template-columns:1fr;height:auto;}.fp{border-right:none;border-bottom:1px solid var(--border);}.kanban{height:auto;min-height:340px;}}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="bar">
+  <div class="bar-l">
+    <div class="app-ic">🎵</div>
+    <span class="app-name">AI Song Pipeline</span>
+  </div>
+  <div class="bar-r">
+    <div class="s-pill" id="sPill">Ready</div>
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-board" onclick="switchTab('board')">🎵 Board</button>
+      <button class="tab-btn" id="tab-settings" onclick="switchTab('settings')">⚙️ Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOARD PAGE -->
+<div class="page active" id="page-board">
+  <div class="pipe">
+    <div class="pip" id="pip-lyrics"><div class="dot"></div>Lyrics</div>
+    <div class="psep">›</div>
+    <div class="pip" id="pip-qa"><div class="dot"></div>QA</div>
+    <div class="psep">›</div>
+    <div class="pip" id="pip-suno"><div class="dot"></div>Suno</div>
+    <div class="psep">›</div>
+    <div class="pip" id="pip-approval"><div class="dot"></div>Approval</div>
+    <span id="concurrencyInfo"></span>
+  </div>
+  <div class="main">
+    <!-- FORM -->
+    <div class="fp">
+      <div class="shdr">Customer</div>
+      <div class="igrp">
+        <div class="irow"><span class="rlbl">For</span><input id="f-dedicatee" type="text" placeholder="Name"/></div>
+        <div class="irow"><span class="rlbl">Relationship</span><input id="f-relationship" type="text" placeholder="e.g. grandmother"/></div>
+        <div class="irow"><span class="rlbl">Email</span><input id="f-email" type="email" placeholder="customer@email.com"/></div>
+        <div class="irow"><span class="rlbl">Traits</span><input id="f-traits" type="text" placeholder="kind, funny…"/></div>
+      </div>
+      <div class="shdr">Genre</div>
+      <div class="gcard">
+        <div class="gchips" id="gChips"></div>
+      </div>
+      <div class="shdr">Song Details</div>
+      <div class="igrp">
+        <div class="irow" style="align-items:flex-start;padding-top:11px;">
+          <span class="rlbl" style="padding-top:2px;">Memory</span>
+          <textarea id="f-memory" placeholder="A specific memory…"></textarea>
+        </div>
+        <div class="irow" style="align-items:flex-start;padding-top:11px;">
+          <span class="rlbl" style="padding-top:2px;">Message</span>
+          <textarea id="f-message" placeholder="What to say…"></textarea>
+        </div>
+      </div>
+      <button class="ios-btn" id="submitBtn" onclick="submitOrder()">Add to Queue ›</button>
+    </div>
+
+    <!-- KANBAN -->
+    <div class="kanban">
+      <div class="col" id="col-order">
+        <div class="col-hdr"><span class="col-title">📋 Order</span><span class="col-cnt" id="cnt-order">0</span></div>
+        <div class="col-body" id="body-order"><div class="empty-card" id="emp-order"><div class="empty-ico">📋</div><div class="empty-txt">No orders yet</div></div></div>
+      </div>
+      <div class="col" id="col-hold"
+        ondragover="event.preventDefault();event.currentTarget.classList.add('drag-target')"
+        ondragleave="event.currentTarget.classList.remove('drag-target')"
+        ondrop="dropToHold(event)">
+        <div class="col-hdr"><span class="col-title">⏸ On Hold</span><span class="col-cnt" id="cnt-hold">0</span></div>
+        <div class="col-body" id="body-hold"><div class="empty-card" id="emp-hold"><div class="empty-ico">⏸</div><div class="empty-txt">Drag cards here</div></div></div>
+      </div>
+      <div class="col" id="col-lyrics">
+        <div class="col-hdr"><span class="col-title">✍️ Lyrics</span><span class="col-cnt" id="cnt-lyrics">0</span></div>
+        <div class="col-body" id="body-lyrics"><div class="empty-card" id="emp-lyrics"><div class="empty-ico">✍️</div><div class="empty-txt">Waiting…</div></div></div>
+      </div>
+      <div class="col" id="col-qa">
+        <div class="col-hdr"><span class="col-title">🔍 QA</span><span class="col-cnt" id="cnt-qa">0</span></div>
+        <div class="col-body" id="body-qa"><div class="empty-card" id="emp-qa"><div class="empty-ico">🔍</div><div class="empty-txt">Waiting…</div></div></div>
+      </div>
+      <div class="col" id="col-suno">
+        <div class="col-hdr"><span class="col-title">🎧 Suno</span><span class="col-cnt" id="cnt-suno">0</span></div>
+        <div class="col-body" id="body-suno"><div class="empty-card" id="emp-suno"><div class="empty-ico">🎧</div><div class="empty-txt">Waiting…</div></div></div>
+      </div>
+      <div class="col" id="col-approval">
+        <div class="col-hdr"><span class="col-title">✅ Approval</span><span class="col-cnt" id="cnt-approval">0</span></div>
+        <div class="col-body" id="body-approval"><div class="empty-card" id="emp-approval"><div class="empty-ico">✅</div><div class="empty-txt">Awaiting review</div></div></div>
+      </div>
+      <div class="col" id="col-done">
+        <div class="col-hdr"><span class="col-title">🎉 Delivered</span><span class="col-cnt" id="cnt-done">0</span></div>
+        <div class="col-body" id="body-done"><div class="empty-card" id="emp-done"><div class="empty-ico">🎉</div><div class="empty-txt">Delivered songs</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div class="page" id="page-settings">
+  <!-- LOCK SCREEN -->
+  <div class="settings-lock" id="settings-lock">
+    <div class="lock-card">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">Settings</div>
+      <div class="lock-sub">Enter the password to access pipeline settings.</div>
+      <input class="lock-input" id="lockInput" type="password" placeholder="••••••••••"
+        onkeydown="if(event.key==='Enter')unlockSettings()"/>
+      <div class="lock-err" id="lockErr"></div>
+      <button class="lock-btn" onclick="unlockSettings()">Unlock</button>
+    </div>
+  </div>
+
+  <!-- SETTINGS BODY (hidden until unlocked) -->
+  <div style="display:none;flex-direction:column;flex:1;overflow:hidden;" id="settings-content">
+    <div class="settings-body">
+
+      <!-- API KEYS -->
+      <div class="s-section">
+        <div class="s-section-hdr"><div><div class="s-section-title">🔑 API Keys</div></div></div>
+        <div class="s-section-sub">Keys are saved locally in your browser. Never share this page.</div>
+        <div class="s-field">
+          <div class="s-label">OpenRouter API Key</div>
+          <input class="s-input mono" id="s-or-key" type="password" placeholder="sk-or-v1-…" oninput="markUnsaved()"/>
+        </div>
+        <div class="s-field">
+          <div class="s-label">Suno API Key</div>
+          <input class="s-input mono" id="s-suno-key" type="password" placeholder="Your sunoapi.org key" oninput="markUnsaved()"/>
+        </div>
+      </div>
+
+      <!-- LYRIC GENERATION PROMPT -->
+      <div class="s-section">
+        <div class="s-section-hdr"><div><div class="s-section-title">✍️ Lyric Generation Prompt</div></div></div>
+        <div class="s-section-sub">The system prompt used when the AI writes lyrics. Define your structure, tone, format rules, and guidelines here.</div>
+        <div class="s-field">
+          <div class="s-label">System Prompt</div>
+          <textarea class="s-textarea" id="s-lyrics-prompt" rows="8" oninput="markUnsaved()" placeholder="e.g. You are an expert lyricist for personalized custom songs. Structure: [Verse 1], [Pre-Chorus], [Chorus]…"></textarea>
+        </div>
+      </div>
+
+      <!-- QA CHECK PROMPT -->
+      <div class="s-section">
+        <div class="s-section-hdr"><div><div class="s-section-title">🔍 QA Check Prompt</div></div></div>
+        <div class="s-section-sub">The system prompt used when the AI reviews lyrics. Define your quality checks, pass/fail criteria, and what the AI should verify.</div>
+        <div class="s-field">
+          <div class="s-label">System Prompt</div>
+          <textarea class="s-textarea" id="s-qa-prompt" rows="6" oninput="markUnsaved()" placeholder="e.g. You are a QA specialist for a custom song business. Respond ONLY with JSON array…"></textarea>
+        </div>
+      </div>
+
+      <!-- GENRE PROMPTS -->
+      <div class="s-section">
+        <div class="s-section-hdr"><div><div class="s-section-title">🎧 Genre Style Prompts</div></div></div>
+        <div class="s-section-sub">Each genre has its own Suno style descriptor. This is passed directly to Suno when generating the song. Click a genre to expand and edit its prompt.</div>
+        <div class="genre-list" id="genreList"></div>
+        <div class="add-genre-row">
+          <input class="add-genre-input" id="newGenreName" placeholder="Add new genre…" onkeydown="if(event.key==='Enter')addGenre()"/>
+          <button class="add-genre-btn" onclick="addGenre()">+ Add</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="save-bar">
+      <div class="save-status" id="saveStatus">Changes auto-saved</div>
+      <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// SETTINGS — DEFAULTS
+// ══════════════════════════════════════════
+const DEFAULT_LYRICS_PROMPT = `You are an expert lyricist for personalized custom songs. Generate a song title AND full lyrics.
+First line must be: TITLE: [your title here]
+Then a blank line, then the lyrics.
+Structure: [Verse 1],[Pre-Chorus],[Chorus],[Verse 2],[Pre-Chorus],[Chorus],[Bridge],[Outro].
+Use the exact names, memories, and details provided. Never hallucinate or invent details.
+Output ONLY the title line then the lyrics — nothing else.`;
+
+const DEFAULT_QA_PROMPT = `You are a QA specialist for a custom song business.
+Check if lyrics correctly reflect the customer's order.
+Respond ONLY with a JSON array like:
+[{"check":"Name Usage","pass":true,"note":"..."},{"check":"Memory Reference","pass":true,"note":"..."},{"check":"Genre Tone","pass":true,"note":"..."},{"check":"No Hallucinations","pass":true,"note":"..."},{"check":"Message Clarity","pass":true,"note":"..."}]
+No markdown, no extra text.`;
+
+const DEFAULT_GENRES = [
+  { name:'Pop',      prompt:'pop, upbeat, emotional, piano and guitar, warm female vocals, moderate tempo' },
+  { name:'R&B',      prompt:'r&b, soulful, smooth, soft drums and bass, silky vocals, slow to mid tempo' },
+  { name:'Country',  prompt:'country, heartfelt, acoustic guitar and fiddle, warm male vocals, storytelling, mid tempo' },
+  { name:'Hip-Hop',  prompt:'hip-hop, rhythmic, beat-driven, confident vocals, modern production, mid tempo' },
+  { name:'Rock',     prompt:'rock, powerful, electric guitar, strong drums, passionate vocals, energetic' },
+  { name:'Jazz',     prompt:'jazz, mellow, piano and bass, smooth saxophone, intimate vocals, slow tempo' },
+  { name:'Gospel',   prompt:'gospel, uplifting, choir harmonies, organ and piano, powerful vocals, soulful' },
+  { name:'OPM',      prompt:'opm, emotional, acoustic guitar, heartfelt Filipino ballad, warm vocals, slow tempo' },
+  { name:'Acoustic', prompt:'acoustic, intimate, fingerpicked guitar, soft warm vocals, minimal instrumentation, slow' },
+  { name:'EDM',      prompt:'edm, electronic, synth-driven, energetic drops, modern production, upbeat' },
+];
+
+const SETTINGS_KEY = 'asp_settings_v1';
+const SETTINGS_PW  = '9186424819';
+
+// ── Load / Save ──
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return {
+    orKey: '',
+    sunoKey: '',
+    lyricsPrompt: DEFAULT_LYRICS_PROMPT,
+    qaPrompt: DEFAULT_QA_PROMPT,
+    genres: DEFAULT_GENRES,
+  };
+}
+
+function saveSettings() {
+  const settings = {
+    orKey: $('s-or-key').value.trim() || cfg.orKey,
+    sunoKey: $('s-suno-key').value.trim() || cfg.sunoKey,
+    lyricsPrompt: $('s-lyrics-prompt').value,
+    qaPrompt: $('s-qa-prompt').value,
+    genres: collectGenresFromUI(),
+  };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  cfg = settings;
+  renderGenreChips();
+  const el = $('saveStatus');
+  el.textContent = '✓ Saved'; el.className = 'save-status saved';
+  setTimeout(()=>{ el.textContent = 'Changes auto-saved'; el.className = 'save-status'; }, 2000);
+  toast('Settings saved');
+}
+
+function markUnsaved() {
+  const el = $('saveStatus');
+  el.textContent = 'Unsaved changes'; el.className = 'save-status';
+  // auto-save after 1.5s of no typing
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(saveSettings, 1500);
+}
+
+let cfg = loadSettings();
+
+// ══════════════════════════════════════════
+// PIPELINE STATE
+// ══════════════════════════════════════════
+const MAX_PER_COL = 5;
+let genre = '', cardIdCounter = 0, dragCardId = null;
+const cards = {};
+const queues = { lyrics:[], qa:[], suno:[] };
+const active = { lyrics: new Set(), qa: new Set(), suno: new Set() };
+
+const $ = id => document.getElementById(id);
+const delay = ms => new Promise(r => setTimeout(r, ms));
+const now = () => new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+function toast(msg, dur=2600) {
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ── TAB SWITCHING ──
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  $('page-'+tab).classList.add('active');
+  $('tab-'+tab).classList.add('active');
+  if(tab==='settings') renderSettingsUI();
+}
+
+// ══════════════════════════════════════════
+// SETTINGS UI
+// ══════════════════════════════════════════
+let settingsUnlocked = false;
+
+function unlockSettings() {
+  const val = $('lockInput').value;
+  if(val === SETTINGS_PW) {
+    settingsUnlocked = true;
+    $('settings-lock').style.display = 'none';
+    $('settings-content').style.display = 'flex';
+    renderSettingsUI();
+  } else {
+    $('lockErr').textContent = 'Incorrect password. Please try again.';
+    $('lockInput').value = '';
+    $('lockInput').focus();
+  }
+}
+
+function renderSettingsUI() {
+  if(!settingsUnlocked) return;
+  $('s-or-key').value   = cfg.orKey || '';
+  $('s-suno-key').value = cfg.sunoKey || '';
+  $('s-lyrics-prompt').value = cfg.lyricsPrompt || DEFAULT_LYRICS_PROMPT;
+  $('s-qa-prompt').value     = cfg.qaPrompt || DEFAULT_QA_PROMPT;
+  renderGenreList();
+}
+
+function renderGenreList() {
+  const list = $('genreList');
+  list.innerHTML = '';
+  (cfg.genres || DEFAULT_GENRES).forEach((g, i) => {
+    const item = document.createElement('div');
+    item.className = 'genre-item';
+    item.id = 'genre-item-'+i;
+    item.innerHTML = `
+      <div class="genre-item-hdr" onclick="toggleGenreItem(${i})">
+        <span class="genre-item-name">${g.name}</span>
+        <span class="genre-item-toggle" id="genre-toggle-${i}">›</span>
+      </div>
+      <div class="genre-item-body" id="genre-body-${i}">
+        <textarea oninput="markUnsaved()" id="genre-prompt-${i}" placeholder="Style descriptor for Suno…">${g.prompt}</textarea>
+        <div class="genre-item-actions">
+          <button class="genre-del-btn" onclick="deleteGenre(${i})">Remove</button>
+        </div>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function toggleGenreItem(i) {
+  const body = $('genre-body-'+i);
+  const tog  = $('genre-toggle-'+i);
+  const open = body.classList.toggle('open');
+  tog.textContent = open ? '∨' : '›';
+}
+
+function collectGenresFromUI() {
+  const genres = [];
+  (cfg.genres || DEFAULT_GENRES).forEach((g, i) => {
+    const promptEl = $('genre-prompt-'+i);
+    if(promptEl) genres.push({ name: g.name, prompt: promptEl.value });
+  });
+  return genres;
+}
+
+function addGenre() {
+  const input = $('newGenreName');
+  const name = input.value.trim();
+  if(!name) return;
+  cfg.genres = cfg.genres || [...DEFAULT_GENRES];
+  cfg.genres.push({ name, prompt: '' });
+  input.value = '';
+  renderGenreList();
+  renderGenreChips();
+  markUnsaved();
+  // open the new item
+  setTimeout(()=>toggleGenreItem(cfg.genres.length-1), 50);
+}
+
+function deleteGenre(i) {
+  if(!confirm(`Remove "${cfg.genres[i].name}"?`)) return;
+  cfg.genres.splice(i, 1);
+  renderGenreList();
+  renderGenreChips();
+  markUnsaved();
+}
+
+// ══════════════════════════════════════════
+// GENRE CHIPS (board form)
+// ══════════════════════════════════════════
+function renderGenreChips() {
+  const container = $('gChips');
+  container.innerHTML = '';
+  (cfg.genres || DEFAULT_GENRES).forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.g = g.name;
+    btn.textContent = g.name;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));
+      btn.classList.add('sel');
+      genre = g.name;
+    });
+    container.appendChild(btn);
+  });
+}
+renderGenreChips();
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function logEvent(id, color, event, detail='') {
+  const c=cards[id]; if(!c)return;
+  const elapsed=c.stageStart?Math.round((Date.now()-c.stageStart)/1000):0;
+  c.activityLog.push({color,event,detail,timeStr:now(),elapsed});
+  c.stageStart=Date.now();
+}
+function renderLog(id) {
+  const c=cards[id];
+  if(!c||!c.activityLog.length) return '<div style="font-size:12px;color:var(--muted);padding:8px 0">No activity yet.</div>';
+  return '<div class="log-wrap">'+c.activityLog.map(l=>`
+    <div class="log-row">
+      <div class="log-dot ${l.color}"></div>
+      <div class="log-content">
+        <div class="log-event">${l.event}</div>
+        ${l.detail?`<div class="log-detail">${l.detail}</div>`:''}
+        ${l.elapsed>0?`<div class="log-detail" style="color:var(--blue)">⏱ +${l.elapsed}s</div>`:''}
+      </div>
+      <div class="log-time">${l.timeStr}</div>
+    </div>`).join('')+'</div>';
+}
+function fmtLyrics(raw) {
+  if(!raw) return '';
+  return raw.replace(/\[([^\]]+)\]/g,'<span class="ltag">[$1]</span>').replace(/\n/g,'<br>');
+}
+function updateGlobalStatus() {
+  const total=Object.values(active).reduce((s,a)=>s+a.size,0);
+  const qTotal=Object.values(queues).reduce((s,q)=>s+q.length,0);
+  const pill=$('sPill');
+  if(total>0){pill.textContent=`${total} processing`;pill.className='s-pill active';}
+  else if(qTotal>0){pill.textContent=`${qTotal} queued`;pill.className='s-pill active';}
+  else{pill.textContent='Ready';pill.className='s-pill';}
+  const parts=[];
+  ['lyrics','qa','suno'].forEach(col=>{
+    if(active[col].size>0||queues[col].length>0)
+      parts.push(`${col}: ${active[col].size}▶${queues[col].length>0?' +'+queues[col].length:''}`);
+  });
+  $('concurrencyInfo').textContent=parts.join(' · ');
+}
+
+// ── COLUMN MANAGEMENT ──
+const EMPTY_CFG={
+  order:{ico:'📋',txt:'No orders yet'},hold:{ico:'⏸',txt:'Drag cards here'},
+  lyrics:{ico:'✍️',txt:'Waiting…'},qa:{ico:'🔍',txt:'Waiting…'},
+  suno:{ico:'🎧',txt:'Waiting…'},approval:{ico:'✅',txt:'Awaiting review'},done:{ico:'🎉',txt:'Delivered songs'}
+};
+const COL_COLOR={order:'cb',hold:'cp',lyrics:'cb',qa:'cb',suno:'cb',approval:'co',done:'cg'};
+const ALL_COLS=['order','hold','lyrics','qa','suno','approval','done'];
+
+function recountCol(col){
+  const n=$('body-'+col).querySelectorAll('.kcard').length;
+  const el=$('cnt-'+col); el.textContent=n;
+  el.className='col-cnt'+(n>0?' '+(COL_COLOR[col]||'cb'):'');
+}
+function removeEmp(col){const e=$('emp-'+col);if(e)e.remove();}
+function restoreEmpty(col){
+  const b=$('body-'+col);
+  if(b.querySelectorAll('.kcard').length===0&&!$('emp-'+col)){
+    const e=document.createElement('div');
+    e.className='empty-card';e.id='emp-'+col;
+    e.innerHTML=`<div class="empty-ico">${EMPTY_CFG[col].ico}</div><div class="empty-txt">${EMPTY_CFG[col].txt}</div>`;
+    b.appendChild(e);
+  }
+}
+function addCardToCol(col,el){removeEmp(col);$('body-'+col).appendChild(el);recountCol(col);}
+function moveCardToCol(id,toCol){
+  const el=$('kcard-'+id);if(!el)return;
+  removeEmp(toCol);$('body-'+toCol).appendChild(el);
+  ALL_COLS.forEach(c=>recountCol(c));
+  if(cards[id])cards[id].currentCol=toCol;
+}
+
+// ── CARD BUILDER ──
+function makeCardEl(id){
+  const c=cards[id];
+  const el=document.createElement('div');
+  el.className='kcard st-queued';
+  el.id='kcard-'+id; el.draggable=true;
+  el.innerHTML=`
+    <div class="kcard-top">
+      <div class="kcard-title" id="ktitle-${id}">${c.order.email}</div>
+      <button class="kcard-pause" onclick="event.stopPropagation();pauseCard('${id}')" title="Hold">⏸</button>
+    </div>
+    <div class="kcard-email" id="kemail-${id}" style="display:none">${c.order.email}</div>
+    <div class="kcard-foot">
+      <div class="kbadge kb-queued" id="badge-${id}">Queued</div>
+      <div class="kcard-time">${now()}</div>
+    </div>`;
+  el.addEventListener('click',()=>openCardModal(id));
+  el.addEventListener('dragstart',e=>{dragCardId=id;el.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+  el.addEventListener('dragend',()=>{el.classList.remove('dragging');dragCardId=null;});
+  return el;
+}
+function updateCardTitle(id,title){
+  const t=$('ktitle-'+id),e=$('kemail-'+id);
+  if(t)t.textContent=title;
+  if(e)e.style.display='block';
+}
+function setCardState(id,stClass,bCls,bText){
+  const el=$('kcard-'+id);
+  if(el)el.className=`kcard st-${stClass}`;
+  const b=$('badge-'+id);
+  if(b){b.className='kbadge '+bCls;b.innerHTML=bText;}
+}
+
+// ── FORM ──
+function shakeBtn(){const b=$('submitBtn');['-5px','5px','-3px','3px','0'].forEach((x,i)=>setTimeout(()=>b.style.transform=`translateX(${x})`,i*70));}
+
+function submitOrder(){
+  const dedicatee=$('f-dedicatee').value.trim();
+  const relationship=$('f-relationship').value.trim();
+  const email=$('f-email').value.trim();
+  const traits=$('f-traits').value.trim();
+  const memory=$('f-memory').value.trim();
+  const message=$('f-message').value.trim();
+  if(!dedicatee||!relationship||!email||!genre||!memory){shakeBtn();toast('Please fill all required fields');return;}
+  if(!cfg.orKey){toast('⚠️ OpenRouter API key not set in Settings');return;}
+  createCard({dedicatee,relationship,email,genre,traits,memory,message});
+  $('f-dedicatee').value='';$('f-relationship').value='';$('f-email').value='';
+  $('f-traits').value='';$('f-memory').value='';$('f-message').value='';
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));genre='';
+  toast('Order added to queue');
+}
+
+function createCard(order){
+  const id='c'+(++cardIdCounter);
+  cards[id]={id,order,lyrics:'',songTitle:'',sunoPrompt:'',songResult:null,qaResults:[],activityLog:[],stageStart:Date.now(),checks:{},currentCol:'order',paused:false,pausedFromCol:null};
+  logEvent(id,'blue','Order placed',`${order.genre} song for ${order.dedicatee} · ${order.email}`);
+  addCardToCol('order',makeCardEl(id));
+  updateGlobalStatus();
+  enqueue('lyrics',id);
+}
+
+// ── CONCURRENCY ENGINE ──
+function enqueue(col,id){
+  moveCardToCol(id,col);
+  setCardState(id,'queued','kb-queued','⏳ In Queue');
+  queues[col].push(id);
+  tryNext(col);
+}
+function tryNext(col){
+  while(active[col].size<MAX_PER_COL&&queues[col].length>0){
+    const id=queues[col].shift();
+    const c=cards[id];
+    if(!c||c.paused)continue;
+    active[col].add(id);
+    updateGlobalStatus();
+    processStage(col,id);
+  }
+}
+function onDone(col,id){
+  active[col].delete(id);
+  ALL_COLS.forEach(c=>restoreEmpty(c));
+  updateGlobalStatus();
+  tryNext(col);
+}
+
+// ── STAGES ──
+async function processStage(col,id){
+  if(col==='lyrics') await stageLyrics(id);
+  else if(col==='qa') await stageQA(id);
+  else if(col==='suno') await stageSuno(id);
+  onDone(col,id);
+}
+
+async function stageLyrics(id){
+  const c=cards[id];
+  setCardState(id,'running','kb-run','<span class="spin-sm"></span>Writing…');
+  try{
+    const result=await apiLyrics(c.order);
+    c.lyrics=result.lyrics; c.songTitle=result.title;
+    updateCardTitle(id,result.title);
+    logEvent(id,'purple','Lyrics generated',`"${result.title}" · ${c.lyrics.split('\n').length} lines`);
+    setCardState(id,'done','kb-done','Lyrics ✓');
+    enqueue('qa',id);
+  }catch(e){
+    logEvent(id,'red','Lyrics failed',e.message);
+    setCardState(id,'error','kb-err','Failed');
+  }
+}
+
+async function stageQA(id){
+  const c=cards[id];
+  setCardState(id,'running','kb-run','<span class="spin-sm"></span>QA…');
+  try{
+    c.qaResults=await apiQA(c.order,c.lyrics);
+    const allPass=c.qaResults.every(q=>q.pass);
+    const passCount=c.qaResults.filter(q=>q.pass).length;
+    if(!allPass){
+      const failed=c.qaResults.filter(q=>!q.pass).map(q=>q.check).join(', ');
+      logEvent(id,'orange',`QA failed (${passCount}/${c.qaResults.length})`,`⚠ ${failed} — retrying`);
+      setCardState(id,'running','kb-run','<span class="spin-sm"></span>Retrying…');
+      moveCardToCol(id,'lyrics');
+      const fb=c.qaResults.filter(q=>!q.pass).map(q=>`- ${q.check}: ${q.note}`).join('\n');
+      const retryResult=await apiLyricsRetry(c.order,fb);
+      if(!retryResult||!retryResult.lyrics) throw new Error('Retry produced no lyrics.');
+      c.lyrics=retryResult.lyrics; c.songTitle=retryResult.title;
+      updateCardTitle(id,retryResult.title);
+      logEvent(id,'purple','Lyrics rewritten',`"${retryResult.title}" · ${c.lyrics.split('\n').length} lines`);
+      setCardState(id,'running','kb-run','<span class="spin-sm"></span>QA retry…');
+      await delay(500);
+      moveCardToCol(id,'qa');
+      c.qaResults=await apiQA(c.order,c.lyrics);
+      const rp=c.qaResults.filter(q=>q.pass).length;
+      logEvent(id,'green',`QA retry passed (${rp}/${c.qaResults.length})`,'');
+    } else {
+      logEvent(id,'green',`QA passed — all ${passCount} checks OK`,c.qaResults.map(q=>`✓ ${q.check}`).join(' · '));
+    }
+    setCardState(id,'done','kb-done','QA ✓');
+    enqueue('suno',id);
+  }catch(e){
+    logEvent(id,'red','QA error',e.message);
+    setCardState(id,'error','kb-err','QA Error');
+  }
+}
+
+async function stageSuno(id){
+  const c=cards[id];
+  setCardState(id,'running','kb-run','<span class="spin-sm"></span>Generating…');
+  let attempt=0;
+  while(attempt<3){
+    try{
+      attempt++;
+      if(attempt>1){logEvent(id,'orange',`Suno retry ${attempt}/3`,'');setCardState(id,'running','kb-run',`<span class="spin-sm"></span>Retry ${attempt}…`);}
+      c.sunoPrompt=await apiSunoPrompt(c.order,c.lyrics);
+      c.songResult=await apiGenerateSong(c.sunoPrompt,c.lyrics,c.order);
+      break;
+    }catch(e){
+      logEvent(id,'orange',`Suno attempt ${attempt} failed`,e.message);
+      if(attempt>=3){logEvent(id,'red','Suno failed after 3 attempts',e.message);setCardState(id,'error','kb-err','Suno Failed');return;}
+      await delay(3000);
+    }
+  }
+  logEvent(id,'orange','Song generated',c.songResult.audioUrl?'Audio ready':`Task: ${c.songResult.taskId}`);
+  setCardState(id,'approval','kb-ap','Review ›');
+  moveCardToCol(id,'approval');
+  logEvent(id,'blue','Awaiting human approval','');
+  updateGlobalStatus();
+}
+
+// ── PAUSE / HOLD ──
+function pauseCard(id){
+  const c=cards[id];if(!c)return;
+  c.paused=true;c.pausedFromCol=c.currentCol;
+  Object.keys(queues).forEach(col=>{queues[col]=queues[col].filter(x=>x!==id);});
+  logEvent(id,'purple','Moved to On Hold',`Was in: ${c.pausedFromCol}`);
+  setCardState(id,'hold','kb-hold','On Hold ⏸');
+  moveCardToCol(id,'hold');
+  updateGlobalStatus();
+  toast('Card moved to On Hold');
+}
+function dropToHold(event){
+  event.preventDefault();event.currentTarget.classList.remove('drag-target');
+  if(dragCardId)pauseCard(dragCardId);
+}
+function resumeCard(id){
+  const c=cards[id];if(!c)return;
+  c.paused=false; closeModal();
+  const returnCol=c.pausedFromCol||'order';
+  logEvent(id,'blue','Resumed from On Hold',`Re-queuing for: ${returnCol}`);
+  c.pausedFromCol=null;
+  if(returnCol==='lyrics'||returnCol==='order') enqueue('lyrics',id);
+  else if(returnCol==='qa') enqueue('qa',id);
+  else if(returnCol==='suno') enqueue('suno',id);
+  updateGlobalStatus();
+  toast('Card resumed');
+}
+
+// ── MODALS ──
+function openModal(title,body){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalOverlay').style.display='flex';}
+function closeModal(e){if(!e||e.target===$('modalOverlay'))$('modalOverlay').style.display='none';}
+
+function openCardModal(id){
+  const c=cards[id];if(!c)return;
+  if(c.currentCol==='hold'){openHoldModal(id);return;}
+  if(c.currentCol==='approval'){openApprovalModal(id);return;}
+  if(c.currentCol==='done'){openDeliveredModal(id);return;}
+  openModal(c.songTitle||`For ${c.order.dedicatee}`,`
+    <div class="msec"><div class="msec-title">Customer Details</div><div class="mgrp">
+      <div class="mrow"><span class="mrow-k">For</span><span class="mrow-v">${c.order.dedicatee}</span></div>
+      <div class="mrow"><span class="mrow-k">Relationship</span><span class="mrow-v">${c.order.relationship}</span></div>
+      <div class="mrow"><span class="mrow-k">Email</span><span class="mrow-v">${c.order.email}</span></div>
+      <div class="mrow"><span class="mrow-k">Genre</span><span class="mrow-v">${c.order.genre}</span></div>
+      ${c.order.traits?`<div class="mrow"><span class="mrow-k">Traits</span><span class="mrow-v">${c.order.traits}</span></div>`:''}
+    </div></div>
+    <div class="msec"><div class="msec-title">Memory</div><div class="mgrp"><div class="mrow-full">${c.order.memory}</div></div></div>
+    ${c.order.message?`<div class="msec"><div class="msec-title">Message</div><div class="mgrp"><div class="mrow-full">${c.order.message}</div></div></div>`:''}
+    ${c.lyrics?`<div class="msec"><div class="msec-title">Generated Lyrics</div><div class="lyrics-box">${fmtLyrics(c.lyrics)}</div></div>`:''}
+    ${c.qaResults.length?`<div class="msec"><div class="msec-title">QA Results</div><div class="qa-wrap">${c.qaResults.map(q=>`<div class="qarow"><span class="qaico">${q.pass?'✅':'⚠️'}</span><div class="qac"><div class="qachk">${q.check}</div><div class="qanote">${q.note}</div></div></div>`).join('')}</div></div>`:''}
+    <div class="msec"><div class="msec-title">Activity Log</div><div class="mgrp" style="padding:4px 8px">${renderLog(id)}</div></div>
+  `);
+}
+
+function openHoldModal(id){
+  const c=cards[id];
+  openModal(`On Hold — ${c.order.dedicatee}`,`
+    <div class="msec"><div style="background:rgba(175,82,222,0.07);border-radius:12px;padding:16px;text-align:center;margin-bottom:4px;">
+      <div style="font-size:26px;margin-bottom:6px">⏸</div>
+      <div style="font-size:15px;font-weight:600">Paused</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px">Was in: ${c.pausedFromCol||'order'} column</div>
+    </div></div>
+    <div class="msec"><div class="msec-title">Order</div><div class="mgrp">
+      <div class="mrow"><span class="mrow-k">For</span><span class="mrow-v">${c.order.dedicatee} (${c.order.relationship})</span></div>
+      <div class="mrow"><span class="mrow-k">Email</span><span class="mrow-v">${c.order.email}</span></div>
+      <div class="mrow"><span class="mrow-k">Genre</span><span class="mrow-v">${c.order.genre}</span></div>
+    </div></div>
+    ${c.lyrics?`<div class="msec"><div class="msec-title">Lyrics (saved)</div><div class="lyrics-box">${fmtLyrics(c.lyrics)}</div></div>`:''}
+    <div class="msec"><div class="msec-title">Activity Log</div><div class="mgrp" style="padding:4px 8px">${renderLog(id)}</div></div>
+    <button class="ios-btn" style="margin-bottom:0" onclick="resumeCard('${id}')">▶ Resume Pipeline</button>
+  `);
+}
+
+function openApprovalModal(id){
+  const c=cards[id];
+  const audioHtml=c.songResult?.audioUrl
+    ?`<audio controls src="${c.songResult.audioUrl}"></audio>`
+    :`<div class="task-box">Task ID: ${c.songResult?.taskId||'N/A'}<br><a href="https://sunoapi.org/dashboard" target="_blank" style="color:var(--blue)">View in Suno dashboard →</a></div>`;
+  const chkItems=['Dedicatee name is correct and natural','Special memory accurately referenced','Genre and mood match the request','No hallucinated details in lyrics','Song audio has no glitches','Quality meets delivery standard'];
+  openModal(`Review — ${c.songTitle||'For '+c.order.dedicatee}`,`
+    <div class="msec"><div class="msec-title">Customer Request</div><div class="mgrp">
+      <div class="mrow"><span class="mrow-k">For</span><span class="mrow-v">${c.order.dedicatee}</span></div>
+      <div class="mrow"><span class="mrow-k">Relationship</span><span class="mrow-v">${c.order.relationship}</span></div>
+      <div class="mrow"><span class="mrow-k">Email</span><span class="mrow-v">${c.order.email}</span></div>
+      <div class="mrow"><span class="mrow-k">Genre</span><span class="mrow-v">${c.order.genre}</span></div>
+      ${c.order.traits?`<div class="mrow"><span class="mrow-k">Traits</span><span class="mrow-v">${c.order.traits}</span></div>`:''}
+    </div></div>
+    <div class="msec"><div class="msec-title">Memory</div><div class="mgrp"><div class="mrow-full">${c.order.memory}</div></div></div>
+    ${c.order.message?`<div class="msec"><div class="msec-title">Message</div><div class="mgrp"><div class="mrow-full">${c.order.message}</div></div></div>`:''}
+    <div class="msec"><div class="msec-title">Generated Lyrics</div><div class="lyrics-box">${fmtLyrics(c.lyrics)}</div></div>
+    <div class="msec"><div class="msec-title">Generated Song</div>${audioHtml}</div>
+    <div class="msec"><div class="msec-title">QA Report</div><div class="qa-wrap">
+      ${c.qaResults.map(q=>`<div class="qarow"><span class="qaico">${q.pass?'✅':'⚠️'}</span><div class="qac"><div class="qachk">${q.check}</div><div class="qanote">${q.note}</div></div></div>`).join('')}
+    </div></div>
+    <div class="msec"><div class="msec-title">Approval Checklist</div><div class="ap-wrap">
+      ${chkItems.map((item,i)=>`
+        <div class="chkrow" onclick="toggleChk('${id}',${i})">
+          <div class="ios-chk${c.checks[i]?' on':''}" id="mchk-${id}-${i}"></div>
+          <span class="chklbl">${item}</span>
+        </div>`).join('')}
+    </div></div>
+    <div class="ap-actions">
+      <button class="abtn abtn-yes" id="apBtn-${id}" onclick="approveCard('${id}')" ${[0,1,2,3,4,5].every(j=>c.checks[j])?'':'disabled'}>Approve & Send ✓</button>
+      <button class="abtn abtn-no" onclick="openRejectModal('${id}')">Reject ✗</button>
+    </div>
+  `);
+}
+
+function openDeliveredModal(id){
+  const c=cards[id];
+  const audioHtml=c.songResult?.audioUrl
+    ?`<audio controls src="${c.songResult.audioUrl}"></audio>`
+    :`<div class="task-box">Task ID: ${c.songResult?.taskId||'N/A'}</div>`;
+  openModal(`Delivered — ${c.songTitle||c.order.dedicatee}`,`
+    <div class="res-wrap" style="padding-bottom:0">
+      <div class="res-em">🎉</div>
+      <div class="res-title">Song Delivered!</div>
+      <div class="res-sub">${c.order.genre} song for <strong>${c.order.dedicatee}</strong><br>Sent to ${c.order.email}</div>
+    </div>
+    <div class="msec" style="margin-top:18px"><div class="msec-title">Audio</div>${audioHtml}</div>
+    <div class="msec"><div class="msec-title">Lyrics</div><div class="lyrics-box">${fmtLyrics(c.lyrics)}</div></div>
+    <div class="msec"><div class="msec-title">Email Sent</div>
+      <div class="email-preview">
+        <div class="email-preview-label">📧 To: ${c.order.email}</div>
+        <strong>Subject:</strong> Your custom song is ready, ${c.order.dedicatee}! 🎵<br><br>
+        Hi ${c.order.dedicatee},<br><br>
+        Your custom ${c.order.genre} song has been created with love. Here are your lyrics and audio link:<br><br>
+        🎧 <strong>Listen here:</strong> ${c.songResult?.audioUrl||'[Audio link]'}<br><br>
+        ✍️ <strong>Your Lyrics:</strong><br>${c.lyrics.replace(/\n/g,'<br>').slice(0,300)}…
+      </div>
+    </div>
+    <div class="msec"><div class="msec-title">Activity Log</div><div class="mgrp" style="padding:4px 8px">${renderLog(id)}</div></div>
+  `);
+}
+
+function toggleChk(id,i){
+  const c=cards[id];if(!c)return;
+  c.checks[i]=!c.checks[i];
+  const el=$(`mchk-${id}-${i}`);
+  if(el)el.className='ios-chk'+(c.checks[i]?' on':'');
+  const allOn=[0,1,2,3,4,5].every(j=>c.checks[j]);
+  const btn=$(`apBtn-${id}`);
+  if(btn)btn.disabled=!allOn;
+}
+
+function approveCard(id){
+  closeModal();
+  const c=cards[id];
+  logEvent(id,'green','Approved — sending email',`To: ${c.order.email}`);
+  setTimeout(()=>{
+    logEvent(id,'green','Email sent',`Lyrics + audio link delivered to ${c.order.email}`);
+    toast(`📧 Email sent to ${c.order.email}`);
+  },800);
+  setCardState(id,'delivered','kb-del','Delivered ✓');
+  moveCardToCol(id,'done');
+  updateGlobalStatus();
+}
+
+function openRejectModal(id){
+  closeModal();
+  openModal('Send Back To…',`
+    <div class="msec"><div class="msec-title">Where should this go?</div><div class="mgrp">
+      <div class="route-opt" onclick="sendBack('${id}','lyrics')">
+        <div class="route-ico" style="background:rgba(175,82,222,0.1)">✍️</div>
+        <div class="route-info"><div class="route-title">Redo Lyrics</div><div class="route-sub">Lyrics don't match or feel wrong</div></div>
+        <span style="color:var(--muted);font-size:18px">›</span>
+      </div>
+      <div class="route-opt" onclick="sendBack('${id}','suno')">
+        <div class="route-ico" style="background:rgba(255,149,0,0.1)">🎧</div>
+        <div class="route-info"><div class="route-title">Regenerate Song</div><div class="route-sub">Lyrics fine but audio has issues</div></div>
+        <span style="color:var(--muted);font-size:18px">›</span>
+      </div>
+    </div></div>
+    <button class="abtn" style="width:100%;background:rgba(142,142,147,0.1);color:var(--muted);margin-top:4px" onclick="closeModal()">Cancel</button>
+  `);
+}
+
+function sendBack(id,dest){
+  closeModal();
+  const c=cards[id];if(!c)return;
+  Object.keys(c.checks).forEach(k=>delete c.checks[k]);
+  logEvent(id,'red',`Rejected — sending to ${dest}`,'Human review decision');
+  enqueue(dest==='lyrics'?'lyrics':'suno',id);
+  updateGlobalStatus();
+}
+
+// ══════════════════════════════════════════
+// API LAYER — reads from cfg at call time
+// ══════════════════════════════════════════
+function getGenrePrompt(genreName) {
+  const g = (cfg.genres||DEFAULT_GENRES).find(g=>g.name===genreName);
+  return g ? g.prompt : genreName;
+}
+
+async function apiLyrics(order){
+  const sysPrompt = cfg.lyricsPrompt || DEFAULT_LYRICS_PROMPT;
+  const raw = await callAI(
+    sysPrompt,
+    `Write a custom ${order.genre} song:\n- Dedicated to: ${order.dedicatee} (${order.relationship})\n- Traits: ${order.traits||'not specified'}\n- Memory: ${order.memory}\n- Message: ${order.message||'love and appreciation'}`
+  );
+  if(!raw||raw.trim()==='') throw new Error('Model returned empty lyrics. Try resubmitting.');
+  const lines=raw.split('\n');
+  const titleLine=lines.find(l=>l.toUpperCase().startsWith('TITLE:'));
+  const title=titleLine?titleLine.replace(/^TITLE:\s*/i,'').trim():`For ${order.dedicatee}`;
+  const lyrics=lines.filter(l=>!l.toUpperCase().startsWith('TITLE:')).join('\n').trim();
+  if(!lyrics||lyrics.trim()==='') throw new Error('Empty lyrics after parsing. Try resubmitting.');
+  return {lyrics,title};
+}
+
+async function apiLyricsRetry(order,feedback){
+  const sysPrompt = (cfg.lyricsPrompt || DEFAULT_LYRICS_PROMPT) + '\n\nThis is a RETRY. Fix the QA issues listed below and rewrite the song.';
+  const raw = await callAI(
+    sysPrompt,
+    `Fix these QA issues:\n${feedback}\n\nOrder:\n- Dedicated to: ${order.dedicatee} (${order.relationship})\n- Genre: ${order.genre}\n- Traits: ${order.traits||'not specified'}\n- Memory: ${order.memory}\n- Message: ${order.message||'love and appreciation'}`
+  );
+  if(!raw||raw.trim()==='') throw new Error('Model returned empty lyrics on retry.');
+  const lines=raw.split('\n');
+  const titleLine=lines.find(l=>l.toUpperCase().startsWith('TITLE:'));
+  const title=titleLine?titleLine.replace(/^TITLE:\s*/i,'').trim():`For ${order.dedicatee}`;
+  const lyrics=lines.filter(l=>!l.toUpperCase().startsWith('TITLE:')).join('\n').trim();
+  if(!lyrics||lyrics.trim()==='') throw new Error('Empty lyrics after retry parsing.');
+  return {lyrics,title};
+}
+
+async function apiQA(order,lyrics){
+  const sysPrompt = cfg.qaPrompt || DEFAULT_QA_PROMPT;
+  const raw = await callAI(
+    sysPrompt,
+    `Order: Dedicatee:${order.dedicatee}(${order.relationship}), Genre:${order.genre}, Traits:${order.traits}, Memory:${order.memory}, Message:${order.message}\n\nLyrics:\n${lyrics}`
+  );
+  if(!raw||raw.trim()==='') return [{check:'QA Parse',pass:false,note:'Empty QA response from model.'}];
+  let clean=raw.replace(/```json/gi,'').replace(/```/g,'').trim();
+  const a=clean.indexOf('['),b=clean.lastIndexOf(']');
+  if(a!==-1&&b>a) clean=clean.slice(a,b+1);
+  try{
+    const p=JSON.parse(clean);
+    if(!Array.isArray(p)||p.length===0) throw new Error('not array');
+    return p;
+  }catch{
+    return [{check:'QA Parse',pass:false,note:`Could not parse QA JSON. Response: ${raw.slice(0,100)}`}];
+  }
+}
+
+async function apiSunoPrompt(order,lyrics){
+  const genreDescriptor = getGenrePrompt(order.genre);
+  return genreDescriptor;
+}
+
+async function apiGenerateSong(prompt,lyrics,order){
+  const sunoKey = cfg.sunoKey;
+  if(!sunoKey) throw new Error('Suno API key not configured in Settings');
+  const body={customMode:true,instrumental:false,model:'V4_5ALL',prompt:lyrics,style:prompt,title:`For ${order.dedicatee}`.slice(0,80),callBackUrl:'https://aisongpipeline.app/callback'};
+  const res=await fetch('https://api.sunoapi.org/api/v1/generate',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sunoKey}`},body:JSON.stringify(body)});
+  const raw=await res.json();
+  console.log('Suno:',JSON.stringify(raw));
+  if(!res.ok)throw new Error(raw.msg||`Suno ${res.status}`);
+  const taskId=raw?.data?.taskId||raw?.taskId;
+  if(!taskId)throw new Error(`No taskId. ${JSON.stringify(raw)}`);
+  for(let i=0;i<36;i++){
+    await delay(5000);
+    const p=await fetch(`https://api.sunoapi.org/api/v1/generate/record-info?taskId=${taskId}`,{headers:{'Authorization':`Bearer ${sunoKey}`}});
+    if(!p.ok)continue;
+    const pd=await p.json();
+    const s=pd?.data?.status;
+    if(s==='SUCCESS'||s==='complete'){const clips=pd?.data?.response?.sunoData;return{audioUrl:clips?.[0]?.audioUrl||clips?.[0]?.audio_url||null,taskId};}
+    if(s==='FAILED'||s==='failed')throw new Error('Suno generation failed.');
+  }
+  return{audioUrl:null,taskId};
+}
+
+async function callAI(sys, usr, attempt=0) {
+  const key = cfg.orKey;
+  if(!key) throw new Error('OpenRouter API key not configured in Settings');
+
+  let res, data;
+  try {
+    res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`,
+        'HTTP-Referer': 'https://aisongpipeline.app',
+        'X-Title': 'AI Song Pipeline'
+      },
+      body: JSON.stringify({
+        model: 'openrouter/auto',
+        max_tokens: 1800,
+        messages: [
+          { role: 'system', content: sys },
+          { role: 'user',   content: usr }
+        ]
+      })
+    });
+    data = await res.json();
+  } catch(e) {
+    if(attempt < 2) { await delay(3000 * (attempt + 1)); return callAI(sys, usr, attempt + 1); }
+    throw new Error(`Network error: ${e.message}`);
+  }
+
+  if(res.status === 429) {
+    if(attempt < 2) { await delay(8000 * (attempt + 1)); return callAI(sys, usr, attempt + 1); }
+    throw new Error('Rate limit hit after 3 attempts. Try again in a moment.');
+  }
+
+  if(!res.ok) {
+    const msg = data?.error?.message || data?.message || `OpenRouter ${res.status}`;
+    if(attempt < 2 && res.status >= 500) { await delay(4000 * (attempt + 1)); return callAI(sys, usr, attempt + 1); }
+    throw new Error(msg);
+  }
+
+  const content = data?.choices?.[0]?.message?.content;
+  if(content == null || content.trim() === '') {
+    const reason = data?.choices?.[0]?.finish_reason || 'unknown';
+    if(attempt < 2) { await delay(3000 * (attempt + 1)); return callAI(sys, usr, attempt + 1); }
+    throw new Error(`Empty AI response (finish_reason: ${reason}). The free model may be rate-limited — wait a moment and retry.`);
+  }
+
+  return content;
+}
+</script>
+</body>
+</html>
