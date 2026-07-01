@@ -25,6 +25,7 @@ export async function middleware(request: NextRequest) {
     },
   );
 
+  // Validates the JWT with Supabase Auth and refreshes the session cookie when needed.
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -38,8 +39,16 @@ export async function middleware(request: NextRequest) {
     if (!user) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/admin/login/";
+      loginUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(loginUrl);
     }
+  }
+
+  if (pathname.startsWith("/admin/login") && user) {
+    const adminUrl = request.nextUrl.clone();
+    adminUrl.pathname = "/admin/";
+    adminUrl.search = "";
+    return NextResponse.redirect(adminUrl);
   }
 
   return supabaseResponse;

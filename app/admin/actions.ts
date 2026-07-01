@@ -1,8 +1,23 @@
 "use server";
 
 import { adminSupabase } from "@/lib/supabase/admin";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+function getAuthRedirectOrigin() {
+  const headersList = headers();
+  const host =
+    headersList.get("x-forwarded-host") ?? headersList.get("host");
+  const protocol = headersList.get("x-forwarded-proto") ?? "http";
+
+  if (host) {
+    return `${protocol}://${host}`;
+  }
+
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://clydeabenojar.site";
+}
 
 export async function sendMagicLink(formData: FormData) {
   const email = (formData.get("email") as string)?.trim().toLowerCase();
@@ -12,13 +27,13 @@ export async function sendMagicLink(formData: FormData) {
     return { success: false, error: "Unauthorized." };
   }
 
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://clydeabenojar.site";
+  const supabase = createServerSupabaseClient();
+  const origin = getAuthRedirectOrigin();
 
-  const { error } = await adminSupabase.auth.signInWithOtp({
+  const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${siteUrl}/auth/callback/`,
+      emailRedirectTo: `${origin}/auth/callback/`,
     },
   });
 
