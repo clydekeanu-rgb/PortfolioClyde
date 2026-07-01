@@ -1,13 +1,15 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const links = [
-  { label: "Work", href: "#work", id: "work" },
-  { label: "About", href: "#about", id: "about" },
-  { label: "Contact", href: "#contact", id: "contact" },
+  { label: "Work", href: "/#work", id: "work", page: false },
+  { label: "Blog", href: "/blog/", id: "blog", page: true },
+  { label: "About", href: "/#about", id: "about", page: false },
+  { label: "Contact", href: "/#contact", id: "contact", page: false },
 ];
 
 export function Navbar() {
@@ -17,6 +19,7 @@ export function Navbar() {
 
   useEffect(() => {
     const sections = links
+      .filter((link) => !link.page)
       .map((link) => document.getElementById(link.id))
       .filter(Boolean) as HTMLElement[];
 
@@ -42,25 +45,37 @@ export function Navbar() {
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <a href="#top" className="text-sm font-semibold text-primary">
+        <Link href="/" className="text-sm font-semibold text-primary">
           <span className="text-accent">&lt;</span>Clyde
           <span className="text-accent">/&gt;</span>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors ${
-                active === link.id ? "text-accent-soft" : "text-secondary hover:text-primary"
-              }`}
-            >
-              {link.label} <span className="text-accent">/&gt;</span>
-            </a>
-          ))}
+          {links.map((link) =>
+            link.page ? (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-secondary transition-colors hover:text-primary"
+              >
+                {link.label} <span className="text-accent">/&gt;</span>
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  active === link.id
+                    ? "text-accent-soft"
+                    : "text-secondary hover:text-primary"
+                }`}
+              >
+                {link.label} <span className="text-accent">/&gt;</span>
+              </a>
+            ),
+          )}
           <a
-            href="#contact"
+            href="/#contact"
             className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow"
           >
             Hire Me
@@ -80,18 +95,29 @@ export function Navbar() {
       {isOpen ? (
         <div className="border-t border-border bg-background px-6 py-4 md:hidden">
           <div className="mx-auto flex max-w-5xl flex-col gap-2">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-md px-2 py-3 text-sm font-medium text-secondary hover:bg-surface hover:text-primary"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label} <span className="text-accent">/&gt;</span>
-              </a>
-            ))}
+            {links.map((link) =>
+              link.page ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-md px-2 py-3 text-sm font-medium text-secondary hover:bg-surface hover:text-primary"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label} <span className="text-accent">/&gt;</span>
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-md px-2 py-3 text-sm font-medium text-secondary hover:bg-surface hover:text-primary"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label} <span className="text-accent">/&gt;</span>
+                </a>
+              ),
+            )}
             <a
-              href="#contact"
+              href="/#contact"
               className="mt-2 rounded-md bg-accent px-4 py-3 text-center text-sm font-semibold text-background"
               onClick={() => setIsOpen(false)}
             >
