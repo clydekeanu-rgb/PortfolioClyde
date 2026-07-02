@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: "Clyde Abenojar - AI-assisted Web Builder",
   description:
     "Portfolio of Clyde Abenojar. Web apps, AI tools, and business websites designed and shipped with AI-assisted development workflows.",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
   openGraph: {
     title: "Clyde Abenojar - AI-assisted Web Builder",
     description:

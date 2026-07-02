@@ -73,16 +73,21 @@ export function Contact() {
 
         <div className="mx-auto mt-8 max-w-xl space-y-3 text-sm text-secondary">
           <a
-            href="https://www.linkedin.com/in/"
+            href="https://www.linkedin.com/in/clyde-keanu-abenojar-b3b578346"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block transition-colors hover:text-accent-soft"
           >
-            <span className="text-accent">&gt;</span> linkedin.com/in/[handle]
+            <span className="text-accent">&gt;</span>{" "}
+            linkedin.com/in/clyde-keanu-abenojar-b3b578346
           </a>
           <a
-            href="https://github.com/"
+            href="https://github.com/clydekeanu-rgb"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block transition-colors hover:text-accent-soft"
           >
-            <span className="text-accent">&gt;</span> github.com/[handle]
+            <span className="text-accent">&gt;</span> github.com/clydekeanu-rgb
           </a>
           <a
             href={`mailto:${email}`}

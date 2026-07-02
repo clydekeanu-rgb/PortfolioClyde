@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect } from "react";
 
 const items = [
   "// full-stack builder, AI-assisted",
@@ -12,12 +13,79 @@ const items = [
 
 const profileImage = "/images/add_profile_photo.jpg";
 
+type DotWaveInstance = {
+  destroy: () => void;
+};
+
+type DotWaveConstructor = new (options: Record<string, unknown>) => DotWaveInstance;
+
 export function Hero() {
   const reduceMotion = useReducedMotion();
 
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReduced || reduceMotion) {
+      return;
+    }
+
+    let dotWaveInstance: DotWaveInstance | null = null;
+    let script: HTMLScriptElement | null = null;
+
+    const initDotWave = () => {
+      const DotWave = (window as Window & { DotWave?: DotWaveConstructor })
+        .DotWave;
+      const container = document.getElementById("hero-canvas");
+
+      if (!DotWave || !container || container.querySelector("canvas")) {
+        return;
+      }
+
+      dotWaveInstance = new DotWave({
+        container,
+        numDots: 150,
+        dotColor: "#7C3AED",
+        backgroundColor: "transparent",
+        dotMinOpacity: 0.15,
+        dotMaxOpacity: 0.5,
+        influenceRadius: 180,
+        dotStretch: true,
+        zIndex: 0,
+      });
+    };
+
+    const existingScript = document.querySelector(
+      'script[src="/libs/dotwave.min.js"]',
+    );
+
+    if (existingScript && (window as Window & { DotWave?: DotWaveConstructor }).DotWave) {
+      initDotWave();
+    } else {
+      script = document.createElement("script");
+      script.src = "/libs/dotwave.min.js";
+      script.async = true;
+      script.onload = initDotWave;
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      dotWaveInstance?.destroy();
+      if (script?.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [reduceMotion]);
+
   return (
-    <section id="top" className="pt-32">
-      <div className="mx-auto grid max-w-5xl items-center gap-12 px-6 pb-24 pt-10 md:grid-cols-[1.05fr_0.95fr] md:pt-16">
+    <>
+      <span id="top" className="sr-only" aria-hidden="true" />
+      <section
+        id="hero-canvas"
+        className="relative overflow-hidden pt-32"
+      >
+      <div className="relative z-[1] mx-auto grid max-w-5xl items-center gap-12 px-6 pb-24 pt-10 md:grid-cols-[1.05fr_0.95fr] md:pt-16">
         <div>
           <motion.p
             className="text-sm font-semibold text-accent"
@@ -103,5 +171,6 @@ export function Hero() {
         </motion.div>
       </div>
     </section>
+    </>
   );
 }
