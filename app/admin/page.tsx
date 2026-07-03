@@ -7,7 +7,17 @@ import {
 } from "@/app/admin/actions";
 import { LogoutButton } from "@/components/LogoutButton";
 import { adminSupabase } from "@/lib/supabase/admin";
+import { getAnalyticsStats } from "@/lib/analytics/get-stats";
 import type { CommentWithPost, Post } from "@/lib/types/blog";
+
+function formatDateTime(dateString: string) {
+  return new Date(dateString).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
 
 type AdminPageProps = {
   searchParams: { success?: string };
@@ -35,6 +45,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const allPosts = (posts ?? []) as Post[];
   const comments = (pendingComments ?? []) as CommentWithPost[];
+  const stats = await getAnalyticsStats();
 
   return (
     <main className="min-h-screen px-6 py-12">
@@ -62,6 +73,155 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         ) : null}
 
         <section className="mt-10">
+          <h2 className="font-mono text-lg font-semibold text-primary">
+            Analytics{" "}
+            <span className="text-sm font-normal text-secondary">
+              (last 30 days)
+            </span>
+          </h2>
+
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="rounded-md border border-border bg-surface p-4">
+              <p className="font-mono text-xs text-secondary">Page Visits</p>
+              <p className="mt-1 text-2xl font-bold text-primary">
+                {stats.totalVisits}
+              </p>
+            </div>
+            <div className="rounded-md border border-border bg-surface p-4">
+              <p className="font-mono text-xs text-secondary">
+                Unique Visitors
+              </p>
+              <p className="mt-1 text-2xl font-bold text-primary">
+                {stats.uniqueVisitors}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                Top Pages
+              </h3>
+              {stats.topPages.length === 0 ? (
+                <p className="mt-3 text-sm text-secondary">No data yet.</p>
+              ) : (
+                <div className="mt-3 overflow-x-auto rounded-md border border-border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-border bg-surface">
+                      <tr>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Page
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Visits
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.topPages.map((page) => (
+                        <tr key={page.path} className="border-b border-border/70">
+                          <td className="px-4 py-2 font-mono text-primary">
+                            {page.path}
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {page.count}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                Time Spent per Landing Section
+              </h3>
+              {stats.sectionStats.length === 0 ? (
+                <p className="mt-3 text-sm text-secondary">No data yet.</p>
+              ) : (
+                <div className="mt-3 overflow-x-auto rounded-md border border-border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-border bg-surface">
+                      <tr>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Section
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Avg. Time
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Views
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.sectionStats.map((section) => (
+                        <tr
+                          key={section.sectionId}
+                          className="border-b border-border/70"
+                        >
+                          <td className="px-4 py-2 font-medium text-primary">
+                            {section.label}
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {section.avgSeconds}s
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {section.views}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {stats.recentVisits.length > 0 ? (
+            <div className="mt-6">
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                Recent Visits
+              </h3>
+              <div className="mt-3 overflow-x-auto rounded-md border border-border">
+                <table className="w-full min-w-[480px] text-left text-sm">
+                  <thead className="border-b border-border bg-surface">
+                    <tr>
+                      <th className="px-4 py-2 font-mono text-secondary">
+                        Page
+                      </th>
+                      <th className="px-4 py-2 font-mono text-secondary">
+                        When
+                      </th>
+                      <th className="px-4 py-2 font-mono text-secondary">
+                        Referrer
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.recentVisits.map((visit, i) => (
+                      <tr key={i} className="border-b border-border/70">
+                        <td className="px-4 py-2 font-mono text-primary">
+                          {visit.path}
+                        </td>
+                        <td className="px-4 py-2 text-secondary">
+                          {formatDateTime(visit.created_at)}
+                        </td>
+                        <td className="px-4 py-2 text-secondary">
+                          {visit.referrer ?? "direct"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
+        </section>
+
+        <section className="mt-12">
           <h2 className="font-mono text-lg font-semibold text-primary">Posts</h2>
 
           {allPosts.length === 0 ? (
