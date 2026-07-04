@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
+import { SiteBackground } from "@/components/SiteBackground";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clydeabenojar.site"),
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <SiteBackground />
         <Analytics />
         {children}
       </body>
