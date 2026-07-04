@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 
 type DotWaveInstance = {
   destroy: () => void;
@@ -10,7 +10,11 @@ type DotWaveInstance = {
 
 type DotWaveConstructor = new (options: Record<string, unknown>) => DotWaveInstance;
 
-export function SiteBackground() {
+type SiteBackgroundProps = {
+  children: ReactNode;
+};
+
+export function SiteBackground({ children }: SiteBackgroundProps) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const isAdmin = pathname.startsWith("/admin");
@@ -79,13 +83,12 @@ export function SiteBackground() {
   }, [isAdmin, reduceMotion]);
 
   if (isAdmin) {
-    return null;
+    return children;
   }
 
   return (
-    <div
-      id="global-dot-wave"
-      className="pointer-events-none fixed inset-0 z-[-1]"
-    />
+    <div id="global-dot-wave" className="relative min-h-screen">
+      <div className="relative z-[1]">{children}</div>
+    </div>
   );
 }

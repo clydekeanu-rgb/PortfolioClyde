@@ -39,9 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <SiteBackground />
-        <Analytics />
-        {children}
+        <SiteBackground>
+          <Analytics />
+          {children}
+        </SiteBackground>
       </body>
     </html>
   );
