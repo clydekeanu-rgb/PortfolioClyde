@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 type DotWaveInstance = {
   destroy: () => void;
@@ -18,9 +18,36 @@ export function SiteBackground({ children }: SiteBackgroundProps) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const isAdmin = pathname.startsWith("/admin");
+  const dotWaveRef = useRef<DotWaveInstance | null>(null);
+  const scriptLoadedRef = useRef(false);
+
+  useEffect(() => {
+    const tryInit = () => {
+      scriptLoadedRef.current = true;
+    };
+
+    const existingScript = document.querySelector(
+      'script[src="/libs/dotwave.min.js"]',
+    ) as HTMLScriptElement | null;
+
+    if (existingScript) {
+      if ((window as Window & { DotWave?: DotWaveConstructor }).DotWave) {
+        tryInit();
+      }
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "/libs/dotwave.min.js";
+    script.async = true;
+    script.onload = tryInit;
+    document.body.appendChild(script);
+  }, []);
 
   useEffect(() => {
     if (isAdmin) {
+      dotWaveRef.current?.destroy();
+      dotWaveRef.current = null;
       return;
     }
 
@@ -29,22 +56,26 @@ export function SiteBackground({ children }: SiteBackgroundProps) {
     ).matches;
 
     if (prefersReduced || reduceMotion) {
+      dotWaveRef.current?.destroy();
+      dotWaveRef.current = null;
       return;
     }
 
-    let dotWaveInstance: DotWaveInstance | null = null;
-    let script: HTMLScriptElement | null = null;
+    const destroyDotWave = () => {
+      dotWaveRef.current?.destroy();
+      dotWaveRef.current = null;
+    };
 
     const initDotWave = () => {
       const DotWave = (window as Window & { DotWave?: DotWaveConstructor })
         .DotWave;
       const container = document.getElementById("global-dot-wave");
 
-      if (!DotWave || !container || container.querySelector("canvas")) {
+      if (!DotWave || !container) {
         return;
       }
 
-      dotWaveInstance = new DotWave({
+      dotWaveRef.current = new DotWave({
         container,
         numDots: 320,
         dotColor: "#7C3AED",
@@ -57,30 +88,40 @@ export function SiteBackground({ children }: SiteBackgroundProps) {
       });
     };
 
-    const existingScript = document.querySelector(
-      'script[src="/libs/dotwave.min.js"]',
-    );
+    destroyDotWave();
 
-    if (
-      existingScript &&
-      (window as Window & { DotWave?: DotWaveConstructor }).DotWave
-    ) {
+    if ((window as Window & { DotWave?: DotWaveConstructor }).DotWave) {
       initDotWave();
-    } else {
-      script = document.createElement("script");
-      script.src = "/libs/dotwave.min.js";
-      script.async = true;
-      script.onload = initDotWave;
-      document.body.appendChild(script);
+      return;
     }
 
-    return () => {
-      dotWaveInstance?.destroy();
-      if (script?.parentNode) {
-        script.parentNode.removeChild(script);
+    let intervalId: number | null = null;
+    const timeoutId = window.setTimeout(() => {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
       }
+    }, 3000);
+
+    intervalId = window.setInterval(() => {
+      if ((window as Window & { DotWave?: DotWaveConstructor }).DotWave) {
+        if (intervalId !== null) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+        clearTimeout(timeoutId);
+        initDotWave();
+      }
+    }, 50);
+
+    return () => {
+      destroyDotWave();
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
+      clearTimeout(timeoutId);
     };
-  }, [isAdmin, reduceMotion]);
+  }, [pathname, isAdmin, reduceMotion]);
 
   if (isAdmin) {
     return children;
