@@ -44,7 +44,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         target={project.external ? "_blank" : undefined}
         rel={project.external ? "noopener noreferrer" : undefined}
         className={[
-          "group relative flex w-full cursor-pointer flex-col gap-6",
+          "group relative flex w-full cursor-pointer flex-col gap-6 transition-transform duration-300 ease-out group-hover:-translate-y-1",
           "md:items-center md:gap-8 lg:gap-12",
           "md:w-[92%] lg:w-[88%]",
           isRight ? "md:flex-row-reverse" : "md:flex-row",
@@ -101,7 +101,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-secondary"
+                className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-accent-soft/80 transition-colors duration-300 group-hover:border-accent-soft/40 group-hover:text-accent-soft"
               >
                 {tag}
               </span>
