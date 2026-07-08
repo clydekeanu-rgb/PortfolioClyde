@@ -452,7 +452,7 @@ export function PromptGenApp() {
     if (state.step === 1) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 1 — product category</p>
+          <p className="font-mono text-sm text-accent">{'// step 1 — product category'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             What are you photographing?
           </h2>
@@ -487,7 +487,7 @@ export function PromptGenApp() {
       const options = state.category ? PRESENTATION_STYLES[state.category] ?? [] : [];
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 2 — presentation style</p>
+          <p className="font-mono text-sm text-accent">{'// step 2 — presentation style'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             How should it be presented?
           </h2>
@@ -521,7 +521,7 @@ export function PromptGenApp() {
     if (state.step === 3 && showModelStep) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 3 — model details</p>
+          <p className="font-mono text-sm text-accent">{'// step 3 — model details'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Describe the model
           </h2>
@@ -564,7 +564,7 @@ export function PromptGenApp() {
     if (state.step === 4) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 4 — shot setup</p>
+          <p className="font-mono text-sm text-accent">{'// step 4 — shot setup'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Camera angle & distance
           </h2>
@@ -607,7 +607,7 @@ export function PromptGenApp() {
     if (state.step === 5) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 5 — background</p>
+          <p className="font-mono text-sm text-accent">{'// step 5 — background'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Choose the environment
           </h2>
@@ -641,7 +641,7 @@ export function PromptGenApp() {
     if (state.step === 6) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 6 — lighting</p>
+          <p className="font-mono text-sm text-accent">{'// step 6 — lighting'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Define the lighting setup
           </h2>
@@ -675,7 +675,7 @@ export function PromptGenApp() {
     if (state.step === 7) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 7 — image style / usage</p>
+          <p className="font-mono text-sm text-accent">{'// step 7 — image style / usage'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             What&apos;s this image for?
           </h2>
@@ -709,7 +709,7 @@ export function PromptGenApp() {
     if (state.step === 8) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 8 — mood / aesthetic</p>
+          <p className="font-mono text-sm text-accent">{'// step 8 — mood / aesthetic'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             What vibe should it convey?
           </h2>
@@ -743,7 +743,7 @@ export function PromptGenApp() {
     if (state.step === 9) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 9 — text overlay</p>
+          <p className="font-mono text-sm text-accent">{'// step 9 — text overlay'}</p>
           <div className="mt-2 flex items-center justify-between gap-4">
             <h2 className="text-2xl font-semibold text-primary sm:text-3xl">
               Add text overlay?
@@ -811,7 +811,7 @@ export function PromptGenApp() {
     if (state.step === 10) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 10 — image size / platform</p>
+          <p className="font-mono text-sm text-accent">{'// step 10 — image size / platform'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Select the output format
           </h2>
@@ -847,7 +847,7 @@ export function PromptGenApp() {
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-2xl font-semibold text-primary sm:text-3xl">
-              // Generated Prompt
+              {'// Generated Prompt'}
             </h2>
             <button
               type="button"
@@ -891,7 +891,7 @@ export function PromptGenApp() {
           </div>
 
           <p className="mt-8 text-center font-mono text-sm text-secondary/70">
-            // generated with PromptGen — built by {" "}
+            {'// generated with PromptGen — built by '}{" "}
             <a
               href="https://clydeabenojar.site"
               target="_blank"

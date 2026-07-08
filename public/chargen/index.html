@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Character Gen 🍌</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Courier New', 'Courier', monospace; background: #0a0a0f; color: #e0d8f0; min-height: 100vh; padding-bottom: 110px; }
+
+.header { background: #0d0d18; border-bottom: 1px solid #1e1e38; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-left { display: flex; align-items: center; gap: 10px; }
+.header-logo { font-size: 22px; }
+.header h1 { font-size: .95rem; font-weight: 700; color: #fff; letter-spacing: .05em; }
+.header p { font-size: .62rem; color: #4a4a7a; margin-top: 1px; letter-spacing: .08em; text-transform: uppercase; }
+.session-badge { font-size: .62rem; background: #130f22; border: 1px solid #2e1f55; color: #8a6dbf; padding: 4px 9px; border-radius: 6px; white-space: nowrap; }
+
+.section { padding: 18px; border-bottom: 1px solid #131325; }
+.lbl { font-size: .63rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #4a4a7a; margin-bottom: 10px; }
+
+input[type=password], input[type=text], input[type=url], textarea {
+  width: 100%; background: #111122; border: 1.5px solid #252545; border-radius: 10px;
+  padding: 13px 15px; color: #e0d8f0; font-size: .88rem; outline: none;
+  font-family: 'Courier New', monospace; transition: border-color .2s;
+}
+input:focus, textarea:focus { border-color: #6a44af; }
+.hint { font-size: .68rem; color: #3a3a5a; margin-top: 6px; }
+.hint a { color: #6a44af; text-decoration: none; }
+.hint.warn { color: #9a6020; }
+.hint.err { color: #a03030; }
+
+textarea { resize: none; min-height: 95px; line-height: 1.6; }
+.input-row { display: flex; gap: 8px; align-items: center; }
+.input-row input { flex: 1; }
+.icon-btn { background: #111122; border: 1.5px solid #252545; border-radius: 10px; color: #8a6dbf; padding: 13px 15px; font-size: .88rem; cursor: pointer; font-family: 'Courier New', monospace; flex-shrink: 0; }
+
+/* Char counter */
+.char-wrap { position: relative; }
+.char-count { position: absolute; bottom: 10px; right: 12px; font-size: .6rem; font-family: 'Courier New', monospace; color: #3a3a5a; pointer-events: none; transition: color .2s; }
+.char-count.warn { color: #9a6020; }
+.char-count.over { color: #a03030; font-weight: 700; }
+.prompt-limit-note { font-size: .65rem; margin-top: 6px; padding: 6px 10px; border-radius: 7px; display: none; }
+.prompt-limit-note.show { display: block; }
+.prompt-limit-note.warn { background: #1a1208; border: 1px solid #3a2a08; color: #9a7030; }
+.prompt-limit-note.over { background: #1a0808; border: 1px solid #3a1010; color: #c04040; }
+
+/* Upload */
+.upload-zone { border: 2px dashed #252545; border-radius: 14px; padding: 28px 18px; text-align: center; cursor: pointer; position: relative; background: #0d0d1a; transition: all .2s; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.upload-zone.drag { border-color: #6a44af; background: #14122a; }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.upload-icon { font-size: 2.2rem; }
+.upload-zone h3 { font-size: .88rem; color: #b0a0d8; font-weight: 700; letter-spacing: .05em; }
+.upload-zone p { font-size: .72rem; color: #3a3a5a; }
+.preview-wrap { display: none; position: relative; border-radius: 14px; overflow: hidden; border: 1.5px solid #252545; background: #0a0a0f; }
+.preview-wrap img { width: 100%; display: block; max-height: 260px; object-fit: contain; }
+.preview-actions { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.85)); padding: 20px 12px 12px; display: flex; justify-content: flex-end; }
+.remove-btn { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); color: #fff; border-radius: 7px; padding: 6px 13px; font-size: .72rem; cursor: pointer; font-family: 'Courier New', monospace; }
+
+/* Region */
+.region-row { display: flex; gap: 7px; }
+.region-btn { flex: 1; padding: 9px; border-radius: 9px; border: 1.5px solid #1e1e38; background: #0f0f20; color: #5a5a8a; font-size: .68rem; font-weight: 700; cursor: pointer; text-align: center; font-family: 'Courier New', monospace; transition: all .2s; }
+.region-btn.active { border-color: #4a6aaf; background: #0e1226; color: #80a0e8; }
+
+/* Model grid */
+.model-family-label { font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #3a3a5a; margin-bottom: 7px; margin-top: 14px; }
+.model-family-label:first-child { margin-top: 0; }
+.model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.model-card { padding: 11px 10px; border-radius: 11px; border: 1.5px solid #252545; cursor: pointer; background: #0f0f20; transition: all .2s; position: relative; }
+.model-card.active { border-color: #6a44af; background: #160f2a; }
+.model-card.active::after { content: '✓'; position: absolute; top: 8px; right: 10px; font-size: .7rem; color: #9a7de0; }
+.model-card-top { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.model-icon { font-size: 1rem; }
+.model-name { font-size: .78rem; font-weight: 700; color: #c8b8f0; letter-spacing: .04em; }
+.model-id { font-size: .56rem; color: #4a4a7a; font-family: 'Courier New', monospace; margin-bottom: 4px; word-break: break-all; }
+.model-desc { font-size: .6rem; color: #5a5a8a; line-height: 1.4; }
+.model-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.model-tag { font-size: .54rem; padding: 2px 7px; border-radius: 4px; font-weight: 700; letter-spacing: .05em; }
+.tag-green  { background: #0e2a1a; color: #60c080; border: 1px solid #1a4a2a; }
+.tag-blue   { background: #0e1a2a; color: #60a0d0; border: 1px solid #1a2a4a; }
+.tag-orange { background: #2a1a0e; color: #d09060; border: 1px solid #4a2a1a; }
+.tag-gray   { background: #1a1a2a; color: #7a7a9a; border: 1px solid #2a2a3a; }
+.tag-purple { background: #1a0e2a; color: #a07ad0; border: 1px solid #2a1a4a; }
+
+/* Size chips */
+.size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.size-chip { padding: 10px 6px; border-radius: 10px; border: 1.5px solid #252545; cursor: pointer; background: #0f0f20; transition: all .2s; text-align: center; }
+.size-chip.active { border-color: #6a44af; background: #160f2a; }
+.size-chip.disabled { opacity: .28; cursor: not-allowed; border-color: #1a1a2a; background: #0a0a15; }
+.size-chip-icon { font-size: .95rem; margin-bottom: 2px; }
+.size-chip-label { font-size: .66rem; font-weight: 700; color: #c8b8f0; }
+.size-chip-px { font-size: .56rem; color: #4a4a7a; font-family: 'Courier New', monospace; margin-top: 1px; }
+.size-note { font-size: .65rem; color: #6a5020; margin-top: 8px; background: #120e04; border: 1px solid #2a2008; border-radius: 7px; padding: 7px 10px; display: none; }
+.size-note.show { display: block; }
+
+/* Stepper */
+.stepper { display: flex; align-items: center; border: 1.5px solid #252545; border-radius: 10px; overflow: hidden; background: #111122; }
+.stepper button { background: none; border: none; color: #c8b8f0; font-size: 1.3rem; padding: 10px 20px; cursor: pointer; flex-shrink: 0; font-family: 'Courier New', monospace; }
+.stepper button:active { background: #1e1e38; }
+.stepper span { flex: 1; text-align: center; font-size: 1rem; font-weight: 700; color: #fff; font-family: 'Courier New', monospace; }
+.count-note { font-size: .65rem; color: #4a4a6a; margin-top: 7px; }
+
+/* Gen button */
+.gen-wrap { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 18px; background: linear-gradient(transparent, #0a0a0f 40%); z-index: 100; }
+.gen-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #5a34af, #3a6adf); border: none; border-radius: 13px; color: #fff; font-size: .95rem; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .1s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 24px rgba(90,52,175,.45); font-family: 'Courier New', monospace; letter-spacing: .08em; }
+.gen-btn:active { transform: scale(0.98); opacity: .9; }
+.gen-btn:disabled { opacity: .4; transform: none; }
+
+/* Status / Error */
+.status-bar { display: none; margin: 10px 18px 0; background: #111122; border: 1px solid #1e1e38; border-radius: 10px; padding: 12px 15px; align-items: center; gap: 11px; font-size: .82rem; }
+.status-bar.show { display: flex; }
+.spinner { width: 17px; height: 17px; border: 2px solid #252545; border-top-color: #6a44af; border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.status-steps { display: flex; flex-direction: column; gap: 2px; }
+.status-steps small { font-size: .66rem; color: #3a3a5a; }
+.error-bar { display: none; margin: 10px 18px 0; background: #1e0a10; border: 1px solid #4a1525; border-radius: 10px; padding: 12px 15px; font-size: .82rem; color: #e07080; line-height: 1.5; }
+.error-bar.show { display: block; }
+
+/* Results */
+.results-header { padding: 18px 18px 0; display: none; align-items: center; justify-content: space-between; }
+.results-count { font-size: .75rem; color: #4a4a6a; font-family: 'Courier New', monospace; }
+.clear-btn { font-size: .72rem; color: #4a4a6a; background: none; border: none; cursor: pointer; padding: 4px 8px; font-family: 'Courier New', monospace; }
+.results-grid { padding: 12px 18px; display: flex; flex-direction: column; gap: 14px; }
+.card { background: #0d0d18; border: 1px solid #1e1e38; border-radius: 14px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
+.card:hover { border-color: #3a2a6a; }
+.card img { width: 100%; display: block; }
+.card-foot { padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; }
+.card-meta { font-size: .62rem; color: #3a3a5a; font-family: 'Courier New', monospace; }
+.card-actions { display: flex; align-items: center; gap: 8px; }
+.dl-btn { background: #131325; border: 1px solid #252545; border-radius: 7px; color: #9a88c8; padding: 6px 13px; font-size: .72rem; text-decoration: none; font-family: 'Courier New', monospace; }
+.expiry-note { font-size: .58rem; color: #4a3010; background: #100e04; border-top: 1px solid #2a1e04; padding: 5px 14px; font-family: 'Courier New', monospace; }
+
+.empty { padding: 55px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.empty .bi { font-size: 3rem; }
+.empty h2 { font-size: .95rem; color: #3a3a5a; font-weight: 700; letter-spacing: .06em; }
+.empty p { font-size: .75rem; color: #2a2a4a; max-width: 240px; line-height: 1.6; }
+
+/* Toast */
+.toast { position: fixed; top: 75px; left: 50%; transform: translateX(-50%) translateY(-18px); background: #1a1a30; border: 1px solid #3a3a6a; color: #b0a0d8; padding: 9px 18px; border-radius: 18px; font-size: .75rem; opacity: 0; transition: all .3s; z-index: 300; pointer-events: none; white-space: nowrap; font-family: 'Courier New', monospace; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Prompt Generator ── */
+.pg-toggle { width: 100%; background: #111122; border: 1.5px solid #252545; border-radius: 10px; color: #b0a0d8; padding: 12px 15px; font-size: .83rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'Courier New', monospace; letter-spacing: .04em; }
+.pg-toggle .pg-arrow { transition: transform .25s; font-style: normal; }
+.pg-toggle.open .pg-arrow { transform: rotate(180deg); }
+.pg-panel { display: none; margin-top: 11px; background: #0d0d1a; border: 1.5px solid #1e1e38; border-radius: 12px; padding: 14px; }
+.pg-panel.open { display: block; }
+.pg-row { margin-bottom: 14px; }
+.pg-row:last-child { margin-bottom: 0; }
+.pg-label { font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #4a4a7a; margin-bottom: 8px; }
+
+.pg-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.pg-chip { padding: 7px 11px; border-radius: 18px; border: 1.5px solid #1e1e38; background: #111122; color: #8a7ab8; font-size: .67rem; font-weight: 700; cursor: pointer; transition: all .18s; white-space: nowrap; font-family: 'Courier New', monospace; }
+.pg-chip.sel { border-color: #6a44af; background: #1a1035; color: #c8a8ff; }
+.pg-chip:active { transform: scale(.96); }
+
+.pg-chip.other-chip { border-style: dashed; color: #5a5a8a; }
+.pg-chip.other-chip.sel { border-color: #6a44af; color: #c8a8ff; border-style: solid; }
+.other-input-wrap { display: none; margin-top: 8px; }
+.other-input-wrap.show { display: block; }
+.other-input-wrap input { background: #0d0d1a; border: 1.5px solid #3a2a6a; border-radius: 9px; padding: 9px 12px; color: #e0d8f0; font-size: .78rem; font-family: 'Courier New', monospace; width: 100%; outline: none; }
+.other-input-wrap input:focus { border-color: #6a44af; }
+
+.bold-toggle { width: 100%; background: #1a0a14; border: 1.5px solid #3a1828; border-radius: 9px; color: #d080a0; padding: 9px 13px; font-size: .68rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'Courier New', monospace; letter-spacing: .05em; margin-top: 9px; }
+.bold-toggle .bold-arrow { transition: transform .2s; font-style: normal; }
+.bold-toggle.open .bold-arrow { transform: rotate(180deg); }
+.bold-chips-panel { display: none; margin-top: 7px; background: #120810; border: 1.5px solid #2a1220; border-radius: 9px; padding: 10px; }
+.bold-chips-panel.open { display: block; }
+.bold-chip { border-color: #3a1828 !important; color: #c06888 !important; background: #160810 !important; }
+.bold-chip.sel { border-color: #d060a0 !important; background: #2a0a1a !important; color: #f0a0c8 !important; }
+
+.pg-preview { margin-top: 11px; background: #080810; border: 1px solid #1e1e38; border-radius: 9px; padding: 11px; font-size: .65rem; color: #5a5a8a; line-height: 1.7; display: none; max-height: 130px; overflow-y: auto; word-break: break-word; font-family: 'Courier New', monospace; }
+.pg-preview.show { display: block; }
+.pg-inject-btn { width: 100%; margin-top: 8px; padding: 10px; background: #0a1e0f; border: 1.5px solid #1a4020; border-radius: 9px; color: #60b870; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace; display: none; align-items: center; justify-content: center; gap: 6px; }
+.pg-inject-btn.show { display: flex; }
+.pg-inject-btn:active { opacity: .85; }
+.pg-random-btn { width: 100%; margin-bottom: 14px; padding: 12px; background: linear-gradient(135deg, #1a0a14, #120818); border: 1.5px solid #4a2040; border-radius: 11px; color: #e090c0; font-size: .85rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.pg-random-btn:active { opacity: .8; transform: scale(.98); }
+.pg-random-btn.spin { animation: dicespin .35s ease; }
+@keyframes dicespin { 0%{transform:rotate(0)} 50%{transform:rotate(180deg) scale(1.05)} 100%{transform:rotate(360deg)} }
+.pg-btn-row { display: flex; gap: 8px; margin-top: 13px; }
+.pg-build-btn { flex: 1; padding: 12px; background: linear-gradient(135deg, #1e1040, #0e2040); border: 1.5px solid #3a2a6a; border-radius: 11px; color: #c0b0f0; font-size: .83rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.pg-build-btn:active { opacity: .85; }
+
+.shot-toggle-row { display: flex; gap: 7px; margin-bottom: 13px; }
+.shot-toggle { flex: 1; padding: 9px 7px; border-radius: 10px; border: 1.5px solid #1e1e38; background: #111122; color: #8a7ab8; font-size: .68rem; font-weight: 700; cursor: pointer; text-align: center; transition: all .2s; font-family: 'Courier New', monospace; }
+.shot-toggle.active { border-color: #c06050; background: #1e100e; color: #e09080; }
+.shot-toggle.active-normal { border-color: #4a6aaf; background: #0e1226; color: #80a0e8; }
+.shot-selfie-opts { display: none; background: #0e080e; border: 1.5px solid #2a1828; border-radius: 11px; padding: 12px; margin-bottom: 13px; }
+.shot-selfie-opts.show { display: block; }
+.shot-selfie-sub { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #6a3848; margin-bottom: 7px; }
+.selfie-chip { padding: 7px 11px; border-radius: 18px; border: 1.5px solid #2a1828; background: #160a12; color: #b07888; font-size: .67rem; font-weight: 700; cursor: pointer; transition: all .18s; white-space: nowrap; display: inline-block; margin: 3px; font-family: 'Courier New', monospace; }
+.selfie-chip.sel { border-color: #c06050; background: #2a100e; color: #e0a898; }
+.selfie-chip:active { transform: scale(.96); }
+
+/* ── Lightbox ── */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.96); z-index: 500; flex-direction: column; }
+.lightbox.show { display: flex; }
+.lb-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(10,10,20,.95); border-bottom: 1px solid #1a1a30; flex-shrink: 0; }
+.lb-counter { font-size: .75rem; color: #6a6a9a; font-family: 'Courier New', monospace; }
+.lb-close { background: none; border: none; color: #9a9ac8; font-size: 1.4rem; cursor: pointer; padding: 4px 10px; }
+.lb-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; touch-action: none; }
+.lb-img { max-width: 100%; max-height: 100%; object-fit: contain; transform-origin: center center; cursor: grab; user-select: none; }
+.lb-img.grabbing { cursor: grabbing; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(20,20,40,.85); border: 1px solid #2a2a4a; color: #c0b0e8; font-size: 1.3rem; padding: 12px 10px; cursor: pointer; border-radius: 8px; z-index: 10; transition: background .2s; }
+.lb-nav:hover { background: rgba(40,30,80,.9); }
+.lb-nav.prev { left: 10px; }
+.lb-nav.next { right: 10px; }
+.lb-nav.hidden { display: none; }
+.lb-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: rgba(10,10,20,.95); border-top: 1px solid #1a1a30; flex-shrink: 0; gap: 10px; }
+.lb-zoom-row { display: flex; align-items: center; gap: 7px; }
+.lb-zoom-btn { background: #141428; border: 1px solid #252545; color: #9a88c8; border-radius: 7px; padding: 7px 13px; font-size: .8rem; cursor: pointer; font-family: 'Courier New', monospace; }
+.lb-zoom-level { font-size: .7rem; color: #5a5a8a; font-family: 'Courier New', monospace; min-width: 42px; text-align: center; }
+.lb-dl { background: #1a1035; border: 1px solid #3a2a6a; border-radius: 7px; color: #a090d8; padding: 7px 16px; font-size: .78rem; text-decoration: none; font-family: 'Courier New', monospace; }
+.lb-hint { font-size: .58rem; color: #3a3a5a; text-align: center; padding: 3px 0 0; font-family: 'Courier New', monospace; background: rgba(10,10,20,.95); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">🍌</div>
+    <div>
+      <h1>KLAAYD CharGen</h1>
+      <p>Nano Banana · DashScope</p>
+    </div>
+  </div>
+  <div class="session-badge" id="sessionBadge">No session</div>
+</div>
+
+<!-- PROMPT GENERATOR -->
+<div class="section">
+  <div class="lbl">🪄 Prompt Generator</div>
+  <button class="pg-toggle" id="pgToggle" onclick="togglePG()">
+    <span>✨ Build a Philippines Realism Prompt</span>
+    <i class="pg-arrow">▼</i>
+  </button>
+  <div class="pg-panel" id="pgPanel">
+    <button class="pg-random-btn" onclick="randomizeAll()">🎲 Randomize Everything</button>
+
+    <!-- SHOT TYPE -->
+    <div class="pg-row">
+      <div class="pg-label">📸 Shot Type</div>
+      <div class="shot-toggle-row">
+        <button class="shot-toggle active-normal" id="shot-normal" onclick="setShotType('normal')">📷 Normal Shot<br><span style="font-size:.58rem;font-weight:400;opacity:.7">taken by someone else</span></button>
+        <button class="shot-toggle" id="shot-selfie" onclick="setShotType('selfie')">🤳 Selfie<br><span style="font-size:.58rem;font-weight:400;opacity:.7">she holds the camera</span></button>
+      </div>
+      <div class="shot-selfie-opts" id="selfieOpts">
+        <div class="shot-selfie-sub">📐 Selfie Angle</div>
+        <div id="selfie-angle">
+          <div class="selfie-chip sel" data-val="arm extended at eye level, classic front-facing selfie">↔️ Eye Level</div>
+          <div class="selfie-chip" data-val="arm raised above head angling camera slightly downward, high-angle selfie">⬆️ High Angle</div>
+          <div class="selfie-chip" data-val="arm extended slightly below eye level, camera angled slightly upward, low-angle selfie">⬇️ Low Angle</div>
+          <div class="selfie-chip" data-val="arm extended to one side at a diagonal, camera angled back toward her face, off-center candid selfie">↗️ Side Diagonal</div>
+        </div>
+        <div class="shot-selfie-sub" style="margin-top:10px">🤚 Holding Hand</div>
+        <div id="selfie-hand">
+          <div class="selfie-chip sel" data-val="right hand holding phone, thumb on side, fingers wrapped naturally">👉 Right Hand</div>
+          <div class="selfie-chip" data-val="left hand holding phone, thumb on side, fingers wrapped naturally">👈 Left Hand</div>
+          <div class="selfie-chip" data-val="both hands gripping the phone, one holding, one steadying — two-handed selfie grip">🤲 Both Hands</div>
+        </div>
+        <div class="shot-selfie-sub" style="margin-top:10px">🪞 Mirror or Direct</div>
+        <div id="selfie-mirror">
+          <div class="selfie-chip sel" data-val="direct front-facing selfie, no mirror">📱 Direct</div>
+          <div class="selfie-chip" data-val="mirror selfie — standing in front of a wall mirror, phone and hand visible in reflection">🪞 Mirror</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="pg-row">
+      <div class="pg-label">📍 Location</div>
+      <div class="pg-chips" id="pg-location">
+        <div class="pg-chip sel" data-val="living room of a typical Filipino home, worn sala set, tiled floor, electric fan nearby">🏠 Living Room</div>
+        <div class="pg-chip" data-val="small Filipino bedroom, single bed with printed sheets, low dresser, jalousie window">🛏 Bedroom</div>
+        <div class="pg-chip" data-val="Filipino home kitchen, gas range, rice cooker, tiled walls, fluorescent light">🍳 Kitchen</div>
+        <div class="pg-chip" data-val="bathroom doorway of a Philippine home, wooden door, tabo and timba visible, tiled floor">🚿 Bathroom Door</div>
+        <div class="pg-chip" data-val="Philippine school hallway, painted concrete walls, bulletin board, classroom doors">🏫 School</div>
+        <div class="pg-chip" data-val="small Philippine minimart, fluorescent lighting, refrigerator units, snack shelves">🏪 Minimart</div>
+        <div class="pg-chip" data-val="Philippine rooftop, concrete parapet wall, water tank, hazy sky, laundry lines">🏙 Rooftop</div>
+        <div class="pg-chip" data-val="Philippine jeepney stop, colorful jeepney in background, concrete sidewalk">🚌 Jeepney Stop</div>
+        <div class="pg-chip" data-val="Philippine wet market entrance, corrugated iron roof, wet concrete floor, produce stalls">🛒 Palengke</div>
+        <div class="pg-chip" data-val="small Philippine sari-sari store, wooden shelves with snacks and sachets, wire mesh counter">🏡 Sari-Sari</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-location">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-location">
+        <input type="text" placeholder="Describe your own location..." oninput="updateOther('pg-location', this.value)">
+      </div>
+      <button class="bold-toggle" id="boldtog-location" onclick="toggleBold('location')">
+        <span>🔥 Bold &amp; Flirty Locations</span><i class="bold-arrow">▼</i>
+      </button>
+      <div class="bold-chips-panel" id="boldpanel-location">
+        <div class="pg-chips">
+          <div class="pg-chip bold-chip" data-val="tropical Philippine beach, white sand, golden hour, waves in background, near the water's edge" data-group="pg-location">🏖️ Beach</div>
+          <div class="pg-chip bold-chip" data-val="dim warmly-lit hotel room, unmade white bed, sheer curtains, warm window light, intimate setting" data-group="pg-location">🛏️ Hotel Room</div>
+          <div class="pg-chip bold-chip" data-val="steamy tiled bathroom, fogged mirror, soft warm backlight, post-shower atmosphere" data-group="pg-location">🚿 Bathroom</div>
+          <div class="pg-chip bold-chip" data-val="low-lit Philippine bar, neon lights, dark ambient, bar counter in background, night crowd behind her" data-group="pg-location">🍸 Bar / Club</div>
+          <div class="pg-chip bold-chip" data-val="car backseat, tinted windows, soft ambient seat light, leather seat visible, parked at night" data-group="pg-location">🚗 Car Backseat</div>
+          <div class="pg-chip bold-chip" data-val="poolside at a Philippine resort, blue pool water reflecting light, wet concrete deck, warm afternoon sun" data-group="pg-location">🏊 Poolside</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="pg-row">
+      <div class="pg-label">🕐 Time of Day</div>
+      <div class="pg-chips" id="pg-time">
+        <div class="pg-chip sel" data-val="midday, bright harsh overhead sunlight, strong shadows">☀️ Midday</div>
+        <div class="pg-chip" data-val="late afternoon, warm golden side-light, long soft shadows">🌅 Late Afternoon</div>
+        <div class="pg-chip" data-val="early morning, soft diffused light, cool blue-white tones">🌤 Morning</div>
+        <div class="pg-chip" data-val="blue hour or dusk, fading light, cool tones, interior lights beginning to glow">🌆 Dusk</div>
+        <div class="pg-chip" data-val="nighttime, artificial indoor lighting only, fluorescent or warm bulb light, deep shadows">🌙 Night</div>
+        <div class="pg-chip" data-val="overcast day, flat even diffused light, soft shadows, no harsh highlights">☁️ Overcast</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-time">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-time">
+        <input type="text" placeholder="Describe your own time/lighting..." oninput="updateOther('pg-time', this.value)">
+      </div>
+    </div>
+
+    <!-- OUTFIT -->
+    <div class="pg-row">
+      <div class="pg-label">👗 Outfit</div>
+      <div class="pg-chips" id="pg-outfit">
+        <div class="pg-chip sel" data-val="plain white or pastel sando and maong shorts, typical casual Filipina home wear">🩱 Sando + Shorts</div>
+        <div class="pg-chip" data-val="school uniform, white polo blouse, pleated skirt, ID lanyard, Philippine school style">👩‍🎓 School Uniform</div>
+        <div class="pg-chip" data-val="daster, loose Filipino house dress, floral or checkered cotton print, comfortable">🌸 Daster</div>
+        <div class="pg-chip" data-val="casual oversized t-shirt and sweatpants or pajama pants, at-home loungewear">😴 Oversized Tee</div>
+        <div class="pg-chip" data-val="jeans and a plain fitted t-shirt, casual everyday Filipino street wear">👖 Jeans + Tee</div>
+        <div class="pg-chip" data-val="simple summer dress, light cotton, floral or plain, knee-length">👒 Summer Dress</div>
+        <div class="pg-chip" data-val="athletic wear, sports tank top with leggings or jogging pants">🏃 Athletic Wear</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-outfit">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-outfit">
+        <input type="text" placeholder="Describe your own outfit..." oninput="updateOther('pg-outfit', this.value)">
+      </div>
+      <button class="bold-toggle" id="boldtog-outfit" onclick="toggleBold('outfit')">
+        <span>🔥 Bold &amp; Flirty Outfits</span><i class="bold-arrow">▼</i>
+      </button>
+      <div class="bold-chips-panel" id="boldpanel-outfit">
+        <div class="pg-chips">
+          <div class="pg-chip bold-chip" data-val="tied bikini top in a tropical print, paired with denim cutoff shorts, beach-ready" data-group="pg-outfit">👙 Bikini + Shorts</div>
+          <div class="pg-chip bold-chip" data-val="form-fitting one-piece swimsuit, slightly wet from the pool, natural drape" data-group="pg-outfit">🩱 One-Piece Swimsuit</div>
+          <div class="pg-chip bold-chip" data-val="fitted crop top with low-rise jeans, midriff showing, relaxed Gen Z energy" data-group="pg-outfit">🫶 Crop Top + Low-rise</div>
+          <div class="pg-chip bold-chip" data-val="sports bra and biker shorts, athleisure, form-fitting, natural body" data-group="pg-outfit">🩳 Sports Bra + Shorts</div>
+          <div class="pg-chip bold-chip" data-val="short fitted mini dress, hemline above the knee, casual going-out look" data-group="pg-outfit">👗 Mini Dress</div>
+          <div class="pg-chip bold-chip" data-val="wrapped in a bath towel only, tucked at the chest, post-shower, bare shoulders" data-group="pg-outfit">🛁 Wrapped Towel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POSE -->
+    <div class="pg-row">
+      <div class="pg-label">🧍 Pose</div>
+      <div class="pg-chips" id="pg-pose">
+        <div class="pg-chip sel" data-val="standing naturally, weight shifted to one leg, arms relaxed at sides">🧍 Standing</div>
+        <div class="pg-chip" data-val="sitting on a chair or couch, legs together, back relaxed, hands in lap">🪑 Sitting</div>
+        <div class="pg-chip" data-val="leaning against a wall with one shoulder, arms loosely crossed">🧱 Leaning on Wall</div>
+        <div class="pg-chip" data-val="sitting on the floor, legs to one side, one hand supporting on the floor">🛋 Floor Sit</div>
+        <div class="pg-chip" data-val="walking slowly and naturally, mid-stride, arms moving loosely">🚶 Walking</div>
+        <div class="pg-chip" data-val="looking away from camera, gaze off-frame, chin turned, candid moment">👀 Looking Away</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-pose">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-pose">
+        <input type="text" placeholder="Describe your own pose..." oninput="updateOther('pg-pose', this.value)">
+      </div>
+      <button class="bold-toggle" id="boldtog-pose" onclick="toggleBold('pose')">
+        <span>🔥 Bold &amp; Flirty Poses</span><i class="bold-arrow">▼</i>
+      </button>
+      <div class="bold-chips-panel" id="boldpanel-pose">
+        <div class="pg-chips">
+          <div class="pg-chip bold-chip" data-val="lying on her back or side on a bed, head propped on one hand, legs relaxed, candid" data-group="pg-pose">😏 Lying on Bed</div>
+          <div class="pg-chip bold-chip" data-val="standing ankle-deep at the shoreline, looking back at camera over shoulder" data-group="pg-pose">🌊 In Water</div>
+          <div class="pg-chip bold-chip" data-val="back leaning against a large window, soft backlight silhouette, arms loosely at sides" data-group="pg-pose">🪟 Window Lean</div>
+          <div class="pg-chip bold-chip" data-val="one shoulder leaning against a doorframe, weight shifted to one hip, relaxed" data-group="pg-pose">🚪 Doorframe</div>
+          <div class="pg-chip bold-chip" data-val="sitting on the floor with back against a wall or bed frame, knees slightly bent" data-group="pg-pose">🪑 Against Wall</div>
+          <div class="pg-chip bold-chip" data-val="standing with a subtle back arch, one hand on hip, chin slightly tilted up, confident" data-group="pg-pose">🤸 Arching Back</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HANDS -->
+    <div class="pg-row">
+      <div class="pg-label">🤚 Hand Pose</div>
+      <div class="pg-chips" id="pg-hands">
+        <div class="pg-chip sel" data-val="arms naturally at sides, no deliberate hand placement">🧍 Natural</div>
+        <div class="pg-chip" data-val="one hand resting at her collarbone, fingertips lightly touching skin">🫀 Collarbone</div>
+        <div class="pg-chip" data-val="one hand on her hip, palm flat, elbow angled out naturally">✋ Hand on Hip</div>
+        <div class="pg-chip" data-val="both hands on hips, palms flat, elbows angled out, shoulders relaxed">🙌 Both on Hips</div>
+        <div class="pg-chip" data-val="one arm slightly crossed, hand resting loosely on opposite forearm">🫂 Holding Own Arm</div>
+        <div class="pg-chip" data-val="one or both hands in pockets, thumbs hooked in denim">👖 In Pockets</div>
+        <div class="pg-chip" data-val="one hand holding a small prop, a coffee cup or small bag, casually">☕ Holding Prop</div>
+        <div class="pg-chip" data-val="fingertips of one hand lightly resting at her lips">👄 Fingers at Lips</div>
+        <div class="pg-chip" data-val="wrist bent inward, hand loosely drooped, a delicate limp-wrist gesture">🫰 Limp Wrist</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-hands">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-hands">
+        <input type="text" placeholder="Describe your own hand pose..." oninput="updateOther('pg-hands', this.value)">
+      </div>
+    </div>
+
+    <!-- EXPRESSION -->
+    <div class="pg-row">
+      <div class="pg-label">😐 Expression</div>
+      <div class="pg-chips" id="pg-expression">
+        <div class="pg-chip sel" data-val="neutral-soft expression, calm eyes at camera, mouth gently closed, relaxed jaw">😐 Neutral</div>
+        <div class="pg-chip" data-val="soft faint almost-smile, relaxed eyes with warmth, mouth mostly closed">🙂 Faint Smile</div>
+        <div class="pg-chip" data-val="slightly sleepy and relaxed, eyes soft and barely heavy, warm at corners">😴 Sleepy</div>
+        <div class="pg-chip" data-val="mild self-conscious faint smile, low-effort, aware of camera but not performing">🤭 Shy Soft</div>
+        <div class="pg-chip" data-val="direct and mildly serious gaze at camera, mouth softly closed">🧐 Serious</div>
+        <div class="pg-chip" data-val="slightly distracted, eyes angled just off-camera, mouth softly parted">👀 Distracted</div>
+        <div class="pg-chip" data-val="soft downward gaze, eyes looking slightly down, quiet introspective look">🌿 Downward</div>
+        <div class="pg-chip" data-val="natural mid-blink, caught in a slow blink, a genuine unplanned moment">😌 Mid-Blink</div>
+        <div class="pg-chip" data-val="lips slightly parted and relaxed as if mid-breath, eyes soft at camera">😮 Lips Parted</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-expression">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-expression">
+        <input type="text" placeholder="Describe your own expression..." oninput="updateOther('pg-expression', this.value)">
+      </div>
+    </div>
+
+    <!-- CAMERA -->
+    <div class="pg-row">
+      <div class="pg-label">📷 Camera Feel</div>
+      <div class="pg-chips" id="pg-camera">
+        <div class="pg-chip sel" data-val="iPhone 7 realism: warm color rendering, limited dynamic range, digital noise, JPEG artifacts">📱 iPhone 7</div>
+        <div class="pg-chip" data-val="iPhone 12 realism: clean and sharp, improved dynamic range, accurate skin tones, minimal noise">📱 iPhone 12</div>
+        <div class="pg-chip" data-val="old Android: oversaturated colors, strong digital noise, aggressive edge sharpening">📲 Old Android</div>
+        <div class="pg-chip" data-val="grainy low-light phone photo: high ISO noise, motion blur, underexposed shadows, warm cast">🌃 Low-Light</div>
+        <div class="pg-chip" data-val="entry-level DSLR 50mm: natural perspective, clean sharp subject, shallow depth, grain at ISO 800">📷 DSLR 50mm</div>
+        <div class="pg-chip" data-val="mirrorless 85mm portrait: telephoto perspective, soft background separation, accurate skin tones">🎞 DSLR 85mm</div>
+        <div class="pg-chip other-chip" data-val="" data-group="pg-camera">✏️ Other…</div>
+      </div>
+      <div class="other-input-wrap" id="other-pg-camera">
+        <input type="text" placeholder="Describe your own camera style..." oninput="updateOther('pg-camera', this.value)">
+      </div>
+    </div>
+
+    <div class="pg-btn-row">
+      <button class="pg-build-btn" onclick="buildPrompt()">🪄 Build Prompt</button>
+    </div>
+    <div class="pg-preview" id="pgPreview"></div>
+    <button class="pg-inject-btn" id="pgInjectBtn" onclick="injectPrompt()">✅ Use This Prompt → Scene Description</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="lbl">📝 Scene Description</div>
+  <div class="char-wrap">
+    <textarea id="prompt" placeholder="Your generated scene description will appear here..." spellcheck="false"></textarea>
+    <div class="char-count" id="charCount">0 / 800</div>
+  </div>
+  <div class="prompt-limit-note" id="promptLimitNote"></div>
+  <div class="hint">The prompt builder above fills this field so you can reuse or edit the final scene description.</div>
+</div>
+
+<script>
+const otherVals = {};
+const SK = { prompt: 'cg_pr' };
+
+window.addEventListener('load', () => {
+  const promptInput = document.getElementById('prompt');
+  if (promptInput) {
+    const savedPrompt = localStorage.getItem(SK.prompt);
+    if (savedPrompt) {
+      promptInput.value = savedPrompt;
+      updateCharCount();
+    }
+
+    promptInput.addEventListener('input', () => {
+      localStorage.setItem(SK.prompt, promptInput.value);
+      updateCharCount();
+    });
+  }
+
+  updateCharCount();
+});
+
+function updateCharCount() {
+  const limit = 800;
+  const val = document.getElementById('prompt').value;
+  const len = val.length;
+  const counter = document.getElementById('charCount');
+  const note = document.getElementById('promptLimitNote');
+  counter.textContent = len + ' / ' + limit;
+
+  const warnAt = Math.floor(limit * 0.85);
+  counter.classList.toggle('warn', len >= warnAt && len <= limit);
+  counter.classList.toggle('over', len > limit);
+
+  if (len > limit) {
+    note.textContent = `⛔ Prompt is ${len - limit} chars over the ${limit}-char limit.`;
+    note.className = 'prompt-limit-note show over';
+  } else if (len >= warnAt) {
+    note.textContent = `⚠️ Approaching ${limit}-char limit (${limit - len} remaining).`;
+    note.className = 'prompt-limit-note show warn';
+  } else {
+    note.className = 'prompt-limit-note';
+  }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ── Prompt Generator ──────────────────────────────────────────
+function togglePG() {
+  document.getElementById('pgToggle').classList.toggle('open');
+  document.getElementById('pgPanel').classList.toggle('open');
+}
+function toggleBold(s) {
+  document.getElementById('boldtog-' + s).classList.toggle('open');
+  document.getElementById('boldpanel-' + s).classList.toggle('open');
+}
+
+// Single-select — normal chips
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.pg-chip');
+  if (!chip) return;
+  const group = chip.closest('.pg-chips');
+  if (!group) return;
+
+  // Find group id
+  const groupId = group.id || chip.dataset.group;
+  if (!groupId) return;
+  const sectionName = groupId.replace('pg-', '');
+
+  // Deselect all in normal + bold for this group
+  document.querySelectorAll(`#${groupId} .pg-chip`).forEach(c => c.classList.remove('sel'));
+  document.querySelectorAll(`#boldpanel-${sectionName} .pg-chip`).forEach(c => c.classList.remove('sel'));
+
+  // Other chip
+  if (chip.classList.contains('other-chip')) {
+    chip.classList.add('sel');
+    const w = document.getElementById('other-' + groupId);
+    if (w) w.classList.add('show');
+    return;
+  }
+
+  // Normal/bold chip
+  chip.classList.add('sel');
+  const w = document.getElementById('other-' + groupId);
+  if (w) w.classList.remove('show');
+  if (groupId) otherVals[groupId] = '';
+});
+
+// Selfie chip single-select
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.selfie-chip');
+  if (!chip) return;
+  const group = chip.closest('[id^="selfie-"]');
+  if (!group) return;
+  group.querySelectorAll('.selfie-chip').forEach(c => c.classList.remove('sel'));
+  chip.classList.add('sel');
+});
+
+function updateOther(groupId, val) { otherVals[groupId] = val; }
+
+function getPGVal(groupId) {
+  if (otherVals[groupId]) return otherVals[groupId];
+  let sel = document.querySelector(`#${groupId} .pg-chip.sel:not(.other-chip)`);
+  if (sel) return sel.dataset.val;
+  const sn = groupId.replace('pg-', '');
+  sel = document.querySelector(`#boldpanel-${sn} .pg-chip.sel`);
+  return sel ? sel.dataset.val : '';
+}
+
+function setShotType(type) {
+  currentShotType = type;
+  document.getElementById('shot-normal').classList.toggle('active-normal', type === 'normal');
+  document.getElementById('shot-normal').classList.remove('active');
+  document.getElementById('shot-selfie').classList.toggle('active', type === 'selfie');
+  document.getElementById('shot-selfie').classList.toggle('active-normal', false);
+  document.getElementById('selfieOpts').classList.toggle('show', type === 'selfie');
+}
+
+function randomizeAll() {
+  ['pg-location','pg-time','pg-outfit','pg-pose','pg-hands','pg-expression','pg-camera'].forEach(gid => {
+    const normal = [...document.querySelectorAll(`#${gid} .pg-chip:not(.other-chip)`)];
+    const bold   = [...document.querySelectorAll(`#boldpanel-${gid.replace('pg-','')} .pg-chip`)];
+    const all    = [...normal, ...bold];
+    if (!all.length) return;
+    [...document.querySelectorAll(`#${gid} .pg-chip`), ...bold].forEach(c => c.classList.remove('sel'));
+    const w = document.getElementById('other-' + gid); if (w) w.classList.remove('show');
+    otherVals[gid] = '';
+    const pick = all[Math.floor(Math.random() * all.length)];
+    pick.classList.add('sel');
+    if (pick.classList.contains('bold-chip')) {
+      const sn = gid.replace('pg-', '');
+      document.getElementById('boldtog-' + sn)?.classList.add('open');
+      document.getElementById('boldpanel-' + sn)?.classList.add('open');
+    }
+  });
+  const st = Math.random() < 0.4 ? 'selfie' : 'normal';
+  setShotType(st);
+  if (st === 'selfie') {
+    ['selfie-angle','selfie-hand','selfie-mirror'].forEach(gid => {
+      const chips = document.querySelectorAll(`#${gid} .selfie-chip`);
+      chips.forEach(c => c.classList.remove('sel'));
+      chips[Math.floor(Math.random() * chips.length)]?.classList.add('sel');
+    });
+  }
+  const btn = document.querySelector('.pg-random-btn');
+  btn.classList.remove('spin'); void btn.offsetWidth; btn.classList.add('spin');
+  setTimeout(() => btn.classList.remove('spin'), 400);
+  buildPrompt();
+  toast('🎲 Randomized & built!');
+}
+
+function buildPrompt() {
+  const location   = getPGVal('pg-location');
+  const time       = getPGVal('pg-time');
+  const outfit     = getPGVal('pg-outfit');
+  const pose       = getPGVal('pg-pose');
+  const hands      = getPGVal('pg-hands');
+  const expression = getPGVal('pg-expression');
+  const camera     = getPGVal('pg-camera');
+
+  let shotBlock = '';
+  if (currentShotType === 'selfie') {
+    const angle  = document.querySelector('#selfie-angle .selfie-chip.sel')?.dataset.val  || 'arm at eye level';
+    const hand   = document.querySelector('#selfie-hand .selfie-chip.sel')?.dataset.val   || 'right hand';
+    const mirror = document.querySelector('#selfie-mirror .selfie-chip.sel')?.dataset.val || 'direct selfie';
+    shotBlock = ` SELFIE SHOT: She takes the photo herself. ${hand}. Angle: ${angle}. ${mirror}. Her hand and phone are visible in frame.`;
+  } else {
+    shotBlock = ` NORMAL SHOT: Photo taken by someone else. Both her hands are free.`;
+  }
+
+  const handsLine = hands && !hands.includes('Natural') ? ` HAND POSE: ${hands}.` : '';
+
+  // Build compact prompt to fit within model limits
+  const built =
+    `Use the reference photo as the subject. Preserve 100% of her facial structure, identity, ethnicity, skin tone, hair, and body proportions exactly. No retouching, no filters, no idealization.` +
+    ` Realistic photo of the same person in: ${location}. Time: ${time}.` +
+    shotBlock +
+    ` POSE: ${pose}.` +
+    handsLine +
+    ` EXPRESSION: ${expression}.` +
+    ` OUTFIT: ${outfit}. Fabric drapes and fits naturally.` +
+    ` FACIAL REALISM: identical to reference. Natural pores, skin texture, peach fuzz, under-eye shadows, real lip texture. No skin smoothing.` +
+    ` CAMERA: ${camera}. Candid, unfiltered, authentic.`;
+
+  const preview = document.getElementById('pgPreview');
+  const injectBtn = document.getElementById('pgInjectBtn');
+  preview.textContent = built;
+  preview.classList.add('show');
+  injectBtn.classList.add('show');
+  preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  window._builtPrompt = built;
+}
+
+function injectPrompt() {
+  if (!window._builtPrompt) return;
+  document.getElementById('prompt').value = window._builtPrompt;
+  localStorage.setItem(SK.prompt, window._builtPrompt);
+  updateCharCount();
+  toast('Prompt injected ✓');
+  document.getElementById('pgToggle').classList.remove('open');
+  document.getElementById('pgPanel').classList.remove('open');
+  document.getElementById('prompt').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
