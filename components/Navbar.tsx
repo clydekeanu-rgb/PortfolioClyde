@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const links = [
   { label: "Work", href: "/#work", id: "work", page: false },
+  { label: "Free Tools", href: "/free-tools/", id: "free-tools", page: true },
   { label: "Blog", href: "/blog/", id: "blog", page: true },
   { label: "About", href: "/#about", id: "about", page: false },
   { label: "Contact", href: "/#contact", id: "contact", page: false },

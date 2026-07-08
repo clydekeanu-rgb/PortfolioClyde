@@ -24,6 +24,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
     },
     {
+      url: "https://clydeabenojar.site/free-tools/",
+      lastModified: new Date(),
+    },
+    {
+      url: "https://clydeabenojar.site/free-tools/promptgen/",
+      lastModified: new Date(),
+    },
+    {
       url: "https://clydeabenojar.site/song-generator/",
       lastModified: new Date(),
     },
