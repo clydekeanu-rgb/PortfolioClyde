@@ -210,7 +210,7 @@ export function BlueprintAIApp() {
     if (state.step === 1) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 1 — architectural style</p>
+          <p className="font-mono text-sm text-accent">{'// step 1 — architectural style'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             What architectural language should define the render?
           </h2>
@@ -260,7 +260,7 @@ export function BlueprintAIApp() {
     if (state.step === 2) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 2 — time & lighting</p>
+          <p className="font-mono text-sm text-accent">{'// step 2 — time & lighting'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Which light conditions should the scene use?
           </h2>
@@ -294,7 +294,7 @@ export function BlueprintAIApp() {
     if (state.step === 3) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 3 — road & environment</p>
+          <p className="font-mono text-sm text-accent">{'// step 3 — road & environment'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             How should the ground plane and atmosphere read?
           </h2>
@@ -328,7 +328,7 @@ export function BlueprintAIApp() {
     if (state.step === 4) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 4 — camera angle</p>
+          <p className="font-mono text-sm text-accent">{'// step 4 — camera angle'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Which camera perspective fits the building best?
           </h2>
@@ -362,7 +362,7 @@ export function BlueprintAIApp() {
     if (state.step === 5) {
       return (
         <div>
-          <p className="font-mono text-sm text-accent">// step 5 — settings</p>
+          <p className="font-mono text-sm text-accent">{'// step 5 — settings'}</p>
           <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
             Add the final scene details.
           </h2>
@@ -443,7 +443,7 @@ export function BlueprintAIApp() {
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="font-mono text-sm text-accent">// step 6 — prompt output</p>
+              <p className="font-mono text-sm text-accent">{'// step 6 — prompt output'}</p>
               <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
                 Ready to copy.
               </h2>
