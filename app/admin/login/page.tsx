@@ -11,7 +11,7 @@ export default function AdminLoginPage() {
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-md rounded-md border border-border bg-surface p-8 shadow-soft">
         <p className="font-mono text-sm text-accent">Admin /&gt;</p>
-        <h1 className="mt-2 text-2xl font-bold text-primary">Sign in</h1>
+        <h1 className="mt-2 text-2xl font-bold text-foreground">Sign in</h1>
         <p className="mt-2 text-sm text-secondary">
           Enter your admin email to receive a magic login link.
         </p>

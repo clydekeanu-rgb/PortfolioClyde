@@ -39,7 +39,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
         >
           {"← Dashboard"}
         </Link>
-        <h1 className="mt-4 text-3xl font-bold text-primary">Edit Post</h1>
+        <h1 className="mt-4 text-3xl font-bold text-foreground">Edit Post</h1>
         <div className="mt-8">
           <PostForm post={post} action={boundUpdate} />
         </div>

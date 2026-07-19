@@ -453,7 +453,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 1 — product category'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             What are you photographing?
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -471,7 +471,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -488,7 +488,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 2 — presentation style'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             How should it be presented?
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -506,7 +506,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -522,7 +522,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 3 — model details'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             Describe the model
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -546,7 +546,7 @@ export function PromptGenApp() {
                           "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                           selected
                             ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                            : "text-secondary hover:border-accent/40 hover:text-primary",
+                            : "text-secondary hover:border-accent/40 hover:text-foreground",
                         ].join(" ")}
                       >
                         {option}
@@ -565,7 +565,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 4 — shot setup'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             Camera angle & distance
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -589,7 +589,7 @@ export function PromptGenApp() {
                           "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                           selected
                             ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                            : "text-secondary hover:border-accent/40 hover:text-primary",
+                            : "text-secondary hover:border-accent/40 hover:text-foreground",
                         ].join(" ")}
                       >
                         {option}
@@ -608,7 +608,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 5 — background'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             Choose the environment
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -626,7 +626,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -642,7 +642,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 6 — lighting'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             Define the lighting setup
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -660,7 +660,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -676,7 +676,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 7 — image style / usage'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             What&apos;s this image for?
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -694,7 +694,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -710,7 +710,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 8 — mood / aesthetic'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             What vibe should it convey?
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -728,7 +728,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -745,7 +745,7 @@ export function PromptGenApp() {
         <div>
           <p className="font-mono text-sm text-accent">{'// step 9 — text overlay'}</p>
           <div className="mt-2 flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-primary sm:text-3xl">
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               Add text overlay?
             </h2>
             <button
@@ -792,7 +792,7 @@ export function PromptGenApp() {
                             "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                             selected
                               ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                              : "text-secondary hover:border-accent/40 hover:text-primary",
+                              : "text-secondary hover:border-accent/40 hover:text-foreground",
                           ].join(" ")}
                         >
                           {option}
@@ -812,7 +812,7 @@ export function PromptGenApp() {
       return (
         <div>
           <p className="font-mono text-sm text-accent">{'// step 10 — image size / platform'}</p>
-          <h2 className="mt-2 text-2xl font-semibold text-primary sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-foreground sm:text-3xl">
             Select the output format
           </h2>
           <p className="mt-3 max-w-2xl font-readable text-sm leading-7 text-secondary sm:text-base">
@@ -830,7 +830,7 @@ export function PromptGenApp() {
                     "rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs transition-all duration-200",
                     selected
                       ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-primary",
+                      : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
@@ -846,7 +846,7 @@ export function PromptGenApp() {
       return (
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-primary sm:text-3xl">
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               {'// Generated Prompt'}
             </h2>
             <button
@@ -870,7 +870,7 @@ export function PromptGenApp() {
                   "rounded-md border border-border px-3 py-2 font-mono text-xs transition-colors duration-200",
                   state.copied
                     ? "border-accent/70 text-accent"
-                    : "text-secondary hover:border-accent/40 hover:text-primary",
+                    : "text-secondary hover:border-accent/40 hover:text-foreground",
                 ].join(" ")}
               >
                 {state.copied ? "✓ Copied!" : "↗ Copy JSON"}
@@ -885,7 +885,7 @@ export function PromptGenApp() {
             <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-secondary/70">
               prompt preview
             </span>
-            <p className="mt-3 font-readable text-base leading-8 text-primary">
+            <p className="mt-3 font-readable text-base leading-8 text-foreground">
               “{state.generatedOutput.prompt}”
             </p>
           </div>
@@ -912,7 +912,7 @@ export function PromptGenApp() {
     <div className="mx-auto flex min-h-[70vh] max-w-4xl flex-col px-6 py-8 sm:py-10">
       <div className="rounded-md border border-border bg-surface/80 p-4 shadow-soft backdrop-blur-sm sm:p-5">
         <div className="flex items-center justify-between gap-4">
-          <div className="font-mono text-sm font-semibold text-primary">
+          <div className="font-mono text-sm font-semibold text-foreground">
             <span className="text-accent">&lt;</span>PromptGen
             <span className="text-accent">/&gt;</span>
           </div>
@@ -940,7 +940,7 @@ export function PromptGenApp() {
             type="button"
             onClick={handleBack}
             disabled={state.step === 1}
-            className="rounded-md border border-border px-4 py-2 font-mono text-sm text-secondary transition-colors hover:border-accent/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-md border border-border px-4 py-2 font-mono text-sm text-secondary transition-colors hover:border-accent/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
           >
             ← Back
           </button>

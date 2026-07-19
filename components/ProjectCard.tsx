@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "motion/react";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export type Project = {
   title: string;
@@ -28,16 +30,15 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const number = project.number ?? String(index).padStart(2, "0");
 
   return (
-    <motion.div
+    <BlurFade
+      inView
+      delay={index * 0.06}
+      offset={28}
+      direction={isRight ? "right" : "left"}
       className={[
         "relative flex w-full",
         isRight ? "md:justify-end" : "md:justify-start",
       ].join(" ")}
-      variants={{
-        hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 },
-        show: { opacity: 1, y: 0 },
-      }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
     >
       <Link
         href={project.href}
@@ -54,7 +55,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         <div
           className={[
             "relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-border bg-surface shadow-soft",
-            "transition-[border-color,box-shadow] duration-300 ease-out",
+            "transition-[border-color,box-shadow] duration-500 ease-out",
             "group-hover:border-accent/80 group-hover:shadow-[0_0_34px_rgba(124,58,237,0.34)]",
             "md:w-[52%] lg:w-[50%]",
           ].join(" ")}
@@ -64,8 +65,19 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             alt={project.title}
             fill
             sizes="(min-width: 1024px) 50vw, (min-width: 768px) 52vw, 100vw"
-            className="object-cover transition-transform duration-300 ease-out group-hover:motion-safe:scale-105"
+            className="object-cover transition-transform duration-500 ease-out group-hover:motion-safe:scale-105"
           />
+          {!reduceMotion && (
+            <BorderBeam
+              size={90}
+              duration={10}
+              delay={index * 0.4}
+              colorFrom="#7C3AED"
+              colorTo="#A78BFA"
+              borderWidth={1.25}
+              className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            />
+          )}
         </div>
 
         <div
@@ -77,13 +89,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         >
           <p className="font-mono text-sm text-accent">{project.subtitle}</p>
 
-          <h3 className="mt-2 font-mono text-2xl font-bold leading-tight text-primary sm:text-3xl lg:text-4xl">
+          <h3 className="mt-2 font-mono text-2xl font-bold leading-tight text-foreground sm:text-3xl lg:text-4xl">
             {project.title}
           </h3>
 
           <div
             className={[
-              "mt-4 h-0.5 w-40 bg-primary sm:w-52",
+              "mt-4 h-0.5 w-40 bg-accent sm:w-52",
               isRight ? "md:ml-auto" : "",
             ].join(" ")}
           />
@@ -124,6 +136,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </BlurFade>
   );
 }

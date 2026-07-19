@@ -22,8 +22,8 @@ const links = [
   { label: "Work", href: "/work/", external: true },
   { label: "Free Tools", href: "/free-tools/", external: true },
   { label: "Blog", href: "/blog/", external: true },
-  { label: "About", href: "#about", external: false },
-  { label: "Contact", href: "#contact", external: false },
+  { label: "About", href: "/#about", external: false },
+  { label: "Contact", href: "/#contact", external: false },
 ] as const;
 
 const glassShell =
@@ -50,7 +50,7 @@ function BrandLink({
 
   return (
     <Link
-      href="/homepage-redo/"
+      href="/"
       className="inline-flex shrink-0 items-center px-1 text-sm font-semibold rw-text"
     >
       <span className="rw-brand">&lt;</span>
@@ -78,7 +78,7 @@ function BrandLink({
 function HireButton({ className }: { className?: string }) {
   return (
     <InteractiveHoverButton
-      href="#contact"
+      href="/#contact"
       className={cn("rw-ihb rw-ihb-fill", className)}
     >
       Hire Me
@@ -248,7 +248,7 @@ export function FloatingGlassNav() {
                         <SheetClose
                           render={
                             <InteractiveHoverButton
-                              href="#contact"
+                              href="/#contact"
                               className="rw-ihb rw-ihb-fill mt-2 w-full rounded-full px-4 py-3 text-sm"
                             />
                           }

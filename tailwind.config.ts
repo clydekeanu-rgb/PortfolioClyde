@@ -11,7 +11,6 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        surface: "#161618",
         card: {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
@@ -25,18 +24,19 @@ const config: Config = {
           foreground: "var(--primary-foreground)",
         },
         secondary: {
-          DEFAULT: "#9A9AA2",
-          foreground: "#F4F4F5",
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
         },
         muted: {
           DEFAULT: "var(--muted)",
           foreground: "var(--muted-foreground)",
         },
         accent: {
-          DEFAULT: "#7C3AED",
-          soft: "#A78BFA",
-          foreground: "#F4F4F5",
+          DEFAULT: "var(--primary)",
+          soft: "#E879FF",
+          foreground: "var(--primary-foreground)",
         },
+        surface: "#2F2B3A",
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
@@ -54,12 +54,12 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
-        mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["Fira Code", "ui-monospace", "SFMono-Regular", "monospace"],
         readable: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 0 34px rgba(124, 58, 237, 0.22)",
+        glow: "0 0 34px rgba(192, 73, 255, 0.22)",
         soft: "0 18px 60px rgba(0, 0, 0, 0.35)",
       },
       animation: {

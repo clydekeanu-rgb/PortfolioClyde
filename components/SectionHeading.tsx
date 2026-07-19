@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 
 type SectionHeadingProps = {
   children: string;
@@ -15,7 +15,7 @@ export function SectionHeading({ children, center = false }: SectionHeadingProps
   return (
     <div className={center ? "text-center" : ""}>
       <motion.h2
-        className="font-mono text-xl font-semibold tracking-normal text-primary"
+        className="font-mono text-xl font-semibold tracking-normal text-foreground"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.7 }}
@@ -32,10 +32,12 @@ export function SectionHeading({ children, center = false }: SectionHeadingProps
           return (
             <motion.span
               key={`${char}-${index}`}
-              className={isAccent ? "text-accent" : "text-primary"}
+              className={isAccent ? "text-accent" : "text-foreground"}
               variants={{
-                hidden: reduceMotion ? { opacity: 1 } : { opacity: 0 },
-                show: { opacity: 1 },
+                hidden: reduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 8 },
+                show: { opacity: 1, y: 0 },
               }}
               aria-hidden="true"
             >

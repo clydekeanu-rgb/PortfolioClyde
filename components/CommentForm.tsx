@@ -33,7 +33,7 @@ export function CommentForm({ postId }: CommentFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      <h3 className="font-mono text-lg font-semibold text-primary">Leave a comment</h3>
+      <h3 className="font-mono text-lg font-semibold text-foreground">Leave a comment</h3>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -45,7 +45,7 @@ export function CommentForm({ postId }: CommentFormProps) {
             name="name"
             type="text"
             required
-            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-primary outline-none transition-colors focus:border-accent"
+            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
           />
         </div>
         <div>
@@ -57,7 +57,7 @@ export function CommentForm({ postId }: CommentFormProps) {
             name="email"
             type="email"
             required
-            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-primary outline-none transition-colors focus:border-accent"
+            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
           />
         </div>
       </div>
@@ -71,7 +71,7 @@ export function CommentForm({ postId }: CommentFormProps) {
           name="body"
           rows={4}
           required
-          className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-primary outline-none transition-colors focus:border-accent"
+          className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
         />
       </div>
 

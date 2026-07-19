@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
+import { FloatingGlassNav } from "@/components/FloatingGlassNav";
 
 export const metadata: Metadata = {
   title: "CharGen | Clyde Abenojar",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function CharGenPage() {
   return (
     <>
-      <Navbar />
+      <FloatingGlassNav />
       <main className="min-h-screen pt-24">
         <div className="mx-auto max-w-6xl px-6 py-8 sm:py-10">
           <Link

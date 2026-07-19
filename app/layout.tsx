@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="font-sans antialiased">
+      <body className="railway font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <Analytics />
           {children}

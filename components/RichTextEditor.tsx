@@ -42,7 +42,7 @@ function ToolbarButton({ onClick, active, label, children }: ToolbarButtonProps)
       className={`rounded p-2 transition-colors ${
         active
           ? "bg-accent/20 text-accent-soft"
-          : "text-secondary hover:bg-surface hover:text-primary"
+          : "text-secondary hover:bg-surface hover:text-foreground"
       }`}
     >
       {children}
@@ -175,7 +175,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
       <EditorContent
         editor={editor}
-        className="blog-editor min-h-[400px] bg-surface p-4 text-primary"
+        className="blog-editor min-h-[400px] bg-surface p-4 text-foreground"
       />
     </div>
   );

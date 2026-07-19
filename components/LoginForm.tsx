@@ -37,7 +37,7 @@ export function LoginForm() {
           name="email"
           type="email"
           required
-          className="w-full rounded-md border border-border bg-background px-4 py-2 text-sm text-primary outline-none transition-colors focus:border-accent"
+          className="w-full rounded-md border border-border bg-background px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
           placeholder="clyde@clydeabenojar.site"
         />
       </div>

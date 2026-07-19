@@ -18,7 +18,7 @@ export default function NewPostPage() {
         >
           {"← Dashboard"}
         </Link>
-        <h1 className="mt-4 text-3xl font-bold text-primary">New Post</h1>
+        <h1 className="mt-4 text-3xl font-bold text-foreground">New Post</h1>
         <div className="mt-8">
           <PostForm action={createPost} />
         </div>

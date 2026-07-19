@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { FreeTools } from "@/components/FreeTools";
-import { Navbar } from "@/components/Navbar";
+import { FloatingGlassNav } from "@/components/FloatingGlassNav";
 
 export const metadata: Metadata = {
   title: "Free Tools | Clyde Abenojar",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function FreeToolsPage() {
   return (
     <>
-      <Navbar />
+      <FloatingGlassNav />
       <main className="min-h-screen pt-24">
         <FreeTools />
       </main>

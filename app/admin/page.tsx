@@ -53,7 +53,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="font-mono text-sm text-accent">Admin /&gt;</p>
-            <h1 className="mt-1 text-3xl font-bold text-primary">Dashboard</h1>
+            <h1 className="mt-1 text-3xl font-bold text-foreground">Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -73,7 +73,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         ) : null}
 
         <section className="mt-10">
-          <h2 className="font-mono text-lg font-semibold text-primary">
+          <h2 className="font-mono text-lg font-semibold text-foreground">
             Analytics{" "}
             <span className="text-sm font-normal text-secondary">
               (last 30 days)
@@ -83,7 +83,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="rounded-md border border-border bg-surface p-4">
               <p className="font-mono text-xs text-secondary">Page Visits</p>
-              <p className="mt-1 text-2xl font-bold text-primary">
+              <p className="mt-1 text-2xl font-bold text-foreground">
                 {stats.totalVisits}
               </p>
             </div>
@@ -91,7 +91,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               <p className="font-mono text-xs text-secondary">
                 Unique Visitors
               </p>
-              <p className="mt-1 text-2xl font-bold text-primary">
+              <p className="mt-1 text-2xl font-bold text-foreground">
                 {stats.uniqueVisitors}
               </p>
             </div>
@@ -120,7 +120,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                     <tbody>
                       {stats.topPages.map((page) => (
                         <tr key={page.path} className="border-b border-border/70">
-                          <td className="px-4 py-2 font-mono text-primary">
+                          <td className="px-4 py-2 font-mono text-foreground">
                             {page.path}
                           </td>
                           <td className="px-4 py-2 text-secondary">
@@ -162,7 +162,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                           key={section.sectionId}
                           className="border-b border-border/70"
                         >
-                          <td className="px-4 py-2 font-medium text-primary">
+                          <td className="px-4 py-2 font-medium text-foreground">
                             {section.label}
                           </td>
                           <td className="px-4 py-2 text-secondary">
@@ -203,7 +203,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                   <tbody>
                     {stats.recentVisits.map((visit, i) => (
                       <tr key={i} className="border-b border-border/70">
-                        <td className="px-4 py-2 font-mono text-primary">
+                        <td className="px-4 py-2 font-mono text-foreground">
                           {visit.path}
                         </td>
                         <td className="px-4 py-2 text-secondary">
@@ -222,7 +222,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-mono text-lg font-semibold text-primary">Posts</h2>
+          <h2 className="font-mono text-lg font-semibold text-foreground">Posts</h2>
 
           {allPosts.length === 0 ? (
             <p className="mt-4 text-sm text-secondary">
@@ -242,7 +242,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 <tbody>
                   {allPosts.map((post) => (
                     <tr key={post.id} className="border-b border-border/70">
-                      <td className="px-4 py-3 font-medium text-primary">
+                      <td className="px-4 py-3 font-medium text-foreground">
                         {post.title}
                       </td>
                       <td className="px-4 py-3">
@@ -296,7 +296,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-mono text-lg font-semibold text-primary">
+          <h2 className="font-mono text-lg font-semibold text-foreground">
             Pending Comments
           </h2>
 
@@ -327,7 +327,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                           "Unknown post"
                         )}
                       </p>
-                      <p className="mt-3 text-sm text-primary">{comment.body}</p>
+                      <p className="mt-3 text-sm text-foreground">{comment.body}</p>
                     </div>
                     <div className="flex gap-2">
                       <form action={approveComment.bind(null, comment.id)}>

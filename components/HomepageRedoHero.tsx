@@ -1,14 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { useReducedMotion } from "motion/react";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { GlyphMatrix } from "@/components/ui/glyph-matrix";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 
 type HomepageRedoHeroProps = {
@@ -16,61 +11,35 @@ type HomepageRedoHeroProps = {
 };
 
 export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
-  const heroRef = useRef<HTMLElement | null>(null);
   const reduceMotion = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const copyY = useTransform(scrollYProgress, [0, 0.55], [0, -48]);
-
-  const photoOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
-  const photoY = useTransform(scrollYProgress, [0, 0.65], [0, -28]);
-
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
   return (
-    <section
-      id="top"
-      ref={heroRef}
-      className="relative overflow-hidden pt-32"
-    >
-      <motion.div
+    <section id="top" className="relative overflow-hidden pt-32">
+      <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[58%] overflow-hidden"
-        style={reduceMotion ? undefined : { opacity: bgOpacity }}
         aria-hidden="true"
       >
-        <Image
-          src="/images/hero-twilight-landscape.png"
-          alt=""
-          fill
-          priority
-          className="object-cover object-top"
-        />
-        <div className="absolute inset-0 bg-[var(--rw-bg)]/40" />
-      </motion.div>
+        {!reduceMotion ? (
+          <GlyphMatrix
+            className="absolute inset-0 h-full w-full"
+            color="#dbdbdb"
+            cellSize={14}
+            fadeBottom={0.7}
+          />
+        ) : null}
+      </div>
 
-      <motion.div
+      <div
         className="rw-hero-wave pointer-events-none absolute inset-0 z-[1] motion-reduce:hidden"
-        style={reduceMotion ? undefined : { opacity: bgOpacity }}
         aria-hidden="true"
       >
         <span />
         <span />
         <span />
-      </motion.div>
+      </div>
 
       <div className="relative z-[2] mx-auto grid max-w-5xl items-center gap-12 px-6 pb-24 pt-10 md:grid-cols-[1.05fr_0.95fr] md:pt-16">
-        <motion.div
-          style={
-            reduceMotion
-              ? undefined
-              : { opacity: copyOpacity, y: copyY }
-          }
-        >
+        <div>
           <p className="font-mono text-sm font-semibold rw-gradient-text">
             {"// full-stack builder, AI-assisted"}
           </p>
@@ -107,16 +76,9 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
               &gt; get_in_touch()
             </InteractiveHoverButton>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="relative"
-          style={
-            reduceMotion
-              ? undefined
-              : { opacity: photoOpacity, y: photoY }
-          }
-        >
+        <div className="relative">
           <div className="rw-hero-photo relative aspect-[4/5] overflow-hidden rounded-[12px]">
             <span
               className="rw-hero-photo-glow motion-reduce:hidden"
@@ -138,7 +100,7 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
             />
             [ status: available_for_work ]
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

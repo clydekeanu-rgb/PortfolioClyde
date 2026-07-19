@@ -12,7 +12,7 @@ export function FreeTools() {
     <section id="free-tools" className="py-24">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeading>Free Tools</SectionHeading>
-        <h2 className="mt-4 max-w-3xl text-3xl font-bold leading-tight text-primary sm:text-4xl lg:text-5xl">
+        <h2 className="mt-4 max-w-3xl text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
           Small tools I&apos;ve built and use myself — free to try.
         </h2>
         <motion.div
