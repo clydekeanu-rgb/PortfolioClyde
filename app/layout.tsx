@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
-import { SiteBackground } from "@/components/SiteBackground";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clydeabenojar.site"),
@@ -37,12 +37,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <SiteBackground>
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <Analytics />
           {children}
-        </SiteBackground>
+        </ThemeProvider>
       </body>
     </html>
   );

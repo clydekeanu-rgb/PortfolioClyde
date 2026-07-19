@@ -49,7 +49,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
         <article className="py-16">
           <div className="mx-auto max-w-5xl px-6">
             <Link
-              href="/#work"
+              href="/work/"
               className="font-mono text-sm text-secondary transition-colors hover:text-accent"
             >
               {"← Back to projects"}
@@ -57,7 +57,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
 
             <header className="mt-8">
               <p className="font-mono text-sm text-accent">{study.tagline}</p>
-              <h1 className="mt-3 text-3xl font-bold leading-tight text-primary sm:text-4xl lg:text-5xl">
+              <h1 className="mt-3 text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
                 {study.title}
               </h1>
 
@@ -125,7 +125,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                           : "md:items-start md:text-left",
                       ].join(" ")}
                     >
-                      <h2 className="font-mono text-2xl font-bold leading-tight text-primary sm:text-3xl">
+                      <h2 className="font-mono text-2xl font-bold leading-tight text-foreground sm:text-3xl">
                         {section.heading}
                       </h2>
                       <div

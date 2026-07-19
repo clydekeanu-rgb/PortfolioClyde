@@ -1,0 +1,385 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.railway {
+  --rw-brand: #c049ff;
+  --rw-brand-soft: #e879ff;
+  --rw-bg: #13111a;
+  --rw-text: #ffffff;
+  --rw-accent: #844fba;
+  --rw-surface: #2f2b3a;
+  --rw-surface-2: #1e1a2b;
+  --rw-border: #4a4560;
+  --rw-muted: #8b8aa0;
+  --rw-success: #22c55e;
+  --rw-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --rw-shadow-md: 0 4px 20px rgba(192, 73, 255, 0.15);
+  --rw-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --rw-radius-sm: 4px;
+  --rw-radius-md: 8px;
+  --rw-radius-lg: 12px;
+
+  background: var(--rw-bg);
+  color: var(--rw-text);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.railway .font-mono {
+  font-family: "Fira Code", ui-monospace, monospace;
+}
+
+.railway .rw-brand {
+  color: var(--rw-brand);
+}
+
+.railway .rw-muted {
+  color: var(--rw-muted);
+}
+
+.railway .rw-text {
+  color: var(--rw-text);
+}
+
+.railway .rw-surface {
+  background: var(--rw-surface);
+}
+
+.railway .rw-surface-2 {
+  background: var(--rw-surface-2);
+}
+
+.railway .rw-border {
+  border-color: var(--rw-border);
+}
+
+.railway .rw-gradient-text {
+  background: linear-gradient(135deg, #c049ff 0%, #e879ff 50%, #844fba 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.railway .rw-cta {
+  background: var(--rw-brand);
+  color: #ffffff;
+  border-radius: var(--rw-radius-md);
+  box-shadow: var(--rw-shadow-md);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.railway .rw-cta:hover {
+  background: #d06aff;
+  box-shadow: 0 6px 28px rgba(192, 73, 255, 0.28);
+}
+
+.railway .rw-cta-outline {
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  color: var(--rw-text);
+  background: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.railway .rw-cta-outline:hover {
+  border-color: var(--rw-brand);
+  color: var(--rw-brand-soft);
+}
+
+.railway .rw-card {
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  box-shadow: var(--rw-shadow-sm);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.railway .rw-card:hover {
+  border-color: rgba(192, 73, 255, 0.55);
+  box-shadow: var(--rw-shadow-md);
+}
+
+.railway .rw-media {
+  background: var(--rw-surface-2);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  box-shadow: var(--rw-shadow-sm);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.railway .group:hover .rw-media {
+  border-color: rgba(192, 73, 255, 0.55);
+  box-shadow: var(--rw-shadow-md);
+}
+
+.railway .rw-badge {
+  border: 1px solid var(--rw-border);
+  background: rgba(19, 17, 26, 0.9);
+  border-radius: 999px;
+  color: var(--rw-text);
+}
+
+.railway .rw-tag {
+  border: 1px solid var(--rw-border);
+  background: var(--rw-surface-2);
+  border-radius: 999px;
+  color: var(--rw-muted);
+}
+
+.railway .rw-divider {
+  background: linear-gradient(90deg, var(--rw-brand), var(--rw-brand-soft));
+}
+
+.railway .rw-nav-shell {
+  border-color: var(--rw-border) !important;
+  background: rgba(19, 17, 26, 0.72) !important;
+  box-shadow: var(--rw-shadow-sm);
+}
+
+.railway .rw-nav-link {
+  color: var(--rw-muted);
+}
+
+.railway .rw-nav-link:hover {
+  color: var(--rw-text);
+}
+
+.railway .rw-nav-hire {
+  background: var(--rw-brand) !important;
+  color: #ffffff !important;
+  box-shadow: var(--rw-shadow-md);
+}
+
+.railway .rw-nav-hire:hover {
+  background: #d06aff !important;
+}
+
+.railway .rw-footer {
+  border-top: 1px solid var(--rw-border);
+  color: var(--rw-muted);
+}
+
+.railway .rw-hero-wave {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Solid purple on the lower liquid; transparent up top so the landscape shows */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 38%,
+    var(--rw-brand) 52%,
+    var(--rw-brand) 100%
+  );
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.railway .rw-hero-wave span {
+  position: absolute;
+  width: 325vh;
+  height: 325vh;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -75%);
+}
+
+.railway .rw-hero-wave span:nth-child(1) {
+  border-radius: 45%;
+  /* Soft dark scrim over the landscape so the wavy edge still reads */
+  background: rgba(19, 17, 26, 0.45);
+  animation: rw-wave-animate 5s linear infinite;
+}
+
+.railway .rw-hero-wave span:nth-child(2) {
+  border-radius: 40%;
+  background: rgba(19, 17, 26, 0.28);
+  animation: rw-wave-animate 10s linear infinite;
+}
+
+.railway .rw-hero-wave span:nth-child(3) {
+  border-radius: 42.5%;
+  background: rgba(19, 17, 26, 0.28);
+  animation: rw-wave-animate 15s linear infinite;
+}
+
+@keyframes rw-wave-animate {
+  0% {
+    transform: translate(-50%, -75%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -75%) rotate(360deg);
+  }
+}
+
+.railway .rw-hero-photo {
+  background: var(--rw-surface-2);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-lg);
+  box-shadow: 0 0 24px rgba(0, 180, 255, 0.2);
+  transition: box-shadow 0.5s ease;
+}
+
+.railway .rw-hero-photo:hover {
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.85);
+}
+
+@property --rw-glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.railway .rw-hero-photo-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--rw-glow-angle),
+    transparent 55%,
+    #00b4ff,
+    #7dd3fc,
+    transparent 75%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: rw-glow-spin 4s linear infinite;
+}
+
+@keyframes rw-glow-spin {
+  to {
+    --rw-glow-angle: 360deg;
+  }
+}
+
+.railway .rw-hero-photo-light {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(circle at 80px 40px, #fff, transparent);
+}
+
+.railway .rw-hero-photo:hover .rw-hero-photo-light {
+  opacity: 0.4;
+}
+
+.railway .rw-hero-typing > span:last-child {
+  color: var(--rw-brand);
+}
+
+.railway .rw-ihb {
+  height: auto;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--rw-radius-md);
+  box-shadow: none;
+}
+
+.railway .rw-ihb-fill {
+  background: var(--rw-brand) !important;
+  border-color: var(--rw-brand) !important;
+  border-radius: 9999px;
+  color: #ffffff;
+  box-shadow: var(--rw-shadow-md);
+}
+
+.railway .rw-ihb-fill .bg-primary {
+  background: #ffffff !important;
+}
+
+.railway .rw-ihb-fill .text-primary-foreground,
+.railway .rw-ihb-fill .text-primary-foreground span {
+  color: #000000 !important;
+}
+
+.railway .rw-ihb-outline {
+  background: transparent !important;
+  border-color: var(--rw-border) !important;
+  color: var(--rw-text);
+}
+
+.railway .rw-ihb-outline .bg-primary {
+  background: var(--rw-brand) !important;
+}
+
+.railway .rw-ihb-outline .text-primary-foreground,
+.railway .rw-ihb-outline .text-primary-foreground span {
+  color: #ffffff !important;
+}
+
+.railway .rw-ihb-outline:hover {
+  border-color: var(--rw-brand) !important;
+  color: #ffffff;
+}
+
+.railway .rw-tech-marquee {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+@keyframes rw-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap, 1rem)));
+  }
+}
+
+/* Plain CSS animation — does not rely on Tailwind animate-marquee (v4 utility) */
+@media (prefers-reduced-motion: no-preference) {
+  .railway .rw-tech-marquee .rw-marquee-track {
+    animation-name: rw-marquee !important;
+    animation-duration: var(--duration, 35s) !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+    will-change: transform;
+  }
+
+  .railway .rw-tech-marquee .group:hover .rw-marquee-track {
+    animation-play-state: paused !important;
+  }
+}
+
+.railway .rw-tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--rw-border);
+  background: var(--rw-surface);
+  color: var(--rw-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.railway .rw-tech-pill img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}

@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @tailwind base;
 @tailwind components;
@@ -6,16 +8,17 @@
 
 :root {
   color-scheme: dark;
-  --color-bg: #0D0D0F;
+  --color-bg: #0d0d0f;
+  --color-background: #0d0d0f;
   --color-surface: #161618;
-  --color-border: #2A2A2E;
-  --color-text-primary: #F4F4F5;
-  --color-text-secondary: #9A9AA2;
-  --color-accent: #7C3AED;
-  --color-accent-soft: #A78BFA;
-  --color-syntax-string: #FACC15;
-  --color-syntax-keyword: #F472B6;
-  --color-syntax-comment: #6B7280;
+  --color-border: #2a2a2e;
+  --color-text-primary: #f4f4f5;
+  --color-text-secondary: #9a9aa2;
+  --color-accent: #7c3aed;
+  --color-accent-soft: #a78bfa;
+  --color-syntax-string: #facc15;
+  --color-syntax-keyword: #f472b6;
+  --color-syntax-comment: #6b7280;
 }
 
 * {
@@ -24,12 +27,6 @@
 
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text-primary);
 }
 
 ::selection {
@@ -206,4 +203,114 @@ body {
 .blog-editor .ProseMirror a {
   color: var(--color-accent-soft);
   text-decoration: underline;
+}
+
+@layer base {
+  .theme {
+    --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite
+      alternate;
+    --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+    --animate-ripple: ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite;
+    --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  }
+
+  /* Always-dark brand tokens (site is dark-only) */
+  :root,
+  .dark {
+    --background: #0d0d0f;
+    --foreground: #f4f4f5;
+    --card: #161618;
+    --card-foreground: #f4f4f5;
+    --popover: #161618;
+    --popover-foreground: #f4f4f5;
+    --primary: #7c3aed;
+    --primary-foreground: #f4f4f5;
+    --secondary: #9a9aa2;
+    --secondary-foreground: #f4f4f5;
+    --muted: #161618;
+    --muted-foreground: #9a9aa2;
+    --destructive: #ef4444;
+    --destructive-foreground: #f4f4f5;
+    --border: #2a2a2e;
+    --input: #2a2a2e;
+    --ring: #7c3aed;
+    --radius: 0.5rem;
+    --sidebar: #161618;
+    --sidebar-foreground: #f4f4f5;
+    --sidebar-primary: #7c3aed;
+    --sidebar-primary-foreground: #f4f4f5;
+    --sidebar-accent: #2a2a2e;
+    --sidebar-accent-foreground: #f4f4f5;
+    --sidebar-border: #2a2a2e;
+    --sidebar-ring: #7c3aed;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+  }
+}
+
+@theme inline {
+  --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+  @keyframes ripple {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+  @keyframes blink-cursor {
+  0%, 49% {
+    opacity: 1;
+    }
+  50%, 100% {
+    opacity: 0;
+    }
+  }
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
