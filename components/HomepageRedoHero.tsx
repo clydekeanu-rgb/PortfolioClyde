@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { GlyphMatrix } from "@/components/ui/glyph-matrix";
@@ -12,6 +13,37 @@ type HomepageRedoHeroProps = {
 
 export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
   const reduceMotion = useReducedMotion();
+  const [showGlyphs, setShowGlyphs] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) setShowGlyphs(true);
+    };
+
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(start, { timeout: 1500 });
+    } else {
+      timeoutId = setTimeout(start, 1);
+    }
+
+    return () => {
+      cancelled = true;
+      if (
+        idleId !== undefined &&
+        typeof window !== "undefined" &&
+        "cancelIdleCallback" in window
+      ) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
+  }, [reduceMotion]);
 
   return (
     <section id="top" className="relative overflow-hidden pt-32">
@@ -19,7 +51,7 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[58%] overflow-hidden"
         aria-hidden="true"
       >
-        {!reduceMotion ? (
+        {showGlyphs ? (
           <GlyphMatrix
             className="absolute inset-0 h-full w-full"
             color="#dbdbdb"
@@ -89,6 +121,7 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
               alt="Clyde Abenojar"
               fill
               priority
+              sizes="(max-width: 768px) 90vw, 400px"
               className="object-cover"
             />
             <span className="rw-hero-photo-light" aria-hidden="true" />

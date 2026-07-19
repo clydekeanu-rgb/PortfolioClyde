@@ -1,8 +1,8 @@
 import { FloatingGlassNav } from "@/components/FloatingGlassNav";
 import { HomepageRedoHero } from "@/components/HomepageRedoHero";
 import { Reveal } from "@/components/Reveal";
+import { TechMarquee } from "@/components/TechMarquee";
 import { WorkCarousel } from "@/components/WorkCarousel";
-import { Marquee } from "@/components/ui/marquee";
 
 const email = "clyde@clydeabenojar.site";
 const profileImage = "/images/add_profile_photo.jpg";
@@ -111,27 +111,7 @@ export default function Home() {
       <main>
         <HomepageRedoHero profileImage={profileImage} />
 
-        {/* Tech stack */}
-        <section
-          aria-label="Technologies"
-          className="rw-tech-marquee border-y border-[var(--rw-border)] py-8"
-        >
-          <Marquee pauseOnHover className="[--duration:35s] [--gap:1rem]">
-            {techStack.map((tech) => (
-              <div key={tech.slug} className="rw-tech-pill">
-                {/* Simple Icons CDN — next/image domain not configured for this host */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://cdn.simpleicons.org/${tech.slug}`}
-                  alt=""
-                  width={16}
-                  height={16}
-                />
-                <span>{tech.name}</span>
-              </div>
-            ))}
-          </Marquee>
-        </section>
+        <TechMarquee techStack={techStack} />
 
         {/* Work */}
         <section id="work" className="py-24">

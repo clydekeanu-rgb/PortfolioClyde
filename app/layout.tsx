@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
+import { Fira_Code, Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 import { ThemeProvider } from "@/components/theme-provider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const firaCode = Fira_Code({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clydeabenojar.site"),
@@ -37,8 +50,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="railway font-sans antialiased">
+    <html
+      lang="en"
+      className={`dark ${inter.variable} ${firaCode.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <link rel="preconnect" href="https://cdn.simpleicons.org" />
+      </head>
+      <body className={`${inter.className} railway antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <Analytics />
           {children}
