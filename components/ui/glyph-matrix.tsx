@@ -54,8 +54,8 @@ export function GlyphMatrix({
     probeCtx.fillStyle = "#6B7280"
     probeCtx.fillStyle = color
     probeCtx.fillRect(0, 0, 1, 1)
-    const [r, g, b, a] = probeCtx.getImageData(0, 0, 1, 1).data
-    rgbaRef.current = { r, g, b, a: a / 255 }
+    const data = probeCtx.getImageData(0, 0, 1, 1).data
+    rgbaRef.current = { r: data[0], g: data[1], b: data[2], a: data[3] / 255 }
   }, [color])
 
   useEffect(() => {
