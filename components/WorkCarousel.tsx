@@ -122,6 +122,8 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
                 src={project.image}
                 alt={project.title}
                 fill
+                loading="lazy"
+                quality={70}
                 sizes="(min-width: 1024px) 40vw, (min-width: 640px) 55vw, 85vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
               />

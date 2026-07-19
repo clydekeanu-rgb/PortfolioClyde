@@ -1,8 +1,30 @@
+import dynamic from "next/dynamic";
 import { FloatingGlassNav } from "@/components/FloatingGlassNav";
 import { HomepageRedoHero } from "@/components/HomepageRedoHero";
 import { Reveal } from "@/components/Reveal";
-import { TechMarquee } from "@/components/TechMarquee";
-import { WorkCarousel } from "@/components/WorkCarousel";
+
+const TechMarquee = dynamic(
+  () => import("@/components/TechMarquee").then((m) => m.TechMarquee),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="border-y border-[var(--rw-border)] py-8"
+        aria-hidden="true"
+      >
+        <div className="h-10" />
+      </div>
+    ),
+  },
+);
+
+const WorkCarousel = dynamic(
+  () => import("@/components/WorkCarousel").then((m) => m.WorkCarousel),
+  {
+    ssr: false,
+    loading: () => <div className="mt-16 h-72" aria-hidden="true" />,
+  },
+);
 
 const email = "clyde@clydeabenojar.site";
 const profileImage = "/images/add_profile_photo.jpg";

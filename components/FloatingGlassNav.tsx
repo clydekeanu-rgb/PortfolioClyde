@@ -1,10 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import { Dock } from "@/components/ui/dock";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
@@ -17,6 +17,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+
+const BorderBeam = dynamic(
+  () => import("@/components/ui/border-beam").then((m) => m.BorderBeam),
+  { ssr: false },
+);
 
 const links = [
   { label: "Work", href: "/work/", external: true },
@@ -89,6 +94,7 @@ function HireButton({ className }: { className?: string }) {
 export function FloatingGlassNav() {
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
+  const [showBeam, setShowBeam] = useState(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -101,6 +107,36 @@ export function FloatingGlassNav() {
   useEffect(() => {
     if (compact) setOpen(false);
   }, [compact]);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    let cancelled = false;
+    const enable = () => {
+      if (!cancelled) setShowBeam(true);
+    };
+
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(enable, { timeout: 2500 });
+    } else {
+      timeoutId = setTimeout(enable, 1);
+    }
+
+    return () => {
+      cancelled = true;
+      if (
+        idleId !== undefined &&
+        typeof window !== "undefined" &&
+        "cancelIdleCallback" in window
+      ) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
+  }, [reduceMotion]);
 
   const transition = reduceMotion
     ? { duration: 0 }
@@ -163,13 +199,15 @@ export function FloatingGlassNav() {
               ) : null}
             </AnimatePresence>
 
-            <BorderBeam
-              size={compact ? 56 : 80}
-              duration={8}
-              colorFrom="#C049FF"
-              colorTo="#E879FF"
-              borderWidth={1.25}
-            />
+            {showBeam ? (
+              <BorderBeam
+                size={compact ? 56 : 80}
+                duration={8}
+                colorFrom="#C049FF"
+                colorTo="#E879FF"
+                borderWidth={1.25}
+              />
+            ) : null}
           </Dock>
 
           {/* Mobile */}
@@ -262,13 +300,15 @@ export function FloatingGlassNav() {
               ) : null}
             </AnimatePresence>
 
-            <BorderBeam
-              size={compact ? 50 : 70}
-              duration={8}
-              colorFrom="#C049FF"
-              colorTo="#E879FF"
-              borderWidth={1.25}
-            />
+            {showBeam ? (
+              <BorderBeam
+                size={compact ? 50 : 70}
+                duration={8}
+                colorFrom="#C049FF"
+                colorTo="#E879FF"
+                borderWidth={1.25}
+              />
+            ) : null}
           </Dock>
         </div>
       </div>

@@ -1,11 +1,28 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
-import { GlyphMatrix } from "@/components/ui/glyph-matrix";
-import { TypingAnimation } from "@/components/ui/typing-animation";
+
+const TypingAnimation = dynamic(
+  () =>
+    import("@/components/ui/typing-animation").then((m) => m.TypingAnimation),
+  {
+    ssr: false,
+    loading: () => (
+      <h1 className="rw-hero-typing mt-5 text-[clamp(2.5rem,5vw,3rem)] font-bold leading-[1.1] tracking-tight rw-text">
+        Hi, I&apos;m Clyde.
+      </h1>
+    ),
+  },
+);
+
+const GlyphMatrix = dynamic(
+  () => import("@/components/ui/glyph-matrix").then((m) => m.GlyphMatrix),
+  { ssr: false },
+);
 
 type HomepageRedoHeroProps = {
   profileImage: string;
@@ -27,7 +44,7 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(start, { timeout: 1500 });
+      idleId = window.requestIdleCallback(start, { timeout: 2000 });
     } else {
       timeoutId = setTimeout(start, 1);
     }
@@ -121,6 +138,7 @@ export function HomepageRedoHero({ profileImage }: HomepageRedoHeroProps) {
               alt="Clyde Abenojar"
               fill
               priority
+              quality={70}
               sizes="(max-width: 768px) 90vw, 400px"
               className="object-cover"
             />
