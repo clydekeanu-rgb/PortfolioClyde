@@ -149,7 +149,21 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
               })}
             </div>
 
-            {study.liveUrl ? (
+            {study.liveLinks?.length ? (
+              <Reveal className="mt-20 flex flex-wrap gap-3">
+                {study.liveLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex rounded-md bg-accent px-5 py-3 text-sm font-semibold text-background transition-shadow hover:shadow-glow"
+                  >
+                    &gt; {link.label}
+                  </a>
+                ))}
+              </Reveal>
+            ) : study.liveUrl ? (
               <Reveal className="mt-20">
                 <a
                   href={study.liveUrl}

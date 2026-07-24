@@ -10,6 +10,7 @@ export type CaseStudy = {
   tagline: string;
   coverImage: string;
   liveUrl?: string;
+  liveLinks?: { label: string; href: string }[];
   role: string;
   techStack: string[];
   overview: string;
@@ -22,6 +23,15 @@ export const caseStudies: CaseStudy[] = [
     title: "Promise Surrogacy",
     tagline: "Marketing Website Rebuild",
     coverImage: "/images/promise-cover.png",
+    liveUrl: "https://pilot.promisesurrogacy.com",
+    liveLinks: [
+      {
+        label: "English (pilot)",
+        href: "https://pilot.promisesurrogacy.com",
+      },
+      { label: "Spanish", href: "https://es.promisesurrogacy.com" },
+      { label: "Chinese", href: "https://zh.promisesurrogacy.com" },
+    ],
     role: "End-to-end design & AI-assisted development",
     techStack: [
       "Next.js",
