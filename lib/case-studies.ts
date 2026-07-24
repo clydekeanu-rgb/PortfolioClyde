@@ -18,6 +18,44 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
+    slug: "promise-surrogacy",
+    title: "Promise Surrogacy",
+    tagline: "Marketing Website Rebuild",
+    coverImage: "/images/promise-cover.png",
+    role: "End-to-end design & AI-assisted development",
+    techStack: [
+      "Next.js",
+      "TinaCMS",
+      "TypeScript",
+      "CSS Modules",
+      "Cloudflare Turnstile",
+      "Upstash Redis",
+      "HubSpot",
+    ],
+    overview:
+      "Rebuilt a full surrogacy agency marketing site from a legacy Wix export into a modern, content-managed Next.js application. The site serves intended parents and surrogate candidates across 46 routed pages, with editable content via TinaCMS, per-deploy localization in English, Spanish, and Chinese, and secure form pipelines that feed leads into Google Sheets and HubSpot.",
+    sections: [
+      {
+        heading: "Content CMS",
+        body:
+          "TinaCMS powers visual editing over Markdown/YAML content so the team can update copy and pages without a developer in the loop — covering 46 routed pages from a single content model, with the admin experience available at /admin.",
+        image: "/images/promise-cms.png",
+      },
+      {
+        heading: "Localization",
+        body:
+          "Per-deploy localization ships the site in English, Spanish, and Chinese so intended parents and surrogate candidates get the full experience in their language without a separate site for each locale.",
+        image: "/images/promise-i18n.png",
+      },
+      {
+        heading: "Lead Capture",
+        body:
+          "Hardened lead forms use Cloudflare Turnstile, honeypot fields, and Upstash Redis rate limiting, then route submissions through a Next.js API into Google Sheets and HubSpot so marketing can follow up without losing inquiries to spam.",
+        image: "/images/promise-forms.png",
+      },
+    ],
+  },
+  {
     slug: "pickleball-pavilion",
     title: "The Pickleball Pavilion",
     tagline: "Cebu's Premier Pickleball Venue",

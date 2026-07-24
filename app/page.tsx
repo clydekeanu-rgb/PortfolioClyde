@@ -46,6 +46,16 @@ const techStack = [
 
 const projects = [
   {
+    title: "Promise Surrogacy",
+    subtitle: "Marketing Website Rebuild",
+    description:
+      "Full-stack Wix-to-Next.js migration for a surrogacy agency — 46 routed pages, TinaCMS, three-language support, and hardened lead-capture forms that feed Google Sheets and HubSpot.",
+    tags: ["Web App", "CMS", "i18n"],
+    href: "/work/promise-surrogacy/",
+    image: "/images/promise-cover.png",
+    number: "00",
+  },
+  {
     title: "Konstru",
     subtitle: "Construction Cost Calculator SaaS",
     description:
@@ -53,7 +63,7 @@ const projects = [
     tags: ["Web App", "SaaS"],
     href: "/work/konstru/",
     image: "/images/Konstru.png",
-    number: "00",
+    number: "01",
   },
   {
     title: "The Pickleball Pavilion",
@@ -63,7 +73,7 @@ const projects = [
     tags: ["Web App", "Booking System"],
     href: "/work/pickleball-pavilion/",
     image: "/images/PicklePavilion.png",
-    number: "01",
+    number: "02",
   },
   {
     title: "La Purisima Resort",
@@ -73,7 +83,7 @@ const projects = [
     tags: ["Landing Page", "Business Website"],
     href: "/work/la-purisima-resort/",
     image: "/images/Lapurisima.png",
-    number: "02",
+    number: "03",
   },
   {
     title: "Lumina Studio",
@@ -83,7 +93,7 @@ const projects = [
     tags: ["AI Tool", "Web App"],
     href: "/work/lumina-studio/",
     image: "/images/lumina.png",
-    number: "03",
+    number: "04",
   },
   {
     title: "Song Automation Tool",
@@ -93,7 +103,7 @@ const projects = [
     tags: ["AI Tool", "Automation"],
     href: "/work/song-automation-tool/",
     image: "/images/Songautomation.png",
-    number: "04",
+    number: "05",
   },
 ];
 

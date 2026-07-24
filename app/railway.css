@@ -387,20 +387,6 @@
 
 .railway .rw-carousel-track {
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 4%,
-    #000 96%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 4%,
-    #000 96%,
-    transparent
-  );
 }
 
 .railway .rw-carousel-track::-webkit-scrollbar {
