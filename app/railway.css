@@ -387,6 +387,12 @@
 
 .railway .rw-carousel-track {
   scrollbar-width: none;
+  scroll-behavior: auto;
+  overscroll-behavior-x: contain;
+}
+
+.railway .rw-carousel-track.rw-carousel-dragging {
+  scroll-snap-type: none;
 }
 
 .railway .rw-carousel-track::-webkit-scrollbar {

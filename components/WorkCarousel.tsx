@@ -21,6 +21,7 @@ type WorkCarouselProps = {
 
 export function WorkCarousel({ projects }: WorkCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const snapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
 
@@ -36,6 +37,13 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
     const el = trackRef.current;
     if (!el) return;
 
+    const normalizeDelta = (e: WheelEvent) => {
+      // 0 = pixels, 1 = lines, 2 = pages
+      if (e.deltaMode === 1) return e.deltaY * 16;
+      if (e.deltaMode === 2) return e.deltaY * el.clientWidth;
+      return e.deltaY;
+    };
+
     const onWheel = (e: WheelEvent) => {
       // Native horizontal trackpad swipe — let the browser handle it.
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
@@ -43,14 +51,22 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
       const max = el.scrollWidth - el.clientWidth;
       if (max <= 0) return;
 
+      const deltaY = normalizeDelta(e);
       const atStart = el.scrollLeft <= 0;
       const atEnd = el.scrollLeft >= max - 1;
 
       // At either edge, allow the page to scroll past the carousel.
-      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+      if ((deltaY < 0 && atStart) || (deltaY > 0 && atEnd)) return;
 
       e.preventDefault();
-      el.scrollLeft += e.deltaY;
+      el.classList.add("rw-carousel-dragging");
+      el.scrollLeft += deltaY;
+
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+      snapTimeoutRef.current = setTimeout(() => {
+        el.classList.remove("rw-carousel-dragging");
+        snapTimeoutRef.current = null;
+      }, 120);
     };
 
     updateEdges();
@@ -61,6 +77,8 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
       el.removeEventListener("scroll", updateEdges);
       el.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", updateEdges);
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+      el.classList.remove("rw-carousel-dragging");
     };
   }, [updateEdges, projects.length]);
 
