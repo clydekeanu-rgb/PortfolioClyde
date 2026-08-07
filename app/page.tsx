@@ -52,7 +52,7 @@ const projects = [
       "Small site teams still run payroll on notebooks and spreadsheets — easy to lose a day or mix up crews. I built PasahodPH end-to-end: multi-project workers, swipe attendance, cash advances, overtime, and live salary on-device with Room — no cloud login required.",
     tags: ["Android App", "Offline-first"],
     href: "/work/pasahodph/",
-    image: "/images/pasahodph-cover.png",
+    image: "/images/pasahodph-cover-v2.png",
     number: "00",
   },
   {
