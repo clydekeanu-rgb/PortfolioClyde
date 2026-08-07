@@ -9,12 +9,16 @@ type BlueprintAIState = {
   lighting: string[];
   road: string | null;
   camera: string | null;
+  lockViewFromReference: boolean;
   location: string;
   includePerson: boolean;
   cars: string;
   generatedPrompts: { lighting: string; prompt: string }[];
   copiedId: string | null;
 };
+
+const REFERENCE_GUARDRAIL =
+  "Keep 100% of the referenced image geometry, massing, proportions, and layout exactly. Do not redesign the building, change the floor plan, or invent new forms. Only apply the selected style materials, lighting, environment, and photorealistic finishing. Image should appear as a real image taken from a real place.";
 
 const ARCHITECTURAL_STYLES = [
   "Modern Minimalist",
@@ -38,44 +42,88 @@ const CAMERA_OPTIONS = [
 ];
 const CARS_OPTIONS = ["No Cars", "Street Car", "Garage Car", "Multiple"];
 
-const STYLE_MAP: Record<string, string> = {
-  "Modern Minimalist":
-    "a modern minimalist architectural composition with clean lines, crisp geometry, expansive glazing, and refined materiality",
-  Industrial:
-    "an industrial architectural scene with raw concrete, steel, exposed structure, and bold massing",
-  "Tropical Resort":
-    "a tropical resort architecture concept with airy volumes, lush landscaping, and relaxed luxury",
-  Japandi:
-    "a Japandi architectural design with warm wood, restrained geometry, and serene balance",
-  Biophilic:
-    "a biophilic architectural concept that blends nature, greenery, and organic connection to the site",
-  "Neo-Mediterranean":
-    "a neo-Mediterranean architectural concept with warm stone, arches, soft light, and timeless elegance",
-  Parametric:
-    "a parametric architectural form with fluid geometry, computational rhythm, and sculptural precision",
-  Brutalist:
-    "a brutalist architectural composition with monolithic forms, tactile concrete, and dramatic shadows",
+type StylePhrases = {
+  subject: string;
+  details: string;
+};
+
+const STYLE_MAP: Record<string, StylePhrases> = {
+  "Modern Minimalist": {
+    subject: "a modern minimalist house",
+    details:
+      "smooth white or light gray concrete render exterior, large dark aluminum-framed windows with glass reflections, flat or low-pitch roof with clean lines, minimalist landscaping with tropical plants, small front garden with concrete pavers leading to the entrance",
+  },
+  Industrial: {
+    subject: "an industrial-style house",
+    details:
+      "raw concrete and steel cladding, exposed structural elements, bold massing, dark-framed industrial windows, utilitarian landscaping with gravel and sparse greenery",
+  },
+  "Tropical Resort": {
+    subject: "a tropical resort-style house",
+    details:
+      "airy open volumes, warm wood accents, expansive glazing, lush tropical landscaping, resort-like outdoor living spaces and soft natural materials",
+  },
+  Japandi: {
+    subject: "a Japandi-inspired house",
+    details:
+      "warm wood finishes, restrained geometry, serene material palette, soft natural textures, balanced indoor-outdoor connection with calm landscaping",
+  },
+  Biophilic: {
+    subject: "a biophilic house",
+    details:
+      "architecture blending with nature, integrated greenery, organic material connections, planted terraces and soft landscaping wrapping the facade",
+  },
+  "Neo-Mediterranean": {
+    subject: "a neo-Mediterranean house",
+    details:
+      "warm stone and stucco surfaces, arched openings, soft earthy tones, timeless detailing, landscaped courtyard cues and Mediterranean plantings",
+  },
+  Parametric: {
+    subject: "a parametric contemporary house",
+    details:
+      "fluid computational geometry, sculptural facade rhythms, precision cladding, dramatic curved or faceted forms, and contemporary hardscape",
+  },
+  Brutalist: {
+    subject: "a brutalist house",
+    details:
+      "monolithic concrete forms, tactile board-formed surfaces, dramatic shadows, heavy massing, sparse landscaping emphasizing the structure",
+  },
 };
 
 const LIGHT_MAP: Record<string, string> = {
-  Daytime: "soft daylight with crisp clarity and balanced contrast",
-  "Golden Hour": "golden hour warmth with long directional shadows and cinematic glow",
-  "Blue Hour": "blue hour ambience with cool twilight tones and atmospheric depth",
-  Night: "night lighting with moody illumination and strong contrast",
+  Daytime:
+    "crisp daytime natural lighting with clear balanced contrast and soft shadows across the facade",
+  "Golden Hour":
+    "golden hour natural lighting with warm sunlight casting soft shadows across the facade",
+  "Blue Hour":
+    "blue hour lighting with cool twilight tones, soft ambient glow, and atmospheric depth across the facade",
+  Night:
+    "night lighting with moody artificial illumination, strong contrast, and warm interior window glow",
 };
 
 const CAM_MAP: Record<string, string> = {
-  "Front Elevation": "captured in a clean front elevation view",
-  "3/4 Perspective": "captured in a three-quarter perspective that reveals depth and massing",
-  "Street-Level Wide": "captured from street level in a wide composition",
-  "Aerial/Bird's Eye": "captured from a dramatic aerial bird's-eye view",
+  "Front Elevation":
+    "shot with a professional DSLR camera on a 35mm lens in a clean front elevation view",
+  "3/4 Perspective":
+    "shot with a professional DSLR camera on a 35mm lens in a three-quarter perspective revealing depth and massing",
+  "Street-Level Wide":
+    "shot with a professional DSLR camera on a wide lens from street level in a wide composition",
+  "Aerial/Bird's Eye":
+    "shot with a professional camera from a dramatic aerial bird's-eye view",
 };
 
 const ROAD_MAP: Record<string, string> = {
-  Dry: "on a dry, sun-baked surface with clean texture and warm atmosphere",
-  Wet: "after rain with reflective wet pavement and glossy surfaces",
-  Puddles: "with scattered puddles and rich reflections across the ground plane",
-  Snowy: "in a snowy environment with crisp white atmosphere and quiet texture",
+  Dry: "weathered asphalt road in the foreground",
+  Wet: "wet reflective asphalt road in the foreground after rain",
+  Puddles:
+    "asphalt road in the foreground with scattered puddles and rich ground reflections",
+  Snowy: "snow-dusted road surface in the foreground with crisp winter texture",
+};
+
+const CARS_MAP: Record<string, string> = {
+  "Street Car": "one realistic street-parked car",
+  "Garage Car": "a realistic car near the garage driveway",
+  Multiple: "multiple realistic vehicles appropriate to the street",
 };
 
 function createInitialState(): BlueprintAIState {
@@ -86,6 +134,7 @@ function createInitialState(): BlueprintAIState {
     lighting: [],
     road: null,
     camera: null,
+    lockViewFromReference: false,
     location: "Philippines",
     includePerson: false,
     cars: "No Cars",
@@ -103,36 +152,64 @@ function buildPrompt(
   includePerson: boolean,
   cars: string,
   customStyle: string,
+  lockViewFromReference: boolean,
 ) {
-  const styleText = style === "Custom Style"
-    ? (customStyle.trim() || "a custom architectural language described by the user")
-    : STYLE_MAP[style] || style;
+  const stylePhrases =
+    style === "Custom Style"
+      ? {
+          subject:
+            customStyle.trim() || "a custom architectural house",
+          details:
+            "refined exterior materials, clean contemporary detailing, and carefully composed landscaping",
+        }
+      : STYLE_MAP[style] || {
+          subject: "a contemporary house",
+          details:
+            "clean architectural detailing, realistic materials, and composed landscaping",
+        };
 
-  const lightingText = lighting.length > 0
-    ? lighting.map((entry) => LIGHT_MAP[entry]).join(" and ")
-    : "balanced cinematic lighting";
+  const locationLabel = location.trim() || "the Philippines";
+  const locationSetting = location.trim()
+    ? `a suburban neighborhood in ${location.trim()}`
+    : "a suburban neighborhood in the Philippines";
 
-  const cameraText = CAM_MAP[camera || "Front Elevation"] || "captured in a polished architectural composition";
-  const roadText = ROAD_MAP[road || "Dry"] || "in a refined urban setting";
+  const lightingPhrase =
+    lighting.length > 0
+      ? lighting.map((entry) => LIGHT_MAP[entry] || entry).join(", ")
+      : "balanced natural lighting with soft shadows across the facade";
 
-  const promptParts = [
-    `A photorealistic architectural render of ${styleText}, ${cameraText}, ${roadText}, and ${lightingText}.`,
-    `Set in ${location || "a striking contemporary setting"}.`,
+  const cameraPhrase = lockViewFromReference
+    ? "match and lock the camera angle, framing, and perspective exactly from the reference image"
+    : CAM_MAP[camera || "Front Elevation"] ||
+      "shot with a professional DSLR camera on a 35mm lens";
+
+  const roadPhrase = ROAD_MAP[road || "Dry"] || "weathered asphalt road in the foreground";
+
+  const parts = [
+    `Hyper-realistic architectural photography of ${stylePhrases.subject} in ${locationSetting}`,
+    "photorealistic render",
+    cameraPhrase,
+    lightingPhrase,
+    stylePhrases.details,
+    roadPhrase,
+    `realistic ${locationLabel} street setting, concrete sidewalk, wooden electric post with multiple utility wires and electrical lines strung across the scene adding urban realism`,
   ];
 
   if (includePerson) {
-    promptParts.push("Include one human figure to show scale and lived-in atmosphere.");
+    parts.push(
+      "one realistic Filipino person standing casually near the entrance or on the sidewalk for human scale reference, wearing casual everyday clothing, natural pose",
+    );
   }
 
-  if (cars !== "No Cars") {
-    promptParts.push(`Include ${cars.toLowerCase()} in the scene.`);
+  if (cars !== "No Cars" && CARS_MAP[cars]) {
+    parts.push(CARS_MAP[cars]);
   }
 
-  promptParts.push(
-    "Ultra-detailed, cinematic composition, realistic materials, sharp focus, atmospheric depth, high-end visualization, and polished editorial quality.",
+  parts.push(
+    "ultra-detailed textures, ray-traced global illumination, ambient occlusion, 8K resolution, shallow depth of field with slight bokeh on background, real estate and architectural digest photography quality, no cartoon, no sketch, no obvious 3D model artifacts",
   );
 
-  return promptParts.join(" ");
+  return [REFERENCE_GUARDRAIL, ...parts].join(", ");
 }
 
 export function BlueprintAIApp() {
@@ -142,7 +219,7 @@ export function BlueprintAIApp() {
     if (state.step === 1) return Boolean(state.style);
     if (state.step === 2) return state.lighting.length > 0;
     if (state.step === 3) return Boolean(state.road);
-    if (state.step === 4) return Boolean(state.camera);
+    if (state.step === 4) return state.lockViewFromReference || Boolean(state.camera);
     return true;
   };
 
@@ -161,6 +238,7 @@ export function BlueprintAIApp() {
           state.includePerson,
           state.cars,
           state.customStyle,
+          state.lockViewFromReference,
         ),
       }));
 
@@ -342,18 +420,56 @@ export function BlueprintAIApp() {
                 <button
                   key={option}
                   type="button"
+                  disabled={state.lockViewFromReference}
                   onClick={() => selectSingle("camera", option)}
                   className={[
                     "rounded-full border border-border bg-surface px-3 py-2 font-mono text-xs text-left transition-all duration-200",
-                    selected
-                      ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
-                      : "text-secondary hover:border-accent/40 hover:text-foreground",
+                    state.lockViewFromReference
+                      ? "cursor-not-allowed opacity-40"
+                      : selected
+                        ? "border-accent/70 bg-accent-soft/20 text-accent-soft"
+                        : "text-secondary hover:border-accent/40 hover:text-foreground",
                   ].join(" ")}
                 >
                   {option}
                 </button>
               );
             })}
+          </div>
+
+          <div className="mt-6 rounded-md border border-border bg-surface p-4">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <span className="font-mono text-sm text-foreground">
+                  Match & Lock View from Reference Image
+                </span>
+                <p className="mt-1 font-readable text-xs leading-5 text-secondary">
+                  Use the reference image camera — ignore the angle pills above.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  setState((current) => ({
+                    ...current,
+                    lockViewFromReference: !current.lockViewFromReference,
+                    camera: !current.lockViewFromReference ? null : current.camera,
+                  }))
+                }
+                className={[
+                  "relative h-6 w-11 shrink-0 rounded-full border border-border transition-colors duration-200",
+                  state.lockViewFromReference ? "bg-accent" : "bg-background",
+                ].join(" ")}
+                aria-label="Toggle match and lock view from reference image"
+              >
+                <span
+                  className={[
+                    "absolute top-0.5 h-5 w-5 rounded-full bg-background transition-transform duration-200",
+                    state.lockViewFromReference ? "left-5" : "left-0.5",
+                  ].join(" ")}
+                />
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -477,7 +593,7 @@ export function BlueprintAIApp() {
                     {state.copiedId === item.lighting ? "✓ Copied" : "↗ Copy"}
                   </button>
                 </div>
-                <p className="mt-4 font-readable text-sm leading-7 text-secondary">
+                <p className="mt-4 whitespace-pre-line font-readable text-sm leading-7 text-secondary">
                   {item.prompt}
                 </p>
               </div>
