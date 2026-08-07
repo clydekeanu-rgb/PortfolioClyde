@@ -46,6 +46,16 @@ const techStack = [
 
 const projects = [
   {
+    title: "PasahodPH",
+    subtitle: "Offline Payroll for Site Crews",
+    description:
+      "Small site teams still run payroll on notebooks and spreadsheets — easy to lose a day or mix up crews. I built PasahodPH end-to-end: multi-project workers, swipe attendance, cash advances, overtime, and live salary on-device with Room — no cloud login required.",
+    tags: ["Android App", "Offline-first"],
+    href: "/work/pasahodph/",
+    image: "/images/pasahodph-cover.png",
+    number: "00",
+  },
+  {
     title: "Promise Surrogacy",
     subtitle: "Marketing Website Rebuild",
     description:
@@ -53,7 +63,7 @@ const projects = [
     tags: ["Web App", "CMS", "i18n"],
     href: "/work/promise-surrogacy/",
     image: "/images/promise-cover.png",
-    number: "00",
+    number: "01",
   },
   {
     title: "Konstru",
@@ -63,7 +73,7 @@ const projects = [
     tags: ["Web App", "SaaS"],
     href: "/work/konstru/",
     image: "/images/Konstru.png",
-    number: "01",
+    number: "02",
   },
   {
     title: "The Pickleball Pavilion",
@@ -73,7 +83,7 @@ const projects = [
     tags: ["Web App", "Booking System"],
     href: "/work/pickleball-pavilion/",
     image: "/images/PicklePavilion.png",
-    number: "02",
+    number: "03",
   },
   {
     title: "La Purisima Resort",
@@ -83,7 +93,7 @@ const projects = [
     tags: ["Landing Page", "Business Website"],
     href: "/work/la-purisima-resort/",
     image: "/images/Lapurisima.png",
-    number: "03",
+    number: "04",
   },
   {
     title: "Lumina Studio",
@@ -93,7 +103,7 @@ const projects = [
     tags: ["AI Tool", "Web App"],
     href: "/work/lumina-studio/",
     image: "/images/lumina.png",
-    number: "04",
+    number: "05",
   },
   {
     title: "Song Automation Tool",
@@ -103,7 +113,7 @@ const projects = [
     tags: ["AI Tool", "Automation"],
     href: "/work/song-automation-tool/",
     image: "/images/Songautomation.png",
-    number: "05",
+    number: "06",
   },
 ];
 

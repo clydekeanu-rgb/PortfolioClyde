@@ -19,6 +19,47 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
+    slug: "pasahodph",
+    title: "PasahodPH",
+    tagline: "Offline Payroll for Site Crews",
+    coverImage: "/images/pasahodph-cover.png",
+    liveUrl: "/downloads/PasahodPH.apk",
+    liveLinks: [
+      { label: "Download APK", href: "/downloads/PasahodPH.apk" },
+    ],
+    role: "End-to-end design & AI-assisted development",
+    techStack: [
+      "Kotlin",
+      "Jetpack Compose",
+      "Room",
+      "DataStore",
+      "Navigation Compose",
+      "Material 3",
+    ],
+    overview:
+      "Small construction and site teams still run payroll on notebooks, chat threads, and spreadsheets — easy to lose a day, double-count a cash advance, or mix up crews across jobs. I built PasahodPH end-to-end as a local-first Android app: multi-project crews, swipe attendance, advances, overtime, and live pay for the current period — no cloud account required.",
+    sections: [
+      {
+        heading: "Projects & Crews",
+        body:
+          "Each job site is its own project with isolated workers, attendance, and pay history. Foremen, masons, welders, and other roles get a daily rate so one phone can run multiple crews without data bleeding between sites.",
+        image: "/images/pasahodph-workers.png",
+      },
+      {
+        heading: "Swipe Attendance & Grid",
+        body:
+          "Mark present, absent, or half-day with a swipe card flow built for one-handed use on site, plus a grid view for scanning the whole crew at once. Overtime hours attach to the day so pay stays tied to what actually happened.",
+        image: "/images/pasahodph-attendance.png",
+      },
+      {
+        heading: "Advances, Salary & Payouts",
+        body:
+          "Cash advances deduct from the open pay period automatically. Salary updates live from attendance and overtime, and marking a period paid locks a payout record so the next cycle can start clean.",
+        image: "/images/pasahodph-salary.png",
+      },
+    ],
+  },
+  {
     slug: "promise-surrogacy",
     title: "Promise Surrogacy",
     tagline: "Marketing Website Rebuild",
