@@ -6,6 +6,10 @@ import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
+import {
+  projectInquiryMailto,
+  projectInquirySubject,
+} from "@/lib/contact";
 import { browserUrl, usesLaptopMockup } from "@/lib/laptop-mockups";
 import type { Metadata } from "next";
 
@@ -26,14 +30,25 @@ export async function generateMetadata({
     return { title: "Case study not found | Clyde Abenojar" };
   }
 
+  const url = `https://clydeabenojar.site/work/${study.slug}/`;
+
   return {
     title: `${study.title} | Clyde Abenojar`,
     description: study.overview,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: study.title,
       description: study.overview,
-      url: `https://clydeabenojar.site/work/${study.slug}/`,
+      url,
       images: [{ url: study.coverImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: study.title,
+      description: study.overview,
+      images: [study.coverImage],
     },
   };
 }
@@ -222,6 +237,49 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                 </a>
               </Reveal>
             ) : null}
+
+            <Reveal className="mt-20">
+              <div
+                className="rounded-xl border px-6 py-10 text-center sm:px-10"
+                style={{
+                  borderColor: "var(--v2-border)",
+                  background: "var(--v2-surface)",
+                }}
+              >
+                <p
+                  className="v2-eyebrow"
+                  style={{ color: "var(--v2-accent-text)" }}
+                >
+                  Next step
+                </p>
+                <h2 className="v2-display mt-3 text-[clamp(1.75rem,3.5vw,2.5rem)]">
+                  Interested in something like {study.title}?
+                </h2>
+                <p
+                  className="mx-auto mt-4 max-w-xl text-base leading-relaxed"
+                  style={{ color: "var(--v2-muted)" }}
+                >
+                  Tell me what you want to ship. I&apos;ll help scope it and
+                  reply with a clear next step.
+                </p>
+                <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <a
+                    href={projectInquiryMailto(
+                      projectInquirySubject(study.title),
+                    )}
+                    className="v2-btn v2-btn-primary px-5 py-3 text-sm"
+                  >
+                    Start a project
+                  </a>
+                  <Link
+                    href="/services/"
+                    className="v2-btn v2-btn-outline px-5 py-3 text-sm"
+                  >
+                    View all services
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </article>
       </main>

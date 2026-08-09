@@ -13,11 +13,20 @@ export const metadata: Metadata = {
   title: "Work | Clyde Abenojar",
   description:
     "Selected projects and case studies: web apps, AI tools, and business sites built end-to-end.",
+  alternates: {
+    canonical: "https://clydeabenojar.site/work/",
+  },
   openGraph: {
     title: "Work | Clyde Abenojar",
     description:
       "Selected projects and case studies: web apps, AI tools, and business sites built end-to-end.",
     url: "https://clydeabenojar.site/work/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Work | Clyde Abenojar",
+    description:
+      "Selected projects and case studies: web apps, AI tools, and business sites built end-to-end.",
   },
 };
 
