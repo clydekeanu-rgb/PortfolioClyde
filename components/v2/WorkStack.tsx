@@ -70,6 +70,16 @@ const projects: Project[] = [
     siteUrl: "picklepavilion.netlify.app",
   },
   {
+    title: "C.H Services",
+    blurb:
+      "Prospect mockup for a Kent property-maintenance firm: services, before/after proof, reviews, and free-quote lead capture.",
+    tags: ["Marketing site", "Lead gen"],
+    href: "/work/ch-services/",
+    image: "/images/ch-services-cover.png",
+    displayAsLaptop: true,
+    siteUrl: "mockup1.clydeabenojar.site",
+  },
+  {
     title: "Lumina Studio",
     blurb:
       "A personal AI image studio: text-to-image, image-to-image, and consistent character fusion with a built-in prompt builder.",
