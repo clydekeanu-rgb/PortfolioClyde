@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { MagneticButton } from "@/components/v2/MagneticButton";
-import { projectInquiryMailto } from "@/lib/contact";
 
 const GradientBlinds = dynamic(
   () => import("@/components/ui/GradientBlinds"),
@@ -124,10 +123,7 @@ export function V2Hero() {
             <MagneticButton href="#work" className="v2-btn v2-btn-primary">
               View work
             </MagneticButton>
-            <a
-              href={projectInquiryMailto()}
-              className="v2-btn v2-btn-outline"
-            >
+            <a href="#contact" className="v2-btn v2-btn-outline">
               Start a project
             </a>
           </motion.div>
