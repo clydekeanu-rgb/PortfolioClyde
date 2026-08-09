@@ -1,37 +1,61 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { validateLeadPayload } from "@/lib/lead";
 
+type UpstreamResult = {
+  ok: boolean;
+  status: number;
+  text: string;
+};
+
 /**
- * Google Apps Script web apps respond to POST with a 302 to
- * script.googleusercontent.com. Fetch with redirect:"follow" turns that
- * into a GET, so doPost never runs and the sheet stays empty while the
- * caller still sees HTTP 200. Re-POST to the redirect location instead.
+ * Apps Script web apps usually 302 once (sometimes more). Following redirects
+ * automatically converts POST → GET, so doPost never runs. Keep POSTing to
+ * each Location until we get a non-redirect response.
  */
-async function postToAppsScript(webhookUrl: string, payload: unknown) {
+async function postToAppsScript(
+  webhookUrl: string,
+  payload: unknown,
+): Promise<UpstreamResult> {
   const body = JSON.stringify(payload);
+  // text/plain avoids some preflight/proxy quirks; Apps Script still gives us contents
   const headers = { "Content-Type": "text/plain;charset=utf-8" };
+  let url = webhookUrl.trim();
 
-  const first = await fetch(webhookUrl, {
-    method: "POST",
-    headers,
-    body,
-    redirect: "manual",
-  });
-
-  if (first.status >= 300 && first.status < 400) {
-    const location = first.headers.get("location");
-    if (!location) {
-      return first;
-    }
-    return fetch(location, {
+  for (let hop = 0; hop < 6; hop++) {
+    const res = await fetch(url, {
       method: "POST",
       headers,
       body,
-      redirect: "follow",
+      redirect: "manual",
     });
+
+    if (res.status >= 300 && res.status < 400) {
+      const location = res.headers.get("location");
+      if (!location) {
+        return {
+          ok: false,
+          status: res.status,
+          text: `Redirect ${res.status} without Location`,
+        };
+      }
+      url = new URL(location, url).toString();
+      continue;
+    }
+
+    const text = await res.text().catch(() => "");
+    return { ok: res.ok, status: res.status, text };
   }
 
-  return first;
+  return { ok: false, status: 310, text: "Too many Apps Script redirects" };
+}
+
+function appsScriptAccepted(text: string) {
+  try {
+    const parsed = JSON.parse(text) as { ok?: boolean };
+    return parsed?.ok === true;
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -69,28 +93,19 @@ export async function POST(request: NextRequest) {
     };
 
     const upstream = await postToAppsScript(webhookUrl, payload);
-    const upstreamText = await upstream.text().catch(() => "");
 
-    if (!upstream.ok) {
-      console.error("[lead] webhook failed", upstream.status, upstreamText.slice(0, 300));
+    if (!upstream.ok || !appsScriptAccepted(upstream.text)) {
+      console.error("[lead] webhook failed", {
+        status: upstream.status,
+        body: upstream.text.slice(0, 400),
+      });
       return NextResponse.json(
-        { error: "Could not save your message. Try again shortly." },
+        {
+          error:
+            "Could not save to the sheet. Check Apps Script deployment and SPREADSHEET_ID.",
+        },
         { status: 502 },
       );
-    }
-
-    // Apps Script may return { ok: false } with HTTP 200
-    try {
-      const parsed = JSON.parse(upstreamText) as { ok?: boolean };
-      if (parsed && parsed.ok === false) {
-        console.error("[lead] webhook reported failure", upstreamText.slice(0, 300));
-        return NextResponse.json(
-          { error: "Could not save your message. Try again shortly." },
-          { status: 502 },
-        );
-      }
-    } catch {
-      // Non-JSON success bodies from Apps Script are still treated as ok
     }
 
     return NextResponse.json({ ok: true });
