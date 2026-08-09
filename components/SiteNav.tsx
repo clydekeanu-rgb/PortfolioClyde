@@ -5,6 +5,7 @@ import { AnimatedNavFramer } from "@/components/ui/navigation-menu";
 
 const navItems = [
   { name: "Work", href: "/work/" },
+  { name: "Services", href: "/services/" },
   { name: "Free Tools", href: "/free-tools/" },
   { name: "Blog", href: "/blog/" },
   { name: "About", href: "/#about" },

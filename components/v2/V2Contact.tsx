@@ -3,13 +3,13 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { CONTACT_EMAIL, projectInquiryMailto } from "@/lib/contact";
 
 const LiquidChrome = dynamic(() => import("@/components/ui/LiquidChrome"), {
   ssr: false,
 });
 
 const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
-const email = "clyde@clydeabenojar.site";
 const LIQUID_BASE_COLOR: [number, number, number] = [0.05, 0.06, 0.12];
 
 export function V2Contact() {
@@ -63,9 +63,7 @@ export function V2Contact() {
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, delay: 0.18, ease: EASE_OUT_STRONG }}
           >
-            <DirectionalFillButton
-              href={`mailto:${email}?subject=Project%20Inquiry`}
-            >
+            <DirectionalFillButton href={projectInquiryMailto()}>
               Start a project
             </DirectionalFillButton>
           </motion.div>
@@ -75,10 +73,10 @@ export function V2Contact() {
             style={{ color: "var(--v2-muted)" }}
           >
             <a
-              href={`mailto:${email}`}
+              href={`mailto:${CONTACT_EMAIL}`}
               className="v2-mono transition-colors hover:text-[var(--v2-text)]"
             >
-              {email}
+              {CONTACT_EMAIL}
             </a>
             <a
               href="https://www.linkedin.com/in/clyde-keanu-abenojar-b3b578346"

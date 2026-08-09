@@ -17,6 +17,7 @@ export type AnimatedNavItem = {
 
 const defaultNavItems: AnimatedNavItem[] = [
   { name: "Work", href: "/work/" },
+  { name: "Services", href: "/services/" },
   { name: "Free Tools", href: "/free-tools/" },
   { name: "Blog", href: "/blog/" },
   { name: "About", href: "/#about" },
