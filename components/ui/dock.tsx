@@ -32,6 +32,14 @@ const dockVariants = cva(
   "supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 mx-auto mt-8 flex h-[58px] w-max items-center justify-center gap-2 rounded-2xl border p-2 backdrop-blur-md"
 )
 
+function isDockIconElement(
+  child: React.ReactNode,
+): child is React.ReactElement<DockIconProps> {
+  if (!React.isValidElement(child)) return false
+  const type = child.type as { displayName?: string }
+  return type?.displayName === "DockIcon"
+}
+
 const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   (
     {
@@ -50,10 +58,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
 
     const renderChildren = () => {
       return React.Children.map(children, (child) => {
-        if (
-          React.isValidElement<DockIconProps>(child) &&
-          child.type === DockIcon
-        ) {
+        if (isDockIconElement(child)) {
           return React.cloneElement(child, {
             ...child.props,
             mouseX: mouseX,
@@ -152,4 +157,4 @@ const DockIcon = ({
 
 DockIcon.displayName = "DockIcon"
 
-export { Dock }
+export { Dock, DockIcon, dockVariants }

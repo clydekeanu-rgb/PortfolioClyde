@@ -1,317 +1,148 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { Menu } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { Dock } from "@/components/ui/dock";
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Briefcase,
+  Home,
+  Linkedin,
+  Mail,
+  Newspaper,
+  User,
+  Wrench,
+} from "lucide-react";
+import Link from "next/link";
+import { useReducedMotion } from "motion/react";
+import type { ComponentType, SVGProps } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { Dock, DockIcon } from "@/components/ui/dock";
+import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-const BorderBeam = dynamic(
-  () => import("@/components/ui/border-beam").then((m) => m.BorderBeam),
-  { ssr: false },
-);
+type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
-const links = [
-  { label: "Work", href: "/work/", external: true },
-  { label: "Free Tools", href: "/free-tools/", external: true },
-  { label: "Blog", href: "/blog/", external: true },
-  { label: "About", href: "/#about", external: false },
-  { label: "Contact", href: "/#contact", external: false },
-] as const;
-
-const glassShell =
-  "rw-nav-shell relative mt-0 origin-left overflow-hidden rounded-full border backdrop-blur-xl";
-
-function NavLabel({ label }: { label: string }) {
+function GithubIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <>
-      {label} <span className="rw-brand">/&gt;</span>
-    </>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.701-1.333-1.701-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+    </svg>
   );
 }
 
-function BrandLink({
-  compact,
-  reduceMotion,
+const NAV_ITEMS: { href: string; label: string; icon: IconType }[] = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/work/", label: "Work", icon: Briefcase },
+  { href: "/free-tools/", label: "Free Tools", icon: Wrench },
+  { href: "/blog/", label: "Blog", icon: Newspaper },
+  { href: "/#about", label: "About", icon: User },
+  { href: "/#contact", label: "Contact", icon: Mail },
+];
+
+const SOCIAL_ITEMS: {
+  href: string;
+  label: string;
+  icon: IconType;
+  external?: boolean;
+}[] = [
+  {
+    href: "https://www.linkedin.com/in/clyde-keanu-abenojar-b3b578346",
+    label: "LinkedIn",
+    icon: Linkedin,
+    external: true,
+  },
+  {
+    href: "https://github.com/clydekeanu-rgb",
+    label: "GitHub",
+    icon: GithubIcon,
+    external: true,
+  },
+  {
+    href: "mailto:clyde@clydeabenojar.site",
+    label: "Email",
+    icon: Mail,
+  },
+];
+
+function DockNavLink({
+  href,
+  label,
+  icon: Icon,
+  external,
 }: {
-  compact: boolean;
-  reduceMotion: boolean | null;
+  href: string;
+  label: string;
+  icon: IconType;
+  external?: boolean;
 }) {
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 420, damping: 34 };
-
-  return (
-    <Link
-      href="/"
-      className="inline-flex shrink-0 items-center px-1 text-sm font-semibold rw-text"
-    >
-      <span className="rw-brand">&lt;</span>
-      <span>Clyde</span>
-      <AnimatePresence initial={false}>
-        {compact ? (
-          <motion.span
-            key="surname"
-            className="inline-block overflow-hidden whitespace-nowrap"
-            initial={reduceMotion ? false : { opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "auto" }}
-            exit={reduceMotion ? undefined : { opacity: 0, width: 0 }}
-            transition={transition}
-          >
-            {" "}
-            Abenojar
-          </motion.span>
-        ) : null}
-      </AnimatePresence>
-      <span className="rw-brand">/&gt;</span>
-    </Link>
+  const className = cn(
+    buttonVariants({ variant: "ghost", size: "icon" }),
+    "size-12 rounded-full text-foreground hover:bg-white/10 hover:text-accent",
   );
-}
+  const icon = <Icon className="size-4" />;
 
-function HireButton({ className }: { className?: string }) {
   return (
-    <InteractiveHoverButton
-      href="/#contact"
-      className={cn("rw-ihb rw-ihb-fill", className)}
-    >
-      Hire Me
-    </InteractiveHoverButton>
+    <Tooltip>
+      <TooltipTrigger
+        delay={0}
+        render={
+          external ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className={className}
+            />
+          ) : (
+            <Link href={href} aria-label={label} className={className} />
+          )
+        }
+      >
+        {icon}
+      </TooltipTrigger>
+      <TooltipContent
+        side="top"
+        className="font-mono text-[10px] uppercase tracking-[0.18em]"
+      >
+        {label}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
 export function FloatingGlassNav() {
-  const [open, setOpen] = useState(false);
-  const [compact, setCompact] = useState(false);
-  const [showBeam, setShowBeam] = useState(false);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 48);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    if (compact) setOpen(false);
-  }, [compact]);
-
-  useEffect(() => {
-    if (reduceMotion) return;
-
-    let cancelled = false;
-    const enable = () => {
-      if (!cancelled) setShowBeam(true);
-    };
-
-    let idleId: number | undefined;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(enable, { timeout: 2500 });
-    } else {
-      timeoutId = setTimeout(enable, 1);
-    }
-
-    return () => {
-      cancelled = true;
-      if (
-        idleId !== undefined &&
-        typeof window !== "undefined" &&
-        "cancelIdleCallback" in window
-      ) {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-    };
-  }, [reduceMotion]);
-
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 380, damping: 32 };
-
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-4 z-50">
-      <div className="mx-auto max-w-5xl px-6">
-        <div className="pointer-events-auto w-max max-w-full origin-left">
-          {/* Desktop */}
-          <Dock
-            disableMagnification
-            className={cn(
-              glassShell,
-              "hidden items-center md:flex",
-              compact ? "h-11 gap-0 px-3" : "h-14 gap-5 px-5",
-            )}
-          >
-            <BrandLink compact={compact} reduceMotion={reduceMotion} />
-
-            <AnimatePresence initial={false}>
-              {!compact ? (
-                <motion.div
-                  key="desktop-links"
-                  className="flex items-center gap-5"
-                  initial={reduceMotion ? false : { opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={
-                    reduceMotion
-                      ? undefined
-                      : { opacity: 0, width: 0, marginLeft: 0 }
-                  }
-                  transition={transition}
-                >
-                  <div
-                    className="mx-1 h-5 w-px shrink-0 bg-[var(--rw-border)]"
-                    aria-hidden="true"
-                  />
-                  {links.map((link) =>
-                    link.external ? (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="rw-nav-link whitespace-nowrap text-sm font-medium transition-colors"
-                      >
-                        <NavLabel label={link.label} />
-                      </Link>
-                    ) : (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        className="rw-nav-link whitespace-nowrap text-sm font-medium transition-colors"
-                      >
-                        <NavLabel label={link.label} />
-                      </a>
-                    ),
-                  )}
-                  <HireButton />
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-
-            {showBeam ? (
-              <BorderBeam
-                size={compact ? 56 : 80}
-                duration={8}
-                colorFrom="#C049FF"
-                colorTo="#E879FF"
-                borderWidth={1.25}
-              />
-            ) : null}
-          </Dock>
-
-          {/* Mobile */}
-          <Dock
-            disableMagnification
-            className={cn(
-              glassShell,
-              "flex items-center md:hidden",
-              compact ? "h-11 gap-0 px-3" : "h-14 gap-3 px-3",
-            )}
-          >
-            <BrandLink compact={compact} reduceMotion={reduceMotion} />
-
-            <AnimatePresence initial={false}>
-              {!compact ? (
-                <motion.div
-                  key="mobile-actions"
-                  className="flex items-center gap-3"
-                  initial={reduceMotion ? false : { opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={reduceMotion ? undefined : { opacity: 0, width: 0 }}
-                  transition={transition}
-                >
-                  <HireButton className="h-8 whitespace-nowrap rounded-full px-3 text-xs font-semibold" />
-                  <Sheet open={open} onOpenChange={setOpen}>
-                    <SheetTrigger
-                      render={
-                        <Button
-                          variant="outline"
-                          size="icon-sm"
-                          className="rounded-full border-[var(--rw-border)] bg-[var(--rw-surface-2)] text-[var(--rw-text)]"
-                          aria-label="Open menu"
-                        />
-                      }
-                    >
-                      <Menu size={16} />
-                    </SheetTrigger>
-                    <SheetContent
-                      side="right"
-                      className="railway border-[var(--rw-border)] bg-[var(--rw-bg)] text-[var(--rw-text)]"
-                    >
-                      <SheetHeader>
-                        <SheetTitle className="font-mono text-[var(--rw-text)]">
-                          <span className="rw-brand">&lt;</span>Clyde
-                          <span className="rw-brand">/&gt;</span>
-                        </SheetTitle>
-                      </SheetHeader>
-                      <div className="flex flex-col gap-1 px-4">
-                        {links.map((link) =>
-                          link.external ? (
-                            <SheetClose
-                              key={link.href}
-                              render={
-                                <Link
-                                  href={link.href}
-                                  className="rounded-[8px] px-2 py-3 text-sm font-medium text-[var(--rw-muted)] hover:bg-[var(--rw-surface)] hover:text-[var(--rw-text)]"
-                                />
-                              }
-                            >
-                              <NavLabel label={link.label} />
-                            </SheetClose>
-                          ) : (
-                            <SheetClose
-                              key={link.href}
-                              render={
-                                <a
-                                  href={link.href}
-                                  className="rounded-[8px] px-2 py-3 text-sm font-medium text-[var(--rw-muted)] hover:bg-[var(--rw-surface)] hover:text-[var(--rw-text)]"
-                                />
-                              }
-                            >
-                              <NavLabel label={link.label} />
-                            </SheetClose>
-                          ),
-                        )}
-                        <SheetClose
-                          render={
-                            <InteractiveHoverButton
-                              href="/#contact"
-                              className="rw-ihb rw-ihb-fill mt-2 w-full rounded-full px-4 py-3 text-sm"
-                            />
-                          }
-                        >
-                          Hire Me
-                        </SheetClose>
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-
-            {showBeam ? (
-              <BorderBeam
-                size={compact ? 50 : 70}
-                duration={8}
-                colorFrom="#C049FF"
-                colorTo="#E879FF"
-                borderWidth={1.25}
-              />
-            ) : null}
-          </Dock>
-        </div>
-      </div>
+    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+      <TooltipProvider delay={0}>
+        <Dock
+          direction="middle"
+          iconSize={40}
+          iconMagnification={reduceMotion ? 40 : 58}
+          iconDistance={120}
+          disableMagnification={!!reduceMotion}
+          className={cn(
+            "sentry-dock pointer-events-auto mt-0",
+          )}
+        >
+          {NAV_ITEMS.map((item) => (
+            <DockIcon key={item.label}>
+              <DockNavLink {...item} />
+            </DockIcon>
+          ))}
+          <Separator orientation="vertical" className="mx-1 h-8 bg-white/15" />
+          {SOCIAL_ITEMS.map((item) => (
+            <DockIcon key={item.label}>
+              <DockNavLink {...item} />
+            </DockIcon>
+          ))}
+        </Dock>
+      </TooltipProvider>
     </div>
   );
 }

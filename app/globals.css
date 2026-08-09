@@ -1,6 +1,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./railway.css";
+@import "./sentry.css";
 
 @tailwind base;
 @tailwind components;
@@ -8,17 +9,17 @@
 
 :root {
   color-scheme: dark;
-  --color-bg: #13111a;
-  --color-background: #13111a;
-  --color-surface: #2f2b3a;
-  --color-border: #4a4560;
+  --color-bg: #1f1633;
+  --color-background: #1f1633;
+  --color-surface: #150f23;
+  --color-border: #362d59;
   --color-text-primary: #ffffff;
-  --color-text-secondary: #8b8aa0;
-  --color-accent: #c049ff;
-  --color-accent-soft: #e879ff;
-  --color-syntax-string: #facc15;
-  --color-syntax-keyword: #f472b6;
-  --color-syntax-comment: #6b7280;
+  --color-text-secondary: #bdb8c0;
+  --color-accent: #c2ef4e;
+  --color-accent-soft: #fa7faa;
+  --color-syntax-string: #c2ef4e;
+  --color-syntax-keyword: #fa7faa;
+  --color-syntax-comment: #79628c;
 }
 
 * {
@@ -30,7 +31,7 @@ html {
 }
 
 ::selection {
-  background: rgba(192, 73, 255, 0.3);
+  background: rgba(194, 239, 78, 0.28);
 }
 
 @keyframes blink {
@@ -216,35 +217,35 @@ html {
     --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   }
 
-  /* Railway as site defaults (dark-only) */
+  /* Sentry design.md as site defaults (dark-only) */
   :root,
   .dark {
-    --background: #13111a;
+    --background: #1f1633;
     --foreground: #ffffff;
-    --card: #2f2b3a;
+    --card: #150f23;
     --card-foreground: #ffffff;
-    --popover: #1e1a2b;
+    --popover: #150f23;
     --popover-foreground: #ffffff;
-    --primary: #c049ff;
-    --primary-foreground: #ffffff;
-    --secondary: #8b8aa0;
+    --primary: #c2ef4e;
+    --primary-foreground: #1f1633;
+    --secondary: #bdb8c0;
     --secondary-foreground: #ffffff;
-    --muted: #1e1a2b;
-    --muted-foreground: #8b8aa0;
+    --muted: #150f23;
+    --muted-foreground: #bdb8c0;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
-    --border: #4a4560;
-    --input: #4a4560;
-    --ring: #c049ff;
+    --border: #362d59;
+    --input: #362d59;
+    --ring: #9dc1f5;
     --radius: 0.5rem;
-    --sidebar: #1e1a2b;
+    --sidebar: #150f23;
     --sidebar-foreground: #ffffff;
-    --sidebar-primary: #c049ff;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #2f2b3a;
+    --sidebar-primary: #c2ef4e;
+    --sidebar-primary-foreground: #1f1633;
+    --sidebar-accent: #1f1633;
     --sidebar-accent-foreground: #ffffff;
-    --sidebar-border: #4a4560;
-    --sidebar-ring: #c049ff;
+    --sidebar-border: #362d59;
+    --sidebar-ring: #9dc1f5;
   }
 
   * {
@@ -259,6 +260,19 @@ html {
 
   .font-mono {
     font-family: var(--font-mono), "Fira Code", ui-monospace, monospace;
+  }
+
+  /* Headlines: white. Lime lives on text-accent / chips / progress. */
+  .text-primary {
+    color: #ffffff;
+  }
+
+  .text-accent {
+    color: #c2ef4e;
+  }
+
+  .bg-accent {
+    background-color: #c2ef4e;
   }
 }
 

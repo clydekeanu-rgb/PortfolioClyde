@@ -33,10 +33,10 @@ const config: Config = {
         },
         accent: {
           DEFAULT: "var(--primary)",
-          soft: "#E879FF",
+          soft: "#fa7faa",
           foreground: "var(--primary-foreground)",
         },
-        surface: "#2F2B3A",
+        surface: "#150f23",
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",

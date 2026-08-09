@@ -1,21 +1,23 @@
 :root,
 .railway {
-  --rw-brand: #c049ff;
-  --rw-brand-soft: #e879ff;
-  --rw-bg: #13111a;
+  --rw-brand: #c2ef4e;
+  --rw-brand-soft: #fa7faa;
+  --rw-bg: #1f1633;
   --rw-text: #ffffff;
-  --rw-accent: #844fba;
-  --rw-surface: #2f2b3a;
-  --rw-surface-2: #1e1a2b;
-  --rw-border: #4a4560;
-  --rw-muted: #8b8aa0;
+  --rw-accent: #79628c;
+  --rw-surface: #150f23;
+  --rw-surface-2: #1f1633;
+  --rw-border: #362d59;
+  --rw-muted: #bdb8c0;
   --rw-success: #22c55e;
-  --rw-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.4);
-  --rw-shadow-md: 0 4px 20px rgba(192, 73, 255, 0.15);
-  --rw-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --rw-shadow-sm: none;
+  --rw-shadow-md: rgb(21, 15, 35) 0 0 8px 6px;
+  --rw-shadow-lg: rgba(0, 0, 0, 0.18) 0 0.5rem 1.5rem;
   --rw-radius-sm: 4px;
   --rw-radius-md: 8px;
   --rw-radius-lg: 12px;
+  --rw-radius-xl: 12px;
+  --rw-radius-xxl: 18px;
 }
 
 .railway {
@@ -53,76 +55,83 @@
 }
 
 .railway .rw-gradient-text {
-  background: linear-gradient(135deg, #c049ff 0%, #e879ff 50%, #844fba 100%);
+  background: linear-gradient(135deg, #c2ef4e 0%, #fa7faa 55%, #6a5fc1 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+/* button-inverted on dark canvas */
 .railway .rw-cta {
-  background: var(--rw-brand);
-  color: #ffffff;
+  background: #ffffff;
+  color: #1f1633;
   border-radius: var(--rw-radius-md);
-  box-shadow: var(--rw-shadow-md);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 2px 8px 0;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.railway .rw-cta:hover {
-  background: #d06aff;
-  box-shadow: 0 6px 28px rgba(192, 73, 255, 0.28);
+.railway .rw-cta:hover,
+.railway .rw-cta:active {
+  background: #f0f0f0;
+  color: #1a1a1a;
+  box-shadow: rgba(0, 0, 0, 0.18) 0 0.5rem 1.5rem;
 }
 
 .railway .rw-cta-outline {
   border: 1px solid var(--rw-border);
-  border-radius: var(--rw-radius-md);
+  border-radius: var(--rw-radius-xl, 12px);
   color: var(--rw-text);
-  background: transparent;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  background: rgba(63, 56, 73, 0.55);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 
 .railway .rw-cta-outline:hover {
   border-color: var(--rw-brand);
-  color: var(--rw-brand-soft);
+  color: var(--rw-brand);
 }
 
 .railway .rw-card {
   background: var(--rw-surface);
   border: 1px solid var(--rw-border);
-  border-radius: var(--rw-radius-md);
-  box-shadow: var(--rw-shadow-sm);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  border-radius: var(--rw-radius-xxl);
+  box-shadow: none;
+  transition: border-color 0.25s ease;
 }
 
 .railway .rw-card:hover {
-  border-color: rgba(192, 73, 255, 0.55);
-  box-shadow: var(--rw-shadow-md);
+  border-color: #79628c;
+  box-shadow: none;
 }
 
 .railway .rw-media {
   background: var(--rw-surface-2);
   border: 1px solid var(--rw-border);
-  border-radius: var(--rw-radius-md);
-  box-shadow: var(--rw-shadow-sm);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  border-radius: var(--rw-radius-xxl);
+  box-shadow: none;
+  transition: border-color 0.25s ease;
 }
 
 .railway .group:hover .rw-media {
-  border-color: rgba(192, 73, 255, 0.55);
-  box-shadow: var(--rw-shadow-md);
+  border-color: #79628c;
+  box-shadow: none;
 }
 
 .railway .rw-badge {
   border: 1px solid var(--rw-border);
-  background: rgba(19, 17, 26, 0.9);
-  border-radius: 999px;
+  background: var(--rw-surface);
+  border-radius: var(--rw-radius-sm);
   color: var(--rw-text);
 }
 
 .railway .rw-tag {
   border: 1px solid var(--rw-border);
-  background: var(--rw-surface-2);
-  border-radius: 999px;
-  color: var(--rw-muted);
+  background: #422082;
+  border-radius: var(--rw-radius-sm);
+  color: var(--rw-text);
 }
 
 .railway .rw-divider {
@@ -131,8 +140,8 @@
 
 .railway .rw-nav-shell {
   border-color: var(--rw-border) !important;
-  background: rgba(19, 17, 26, 0.72) !important;
-  box-shadow: var(--rw-shadow-sm);
+  background: rgba(21, 15, 35, 0.82) !important;
+  box-shadow: var(--rw-shadow-md);
 }
 
 .railway .rw-nav-link {
@@ -144,13 +153,14 @@
 }
 
 .railway .rw-nav-hire {
-  background: var(--rw-brand) !important;
-  color: #ffffff !important;
-  box-shadow: var(--rw-shadow-md);
+  background: #ffffff !important;
+  color: #1f1633 !important;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 2px 8px 0;
 }
 
 .railway .rw-nav-hire:hover {
-  background: #d06aff !important;
+  background: #f0f0f0 !important;
+  color: #1a1a1a !important;
 }
 
 .railway .rw-footer {
@@ -162,13 +172,12 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  /* Solid purple on the lower liquid; transparent up top so the glyphs show */
   background: linear-gradient(
     to bottom,
     transparent 0%,
     transparent 38%,
-    var(--rw-brand) 52%,
-    var(--rw-brand) 100%
+    #422082 52%,
+    #150f23 100%
   );
   box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
 }
@@ -184,20 +193,19 @@
 
 .railway .rw-hero-wave span:nth-child(1) {
   border-radius: 45%;
-  /* Soft dark scrim over the landscape so the wavy edge still reads */
-  background: rgba(19, 17, 26, 0.45);
+  background: rgba(21, 15, 35, 0.45);
   animation: rw-wave-animate 5s linear infinite;
 }
 
 .railway .rw-hero-wave span:nth-child(2) {
   border-radius: 40%;
-  background: rgba(19, 17, 26, 0.28);
+  background: rgba(21, 15, 35, 0.28);
   animation: rw-wave-animate 10s linear infinite;
 }
 
 .railway .rw-hero-wave span:nth-child(3) {
   border-radius: 42.5%;
-  background: rgba(19, 17, 26, 0.28);
+  background: rgba(21, 15, 35, 0.28);
   animation: rw-wave-animate 15s linear infinite;
 }
 
@@ -211,15 +219,16 @@
 }
 
 .railway .rw-hero-photo {
-  background: var(--rw-surface-2);
+  background: var(--rw-surface);
   border: 1px solid var(--rw-border);
-  border-radius: var(--rw-radius-lg);
-  box-shadow: 0 0 24px rgba(0, 180, 255, 0.2);
-  transition: box-shadow 0.5s ease;
+  border-radius: var(--rw-radius-xxl);
+  box-shadow: none;
+  transition: border-color 0.5s ease;
 }
 
 .railway .rw-hero-photo:hover {
-  box-shadow: 0 0 70px rgba(0, 0, 0, 0.85);
+  border-color: #79628c;
+  box-shadow: none;
 }
 
 @property --rw-glow-angle {
@@ -238,8 +247,8 @@
   background: conic-gradient(
     from var(--rw-glow-angle),
     transparent 55%,
-    #00b4ff,
-    #7dd3fc,
+    #c2ef4e,
+    #fa7faa,
     transparent 75%
   );
   -webkit-mask:
@@ -282,41 +291,43 @@
   height: auto;
   padding: 0.75rem 1.25rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
   border-radius: var(--rw-radius-md);
   box-shadow: none;
 }
 
 .railway .rw-ihb-fill {
-  background: var(--rw-brand) !important;
-  border-color: var(--rw-brand) !important;
-  border-radius: 9999px;
-  color: #ffffff;
-  box-shadow: var(--rw-shadow-md);
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  border-radius: var(--rw-radius-md);
+  color: #1f1633;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 2px 8px 0;
 }
 
 .railway .rw-ihb-fill .bg-primary {
-  background: #ffffff !important;
+  background: #1f1633 !important;
 }
 
 .railway .rw-ihb-fill .text-primary-foreground,
 .railway .rw-ihb-fill .text-primary-foreground span {
-  color: #000000 !important;
+  color: #ffffff !important;
 }
 
 .railway .rw-ihb-outline {
-  background: transparent !important;
+  background: rgba(63, 56, 73, 0.55) !important;
   border-color: var(--rw-border) !important;
   color: var(--rw-text);
 }
 
 .railway .rw-ihb-outline .bg-primary {
-  background: var(--rw-brand) !important;
+  background: #ffffff !important;
 }
 
 .railway .rw-ihb-outline .text-primary-foreground,
 .railway .rw-ihb-outline .text-primary-foreground span {
-  color: #ffffff !important;
+  color: #1f1633 !important;
 }
 
 .railway .rw-ihb-outline:hover {
@@ -350,7 +361,6 @@
   }
 }
 
-/* Plain CSS animation — does not rely on Tailwind animate-marquee (v4 utility) */
 @media (prefers-reduced-motion: no-preference) {
   .railway .rw-tech-marquee .rw-marquee-track {
     animation-name: rw-marquee !important;
@@ -370,7 +380,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  border-radius: 9999px;
+  border-radius: var(--rw-radius-sm);
   border: 1px solid var(--rw-border);
   background: var(--rw-surface);
   color: var(--rw-text);
