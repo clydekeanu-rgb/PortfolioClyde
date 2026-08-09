@@ -1,8 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { MagneticButton } from "@/components/v2/MagneticButton";
 
@@ -11,29 +9,30 @@ const GradientBlinds = dynamic(
   { ssr: false },
 );
 
-const Lanyard = dynamic(() => import("@/components/ui/Lanyard/Lanyard"), {
+const ProfileCard = dynamic(() => import("@/components/ui/ProfileCard"), {
   ssr: false,
 });
 
-const headlineLines = ["I design and ship", "working web products."];
+const headlineLines = [
+  {
+    key: "line-1",
+    content: (
+      <>
+        I <span className="v2-text-highlight">design and ship</span>
+      </>
+    ),
+  },
+  { key: "line-2", content: "working web products." },
+];
 
 const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
 
 const GRADIENT_COLORS = ["#FF9FFC", "#5227FF"];
 
+const PROFILE_AVATAR = "/images/add_profile_photo.jpg";
+
 export function V2Hero() {
   const reduceMotion = useReducedMotion();
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const update = () => setIsDesktop(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  const showLanyard = !reduceMotion && isDesktop;
 
   return (
     <section className="v2-hero relative flex min-h-[100dvh] items-center overflow-hidden">
@@ -74,26 +73,6 @@ export function V2Hero() {
         />
       </div>
 
-      {showLanyard && (
-        <motion.div
-          className="absolute inset-0 z-[5]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: EASE_OUT_STRONG }}
-          aria-hidden="true"
-        >
-          <div className="absolute inset-y-0 right-0 top-0 h-full w-full md:w-[min(52%,38rem)]">
-            <Lanyard
-              position={[0, 0, 22]}
-              gravity={[0, -40, 0]}
-              frontImage="/images/add_profile_photo.jpg"
-              imageFit="cover"
-              lanyardWidth={1.2}
-            />
-          </div>
-        </motion.div>
-      )}
-
       <div className="pointer-events-none relative z-10 mx-auto grid w-full max-w-6xl items-center gap-14 px-6 py-16 md:grid-cols-[1.1fr_0.9fr]">
         <div className="pointer-events-auto">
           <motion.p
@@ -107,7 +86,7 @@ export function V2Hero() {
 
           <h1 className="v2-display mt-6 text-[clamp(2.75rem,6vw,4.5rem)]">
             {headlineLines.map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.08em]">
+              <span key={line.key} className="block overflow-hidden pb-[0.08em]">
                 <motion.span
                   className="block"
                   initial={reduceMotion ? false : { y: "110%" }}
@@ -118,7 +97,7 @@ export function V2Hero() {
                     ease: EASE_OUT_STRONG,
                   }}
                 >
-                  {line}
+                  {line.content}
                 </motion.span>
               </span>
             ))}
@@ -153,26 +132,21 @@ export function V2Hero() {
           </motion.div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-sm md:max-w-none">
-          {showLanyard ? (
-            <div className="aspect-[4/5] w-full" aria-hidden="true" />
-          ) : (
-            <div
-              className="pointer-events-auto relative aspect-[4/5] overflow-hidden rounded-[12px] border"
-              style={{ borderColor: "var(--v2-border)" }}
-            >
-              <Image
-                src="/images/add_profile_photo.jpg"
-                alt="Clyde Abenojar"
-                fill
-                priority
-                quality={75}
-                sizes="(max-width: 768px) 90vw, 460px"
-                className="object-cover"
-              />
-            </div>
-          )}
-        </div>
+        <motion.div
+          className="pointer-events-auto relative mx-auto flex w-full max-w-sm justify-center md:max-w-none"
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: EASE_OUT_STRONG }}
+        >
+          <ProfileCard
+            name="Clyde Abenojar"
+            title="AI-assisted Web Builder"
+            avatarUrl={PROFILE_AVATAR}
+            enableTilt={!reduceMotion}
+            enableMobileTilt={false}
+            innerGradient="linear-gradient(145deg,#4220828c 0%,#c2ef4e33 100%)"
+          />
+        </motion.div>
       </div>
     </section>
   );
