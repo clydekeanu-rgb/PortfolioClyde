@@ -1,8 +1,22 @@
 # Google Sheet lead capture
 
-Leads from **Leave a message** and **Book a discovery call** POST to `/api/lead`, which forwards rows to a Google Apps Script web app.
+Leads from **Leave a message** and **Book a discovery call** POST to `/api/lead`.
 
-## 1. Create the Sheet
+## Storage model
+
+1. **Primary:** Supabase `leads` table (required for the form to succeed)
+2. **Secondary:** Google Apps Script → Sheet (best-effort sync; failures are logged and do not block the form)
+
+## 1. Create the Supabase table (required)
+
+In the Supabase SQL editor, run [`docs/supabase-leads.sql`](supabase-leads.sql).
+
+Confirm Vercel already has:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+## 2. Create the Sheet (optional sync)
 
 Create a Google Sheet with a header row on the **first tab**:
 
@@ -13,7 +27,7 @@ Copy the **Spreadsheet ID** from the URL:
 
 `https://docs.google.com/spreadsheets/d/`**`THIS_IS_THE_ID`**`/edit`
 
-## 2. Paste this Apps Script (bound to the Sheet)
+## 3. Apps Script (optional sync)
 
 In the Sheet: **Extensions → Apps Script**. Replace everything with:
 
@@ -49,7 +63,6 @@ function doPost(e) {
   }
 }
 
-// Optional: open the /exec URL in a browser — should show this JSON
 function doGet() {
   return ContentService
     .createTextOutput(JSON.stringify({ ok: true, service: "portfolio-leads" }))
@@ -57,42 +70,29 @@ function doGet() {
 }
 ```
 
-Save.
+Save, then **Deploy → New deployment** (Web app, Execute as Me, Who has access: **Anyone**). Copy the `/exec` URL.
 
-**Why `openById`?** In a deployed web app, `getActiveSpreadsheet()` is often `null`, so rows never append even when the request “succeeds.”
+Open `/exec` in a browser — expect `{"ok":true,"service":"portfolio-leads"}`.
 
-## 3. Deploy the web app
-
-1. **Deploy → New deployment** (always choose **New** after script changes)
-2. Type: **Web app**
-3. Execute as: **Me**
-4. Who has access: **Anyone** (not “Anyone with a Google account”)
-5. Deploy → authorize if prompted → copy the URL ending in **`/exec`**
-
-Test the URL in a browser — you should see:
-
-```json
-{"ok":true,"service":"portfolio-leads"}
-```
-
-## 4. Set the env var
-
-Vercel → Project → Settings → Environment Variables:
+## 4. Env vars
 
 ```bash
+# Required for form success
+NEXT_PUBLIC_SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+
+# Optional Sheet sync
 GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 ```
 
-Redeploy Production after saving.
+Redeploy after changes.
 
 ## 5. Smoke test
 
 ```bash
 curl -i -X POST https://www.clydeabenojar.site/api/lead/ \
   -H "Content-Type: application/json" \
-  -d "{\"type\":\"discovery\",\"name\":\"Test\",\"email\":\"you@example.com\",\"preferredDate\":\"2026-08-12\",\"preferredTime\":\"10:00\",\"timezone\":\"Asia/Manila\",\"message\":\"Hello\"}"
+  -d "{\"type\":\"message\",\"name\":\"Test\",\"email\":\"you@example.com\",\"message\":\"Hello\"}"
 ```
 
-Expect HTTP 200 and `{ "ok": true }` **and** a new Sheet row.
-
-If the script is wrong, the API now returns **502** instead of a fake success.
+Expect `{ "ok": true }` and a row in Supabase `leads`. If Sheets sync is configured correctly, a Sheet row appears too.

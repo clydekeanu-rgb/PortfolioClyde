@@ -62,7 +62,12 @@ export function DiscoveryCallForm() {
 
       if (!res.ok) {
         setStatus("error");
-        setError(json?.error ?? "Something went wrong. Please try again.");
+        setError(
+          json?.error ||
+            (res.status === 502
+              ? "Server could not reach the lead service. Please try again in a minute."
+              : "Something went wrong. Please try again."),
+        );
         return;
       }
 

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { validateLeadPayload } from "@/lib/lead";
+import { adminSupabase } from "@/lib/supabase/admin";
 
 type UpstreamResult = {
   ok: boolean;
@@ -8,45 +9,56 @@ type UpstreamResult = {
 };
 
 /**
- * Apps Script web apps usually 302 once (sometimes more). Following redirects
- * automatically converts POST → GET, so doPost never runs. Keep POSTing to
- * each Location until we get a non-redirect response.
+ * Apps Script web apps usually 302. Auto-follow turns POST into GET.
+ * Re-POST to each Location. Never throw — callers must stay online.
  */
 async function postToAppsScript(
   webhookUrl: string,
   payload: unknown,
 ): Promise<UpstreamResult> {
-  const body = JSON.stringify(payload);
-  // text/plain avoids some preflight/proxy quirks; Apps Script still gives us contents
-  const headers = { "Content-Type": "text/plain;charset=utf-8" };
-  let url = webhookUrl.trim();
+  try {
+    const body = JSON.stringify(payload);
+    const headers = { "Content-Type": "text/plain;charset=utf-8" };
+    let url = webhookUrl.trim();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
 
-  for (let hop = 0; hop < 6; hop++) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body,
-      redirect: "manual",
-    });
+    try {
+      for (let hop = 0; hop < 5; hop++) {
+        const res = await fetch(url, {
+          method: "POST",
+          headers,
+          body,
+          redirect: "manual",
+          signal: controller.signal,
+        });
 
-    if (res.status >= 300 && res.status < 400) {
-      const location = res.headers.get("location");
-      if (!location) {
-        return {
-          ok: false,
-          status: res.status,
-          text: `Redirect ${res.status} without Location`,
-        };
+        if (res.status >= 300 && res.status < 400) {
+          const location =
+            res.headers.get("location") ?? res.headers.get("Location");
+          if (!location) {
+            return {
+              ok: false,
+              status: res.status,
+              text: `Redirect ${res.status} without Location`,
+            };
+          }
+          url = new URL(location, url).toString();
+          continue;
+        }
+
+        const text = await res.text().catch(() => "");
+        return { ok: res.ok, status: res.status, text };
       }
-      url = new URL(location, url).toString();
-      continue;
+
+      return { ok: false, status: 310, text: "Too many Apps Script redirects" };
+    } finally {
+      clearTimeout(timer);
     }
-
-    const text = await res.text().catch(() => "");
-    return { ok: res.ok, status: res.status, text };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { ok: false, status: 500, text: message };
   }
-
-  return { ok: false, status: 310, text: "Too many Apps Script redirects" };
 }
 
 function appsScriptAccepted(text: string) {
@@ -71,14 +83,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error }, { status });
     }
 
-    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
-    if (!webhookUrl) {
-      return NextResponse.json(
-        { error: "Lead capture is not configured yet." },
-        { status: 503 },
-      );
-    }
-
     const userAgent = request.headers.get("user-agent") ?? "";
     const payload = {
       timestamp: new Date().toISOString(),
@@ -92,25 +96,46 @@ export async function POST(request: NextRequest) {
       user_agent: userAgent.slice(0, 512),
     };
 
-    const upstream = await postToAppsScript(webhookUrl, payload);
+    // Primary store: Supabase (reliable on Vercel). Sheets is best-effort.
+    const { error: dbError } = await adminSupabase.from("leads").insert({
+      type: payload.type,
+      name: payload.name,
+      email: payload.email,
+      message: payload.message || null,
+      preferred_date: payload.preferred_date || null,
+      preferred_time: payload.preferred_time || null,
+      timezone: payload.timezone || null,
+      user_agent: payload.user_agent || null,
+    });
 
-    if (!upstream.ok || !appsScriptAccepted(upstream.text)) {
-      console.error("[lead] webhook failed", {
-        status: upstream.status,
-        body: upstream.text.slice(0, 400),
-      });
+    if (dbError) {
+      console.error("[lead] supabase insert failed", dbError.message);
       return NextResponse.json(
         {
           error:
-            "Could not save to the sheet. Check Apps Script deployment and SPREADSHEET_ID.",
+            "Could not save your message. If this keeps happening, the leads table may be missing — see docs/supabase-leads.sql.",
         },
-        { status: 502 },
+        { status: 500 },
       );
+    }
+
+    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
+    if (webhookUrl) {
+      const upstream = await postToAppsScript(webhookUrl, payload);
+      if (!upstream.ok || !appsScriptAccepted(upstream.text)) {
+        console.error("[lead] sheets sync failed (lead still saved)", {
+          status: upstream.status,
+          body: upstream.text.slice(0, 400),
+        });
+      }
     }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[lead] unexpected error", error);
-    return NextResponse.json({ error: "Bad request." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again." },
+      { status: 400 },
+    );
   }
 }
