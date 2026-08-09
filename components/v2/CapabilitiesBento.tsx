@@ -139,20 +139,26 @@ export function CapabilitiesBento() {
             </div>
           </motion.div>
 
-          {/* E: 3D modeling (tinted cell) */}
+          {/* E: 3D modeling (image cell) */}
           <motion.div
             variants={cellVariants}
-            className="v2-card relative overflow-hidden p-7 md:col-span-3"
+            className="v2-card relative overflow-hidden md:col-span-3"
           >
+            <Image
+              src="/images/capability-3d-rendering.png"
+              alt="Architectural 3D rendering of a modern residence at dusk"
+              fill
+              quality={70}
+              sizes="(max-width: 768px) 92vw, 520px"
+              className="object-cover object-center"
+            />
             <div
-              className="pointer-events-none absolute inset-0"
-              aria-hidden="true"
+              className="relative flex h-full min-h-[13rem] flex-col justify-end p-7"
               style={{
                 background:
-                  "radial-gradient(120% 140% at 100% 0%, rgba(67,83,255,0.16), transparent 55%)",
+                  "linear-gradient(to top, rgba(14,15,18,0.92) 28%, rgba(14,15,18,0.35) 70%, rgba(14,15,18,0.15))",
               }}
-            />
-            <div className="relative flex h-full flex-col justify-end">
+            >
               <h3
                 className="text-xl font-semibold tracking-tight"
                 style={{ color: "var(--v2-text)" }}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommentForm } from "@/components/CommentForm";
 import { Footer } from "@/components/Footer";
-import { FloatingGlassNav } from "@/components/FloatingGlassNav";
+import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { adminSupabase } from "@/lib/supabase/admin";
 import type { Comment, Post } from "@/lib/types/blog";
@@ -68,14 +68,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const approvedComments = (comments ?? []) as Comment[];
 
   return (
-    <>
-      <FloatingGlassNav />
-      <main className="min-h-screen pt-24">
-        <article className="py-16">
+    <SitePage variant="blog">
+      <main className="min-h-[100dvh] pt-24">
+        <article className="py-24">
           <div className="mx-auto max-w-3xl px-6">
             <Link
               href="/blog/"
-              className="font-mono text-sm text-secondary transition-colors hover:text-accent"
+              className="v2-mono text-sm transition-colors hover:text-[var(--v2-text)]"
+              style={{ color: "var(--v2-muted)" }}
             >
               {"← Blog"}
             </Link>
@@ -84,11 +84,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <header className="mt-8">
                 <time
                   dateTime={post.created_at}
-                  className="font-mono text-sm text-accent"
+                  className="v2-mono text-sm"
+                  style={{ color: "var(--v2-accent-text)" }}
                 >
                   {formatDate(post.created_at)}
                 </time>
-                <h1 className="mt-4 text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+                <h1 className="v2-display mt-4 text-[clamp(2.25rem,5vw,3.5rem)]">
                   {post.title}
                 </h1>
               </header>
@@ -101,29 +102,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               />
             </Reveal>
 
-            <hr className="mt-12 border-border" />
+            <hr className="mt-12" style={{ borderColor: "var(--v2-border)" }} />
 
             <Reveal>
               <section className="mt-12">
-                <h2 className="font-mono text-xl font-semibold text-foreground">
-                  Comments
-                </h2>
+                <h2 className="v2-display text-xl">Comments</h2>
 
                 {approvedComments.length === 0 ? (
-                  <p className="mt-4 text-sm text-secondary">
+                  <p
+                    className="mt-4 text-sm"
+                    style={{ color: "var(--v2-muted)" }}
+                  >
                     No comments yet. Be the first to share your thoughts.
                   </p>
                 ) : (
                   <ul className="mt-6 space-y-6">
                     {approvedComments.map((comment) => (
-                      <li
-                        key={comment.id}
-                        className="rounded-md border border-border bg-surface p-4"
-                      >
-                        <p className="font-mono text-sm font-semibold text-accent-soft">
+                      <li key={comment.id} className="v2-card p-4">
+                        <p
+                          className="v2-mono text-sm font-semibold"
+                          style={{ color: "var(--v2-accent-text)" }}
+                        >
                           {comment.name}
                         </p>
-                        <p className="mt-2 text-sm leading-relaxed text-secondary">
+                        <p
+                          className="mt-2 text-sm leading-relaxed"
+                          style={{ color: "var(--v2-muted)" }}
+                        >
                           {comment.body}
                         </p>
                       </li>
@@ -138,6 +143,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </article>
       </main>
       <Footer />
-    </>
+    </SitePage>
   );
 }

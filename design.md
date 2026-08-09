@@ -1,6 +1,6 @@
 # Graphite - Brand & Design Spec
 
-Brand system for clydeabenojar.site. First applied to the `/v2` landing page; intended to roll out sitewide once approved. Supersedes the Railway (purple) and Sentry (lime/violet) themes.
+Brand system for clydeabenojar.site. Applied sitewide across public pages, tools, blog, work, admin, and standalone apps. Supersedes the Railway (purple) and Sentry (lime/violet) themes.
 
 ## 1. Personality
 

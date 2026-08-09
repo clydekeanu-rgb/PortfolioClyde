@@ -33,11 +33,15 @@ export function CommentForm({ postId }: CommentFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      <h3 className="font-mono text-lg font-semibold text-foreground">Leave a comment</h3>
+      <h3 className="v2-display text-lg">Leave a comment</h3>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-2 block text-sm text-secondary">
+          <label
+            htmlFor="name"
+            className="mb-2 block text-sm"
+            style={{ color: "var(--v2-muted)" }}
+          >
             Name
           </label>
           <input
@@ -45,11 +49,15 @@ export function CommentForm({ postId }: CommentFormProps) {
             name="name"
             type="text"
             required
-            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+            className="site-input"
           />
         </div>
         <div>
-          <label htmlFor="email" className="mb-2 block text-sm text-secondary">
+          <label
+            htmlFor="email"
+            className="mb-2 block text-sm"
+            style={{ color: "var(--v2-muted)" }}
+          >
             Email (not displayed publicly)
           </label>
           <input
@@ -57,13 +65,17 @@ export function CommentForm({ postId }: CommentFormProps) {
             name="email"
             type="email"
             required
-            className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+            className="site-input"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="body" className="mb-2 block text-sm text-secondary">
+        <label
+          htmlFor="body"
+          className="mb-2 block text-sm"
+          style={{ color: "var(--v2-muted)" }}
+        >
           Comment
         </label>
         <textarea
@@ -71,26 +83,26 @@ export function CommentForm({ postId }: CommentFormProps) {
           name="body"
           rows={4}
           required
-          className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          className="site-input"
         />
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-md bg-accent px-5 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow disabled:opacity-60"
+        className="v2-btn v2-btn-primary px-5 py-2 text-sm disabled:opacity-60"
       >
         {isSubmitting ? "Submitting..." : "Submit comment"}
       </button>
 
       {status === "success" ? (
-        <p className="text-sm text-accent-soft">
+        <p className="text-sm" style={{ color: "var(--v2-accent-text)" }}>
           Your comment is awaiting moderation.
         </p>
       ) : null}
 
       {status === "error" ? (
-        <p className="text-sm text-syntax-keyword">
+        <p className="text-sm" style={{ color: "var(--color-error)" }}>
           Something went wrong. Please try again.
         </p>
       ) : null}

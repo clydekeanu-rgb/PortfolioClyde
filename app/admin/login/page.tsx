@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/LoginForm";
+import { SitePage } from "@/components/PageBackdrop";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,17 +9,21 @@ export const metadata: Metadata = {
 
 export default function AdminLoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-md rounded-md border border-border bg-surface p-8 shadow-soft">
-        <p className="font-mono text-sm text-accent">Admin /&gt;</p>
-        <h1 className="mt-2 text-2xl font-bold text-foreground">Sign in</h1>
-        <p className="mt-2 text-sm text-secondary">
-          Enter your admin email to receive a magic login link.
-        </p>
-        <div className="mt-6">
-          <LoginForm />
+    <SitePage variant="admin">
+      <main className="flex min-h-[100dvh] items-center justify-center px-6">
+        <div className="v2-card w-full max-w-md p-8">
+          <p className="v2-eyebrow" style={{ color: "var(--v2-accent-text)" }}>
+            {"// admin"}
+          </p>
+          <h1 className="v2-display mt-2 text-2xl">Sign in</h1>
+          <p className="mt-2 text-sm" style={{ color: "var(--v2-muted)" }}>
+            Enter your admin email to receive a magic login link.
+          </p>
+          <div className="mt-6">
+            <LoginForm />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </SitePage>
   );
 }

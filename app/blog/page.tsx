@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
-import { FloatingGlassNav } from "@/components/FloatingGlassNav";
+import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SitePageHeader } from "@/components/SectionHeading";
 import { adminSupabase } from "@/lib/supabase/admin";
 import type { Post } from "@/lib/types/blog";
 import type { Metadata } from "next";
@@ -39,45 +39,51 @@ export default async function BlogPage() {
   const publishedPosts = (posts ?? []) as Post[];
 
   return (
-    <>
-      <FloatingGlassNav />
-      <main className="min-h-screen pt-24">
-        <section className="py-16">
-          <div className="mx-auto max-w-5xl px-6">
+    <SitePage variant="blog">
+      <main className="min-h-[100dvh] pt-24">
+        <section className="py-24">
+          <div className="mx-auto max-w-6xl px-6">
             <Reveal>
-              <SectionHeading>Blog</SectionHeading>
-              <h1 className="mt-4 max-w-3xl text-3xl font-bold leading-tight text-foreground sm:text-4xl">
-                Project write-ups, dev notes, and more...
-              </h1>
+              <SitePageHeader
+                eyebrow="Blog"
+                title="Project write-ups, dev notes, and more."
+              />
             </Reveal>
 
             {publishedPosts.length === 0 ? (
-              <p className="mt-12 font-mono text-secondary">
-                {"// no posts yet — check back soon"}
+              <p className="v2-mono mt-12" style={{ color: "var(--v2-muted)" }}>
+                {"// no posts yet. check back soon"}
               </p>
             ) : (
-              <div className="mt-12 grid gap-6 sm:grid-cols-2">
+              <div className="mt-14 grid gap-6 sm:grid-cols-2">
                 {publishedPosts.map((post, index) => (
-                  <Reveal key={post.id} delay={index * 0.08}>
+                  <Reveal key={post.id} delay={index * 0.06}>
                     <Link
                       href={`/blog/${post.slug}/`}
-                      className="group block rounded-md border border-border bg-surface p-6 transition-[border-color,box-shadow] duration-300 hover:border-accent/60 hover:shadow-glow"
+                      className="v2-card group block p-6 transition-colors duration-200 hover:border-[var(--v2-accent)]/40"
                     >
                       <time
                         dateTime={post.created_at}
-                        className="font-mono text-sm text-accent"
+                        className="v2-mono text-sm"
+                        style={{ color: "var(--v2-accent-text)" }}
                       >
                         {formatDate(post.created_at)}
                       </time>
-                      <h2 className="mt-3 text-xl font-bold text-foreground transition-colors group-hover:text-accent-soft">
+                      <h2 className="v2-display mt-3 text-xl">
                         {post.title}
                       </h2>
                       {post.excerpt ? (
-                        <p className="mt-3 text-sm leading-relaxed text-secondary">
+                        <p
+                          className="mt-3 text-sm leading-relaxed"
+                          style={{ color: "var(--v2-muted)" }}
+                        >
                           {post.excerpt}
                         </p>
                       ) : null}
-                      <span className="mt-4 inline-flex items-center gap-2 font-mono text-sm text-secondary transition-colors group-hover:text-accent">
+                      <span
+                        className="mt-4 inline-flex items-center gap-2 text-sm font-medium"
+                        style={{ color: "var(--v2-accent-text)" }}
+                      >
                         Read more <span aria-hidden="true">→</span>
                       </span>
                     </Link>
@@ -89,6 +95,6 @@ export default async function BlogPage() {
         </section>
       </main>
       <Footer />
-    </>
+    </SitePage>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { updatePost } from "@/app/admin/actions";
+import { SitePage } from "@/components/PageBackdrop";
 import { PostForm } from "@/components/PostForm";
 import { adminSupabase } from "@/lib/supabase/admin";
 import type { Post } from "@/lib/types/blog";
@@ -31,19 +32,22 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
   const boundUpdate = updatePost.bind(null, post.id);
 
   return (
-    <main className="min-h-screen px-6 py-12">
-      <div className="mx-auto max-w-4xl">
-        <Link
-          href="/admin/"
-          className="font-mono text-sm text-secondary transition-colors hover:text-accent"
-        >
-          {"← Dashboard"}
-        </Link>
-        <h1 className="mt-4 text-3xl font-bold text-foreground">Edit Post</h1>
-        <div className="mt-8">
-          <PostForm post={post} action={boundUpdate} />
+    <SitePage variant="admin">
+      <main className="min-h-[100dvh] px-6 py-12">
+        <div className="mx-auto max-w-4xl">
+          <Link
+            href="/admin/"
+            className="v2-mono text-sm transition-colors hover:text-[var(--v2-text)]"
+            style={{ color: "var(--v2-muted)" }}
+          >
+            {"← Dashboard"}
+          </Link>
+          <h1 className="v2-display mt-4 text-3xl">Edit Post</h1>
+          <div className="mt-8">
+            <PostForm post={post} action={boundUpdate} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </SitePage>
   );
 }

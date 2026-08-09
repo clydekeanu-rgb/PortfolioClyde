@@ -41,7 +41,7 @@ function ToolbarButton({ onClick, active, label, children }: ToolbarButtonProps)
       aria-label={label}
       className={`rounded p-2 transition-colors ${
         active
-          ? "bg-accent/20 text-accent-soft"
+          ? "bg-[var(--v2-accent)]/20 text-[var(--v2-accent-text)]"
           : "text-secondary hover:bg-surface hover:text-foreground"
       }`}
     >
@@ -67,7 +67,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
   if (!editor) {
     return (
-      <div className="min-h-[400px] rounded-md border border-border bg-surface p-4 text-secondary">
+      <div className="min-h-[400px] rounded-xl border border-border bg-surface p-4 text-[var(--v2-muted)]">
         Loading editor...
       </div>
     );
@@ -88,7 +88,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   };
 
   return (
-    <div className="overflow-hidden rounded-md border border-border">
+    <div className="overflow-hidden rounded-xl border border-border">
       <div className="flex flex-wrap gap-1 border-b border-border bg-background p-2">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}

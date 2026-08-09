@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SitePage } from "@/components/PageBackdrop";
 import {
   approveComment,
   deleteComment,
@@ -48,17 +49,18 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const stats = await getAnalyticsStats();
 
   return (
-    <main className="min-h-screen px-6 py-12">
+    <SitePage variant="admin">
+    <main className="min-h-[100dvh] px-6 py-12">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="font-mono text-sm text-accent">Admin /&gt;</p>
-            <h1 className="mt-1 text-3xl font-bold text-foreground">Dashboard</h1>
+            <p className="v2-eyebrow" style={{ color: "var(--v2-accent-text)" }}>{"// admin"}</p>
+            <h1 className="mt-1 v2-display text-3xl">Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
             <Link
               href="/admin/new/"
-              className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow"
+              className="v2-btn v2-btn-primary px-4 py-2 text-sm"
             >
               New Post
             </Link>
@@ -67,13 +69,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </div>
 
         {searchParams.success === "saved" ? (
-          <p className="mt-6 rounded-md border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-accent-soft">
+          <p className="mt-6 rounded-xl border border-[var(--v2-accent)]/40 bg-[var(--v2-accent)]/10 px-4 py-3 text-sm text-[var(--v2-accent-text)]">
             Post saved successfully.
           </p>
         ) : null}
 
         <section className="mt-10">
-          <h2 className="font-mono text-lg font-semibold text-foreground">
+          <h2 className="v2-display text-lg">
             Analytics{" "}
             <span className="text-sm font-normal text-secondary">
               (last 30 days)
@@ -81,13 +83,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </h2>
 
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="rounded-md border border-border bg-surface p-4">
+            <div className="v2-card p-4">
               <p className="font-mono text-xs text-secondary">Page Visits</p>
               <p className="mt-1 text-2xl font-bold text-foreground">
                 {stats.totalVisits}
               </p>
             </div>
-            <div className="rounded-md border border-border bg-surface p-4">
+            <div className="v2-card p-4">
               <p className="font-mono text-xs text-secondary">
                 Unique Visitors
               </p>
@@ -105,7 +107,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               {stats.topPages.length === 0 ? (
                 <p className="mt-3 text-sm text-secondary">No data yet.</p>
               ) : (
-                <div className="mt-3 overflow-x-auto rounded-md border border-border">
+                <div className="mt-3 overflow-x-auto rounded-xl border border-border">
                   <table className="w-full text-left text-sm">
                     <thead className="border-b border-border bg-surface">
                       <tr>
@@ -141,7 +143,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               {stats.sectionStats.length === 0 ? (
                 <p className="mt-3 text-sm text-secondary">No data yet.</p>
               ) : (
-                <div className="mt-3 overflow-x-auto rounded-md border border-border">
+                <div className="mt-3 overflow-x-auto rounded-xl border border-border">
                   <table className="w-full text-left text-sm">
                     <thead className="border-b border-border bg-surface">
                       <tr>
@@ -185,7 +187,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               <h3 className="font-mono text-sm font-semibold text-secondary">
                 Recent Visits
               </h3>
-              <div className="mt-3 overflow-x-auto rounded-md border border-border">
+              <div className="mt-3 overflow-x-auto rounded-xl border border-border">
                 <table className="w-full min-w-[480px] text-left text-sm">
                   <thead className="border-b border-border bg-surface">
                     <tr>
@@ -222,14 +224,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-mono text-lg font-semibold text-foreground">Posts</h2>
+          <h2 className="v2-display text-lg">Posts</h2>
 
           {allPosts.length === 0 ? (
             <p className="mt-4 text-sm text-secondary">
               No posts yet. Create your first one.
             </p>
           ) : (
-            <div className="mt-4 overflow-x-auto rounded-md border border-border">
+            <div className="mt-4 overflow-x-auto rounded-xl border border-border">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead className="border-b border-border bg-surface">
                   <tr>
@@ -270,7 +272,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                           <form action={deletePost.bind(null, post.id)}>
                             <button
                               type="submit"
-                              className="rounded border border-border px-2 py-1 text-xs text-secondary transition-colors hover:text-syntax-keyword"
+                              className="rounded border border-border px-2 py-1 text-xs text-secondary transition-colors hover:text-[var(--color-error)]"
                             >
                               Delete
                             </button>
@@ -296,7 +298,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <section className="mt-12">
-          <h2 className="font-mono text-lg font-semibold text-foreground">
+          <h2 className="v2-display text-lg">
             Pending Comments
           </h2>
 
@@ -307,7 +309,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               {comments.map((comment) => (
                 <li
                   key={comment.id}
-                  className="rounded-md border border-border bg-surface p-4"
+                  className="v2-card p-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -341,7 +343,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                       <form action={deleteComment.bind(null, comment.id)}>
                         <button
                           type="submit"
-                          className="rounded border border-border px-3 py-1 text-xs text-secondary transition-colors hover:text-syntax-keyword"
+                          className="rounded border border-border px-3 py-1 text-xs text-secondary transition-colors hover:text-[var(--color-error)]"
                         >
                           Delete
                         </button>
@@ -355,5 +357,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
       </div>
     </main>
+    </SitePage>
   );
 }

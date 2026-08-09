@@ -1,18 +1,18 @@
 :root,
 .railway {
-  --rw-brand: #c049ff;
-  --rw-brand-soft: #e879ff;
-  --rw-bg: #13111a;
-  --rw-text: #ffffff;
-  --rw-accent: #844fba;
-  --rw-surface: #2f2b3a;
-  --rw-surface-2: #1e1a2b;
-  --rw-border: #4a4560;
-  --rw-muted: #8b8aa0;
+  --rw-brand: #4353ff;
+  --rw-brand-soft: #9aa3ff;
+  --rw-bg: #0e0f12;
+  --rw-text: #eceef2;
+  --rw-accent: #5b69ff;
+  --rw-surface: #15171c;
+  --rw-surface-2: #1b1e24;
+  --rw-border: #26292f;
+  --rw-muted: #9ba0aa;
   --rw-success: #22c55e;
-  --rw-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.4);
-  --rw-shadow-md: 0 4px 20px rgba(192, 73, 255, 0.15);
-  --rw-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --rw-shadow-sm: 0 1px 4px rgba(5, 6, 10, 0.4);
+  --rw-shadow-md: 0 4px 20px rgba(5, 6, 10, 0.35);
+  --rw-shadow-lg: 0 12px 40px rgba(5, 6, 10, 0.55);
   --rw-radius-sm: 4px;
   --rw-radius-md: 8px;
   --rw-radius-lg: 12px;
@@ -21,11 +21,11 @@
 .railway {
   background: var(--rw-bg);
   color: var(--rw-text);
-  font-family: var(--font-sans), Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-geist-sans), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 .railway .font-mono {
-  font-family: var(--font-mono), "Fira Code", ui-monospace, monospace;
+  font-family: var(--font-geist-mono), var(--font-mono), ui-monospace, monospace;
 }
 
 .railway .rw-brand {
@@ -53,7 +53,7 @@
 }
 
 .railway .rw-gradient-text {
-  background: linear-gradient(135deg, #c049ff 0%, #e879ff 50%, #844fba 100%);
+  background: linear-gradient(135deg, #4353ff 0%, #5b69ff 50%, #9aa3ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -68,8 +68,8 @@
 }
 
 .railway .rw-cta:hover {
-  background: #d06aff;
-  box-shadow: 0 6px 28px rgba(192, 73, 255, 0.28);
+  background: #5b69ff;
+  box-shadow: 0 6px 28px rgba(67, 83, 255, 0.28);
 }
 
 .railway .rw-cta-outline {
@@ -94,7 +94,7 @@
 }
 
 .railway .rw-card:hover {
-  border-color: rgba(192, 73, 255, 0.55);
+  border-color: rgba(67, 83, 255, 0.55);
   box-shadow: var(--rw-shadow-md);
 }
 
@@ -107,7 +107,7 @@
 }
 
 .railway .group:hover .rw-media {
-  border-color: rgba(192, 73, 255, 0.55);
+  border-color: rgba(67, 83, 255, 0.55);
   box-shadow: var(--rw-shadow-md);
 }
 
@@ -150,7 +150,7 @@
 }
 
 .railway .rw-nav-hire:hover {
-  background: #d06aff !important;
+  background: #5b69ff !important;
 }
 
 .railway .rw-footer {

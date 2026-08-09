@@ -19,6 +19,16 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/v2",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/v2/",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

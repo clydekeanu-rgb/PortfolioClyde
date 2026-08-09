@@ -1,7 +1,9 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { motion, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+
+const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
 
 type RevealProps = {
   children: React.ReactNode;
@@ -12,21 +14,43 @@ type RevealProps = {
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   const reduceMotion = useReducedMotion();
 
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
-    <BlurFade
-      inView
-      direction="up"
-      offset={40}
-      duration={0.6}
-      blur="4px"
-      delay={delay}
+    <motion.div
       className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: EASE_OUT_STRONG,
+      }}
     >
       {children}
-    </BlurFade>
+    </motion.div>
+  );
+}
+
+type SectionHeadingProps = {
+  children: string;
+  center?: boolean;
+  className?: string;
+};
+
+export function SectionHeading({
+  children,
+  center = false,
+  className,
+}: SectionHeadingProps) {
+  return (
+    <p
+      className={cn(
+        "v2-eyebrow",
+        center && "text-center",
+        className,
+      )}
+    >
+      {`// ${children.toLowerCase()}`}
+    </p>
   );
 }

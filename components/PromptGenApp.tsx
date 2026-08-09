@@ -858,7 +858,7 @@ export function PromptGenApp() {
             </button>
           </div>
 
-          <div className="mt-8 rounded-md border border-border bg-surface p-5 shadow-soft">
+          <div className="mt-8 v2-card p-5">
             <div className="flex items-center justify-between gap-4">
               <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-secondary/70">
                 json output
@@ -881,7 +881,7 @@ export function PromptGenApp() {
             </pre>
           </div>
 
-          <div className="mt-6 rounded-md border border-border bg-surface p-6 shadow-soft">
+          <div className="mt-6 v2-card p-6">
             <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-secondary/70">
               prompt preview
             </span>
@@ -909,8 +909,8 @@ export function PromptGenApp() {
   };
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-4xl flex-col px-6 py-8 sm:py-10">
-      <div className="rounded-md border border-border bg-surface/80 p-4 shadow-soft backdrop-blur-sm sm:p-5">
+    <div className="mx-auto flex min-h-[70vh] max-w-4xl flex-col py-6">
+      <div className="rounded-xl border border-border bg-surface/90 p-4 sm:p-5">
         <div className="flex items-center justify-between gap-4">
           <div className="font-mono text-sm font-semibold text-foreground">
             <span className="text-accent">&lt;</span>PromptGen
@@ -930,12 +930,12 @@ export function PromptGenApp() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-md border border-border bg-background/70 p-6 shadow-soft sm:p-8">
+      <div className="mt-6 rounded-md border border-border bg-background/70 p-6  sm:p-8">
         {renderStepContent()}
       </div>
 
       {state.step < 11 ? (
-        <div className="mt-6 flex items-center justify-between gap-4 rounded-md border border-border bg-surface/80 p-4 shadow-soft">
+        <div className="mt-6 flex items-center justify-between gap-4 rounded-md border border-border bg-surface/80 p-4 ">
           <button
             type="button"
             onClick={handleBack}
@@ -948,7 +948,7 @@ export function PromptGenApp() {
             type="button"
             onClick={handleNext}
             disabled={state.step === 10 && !canGenerate}
-            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow disabled:cursor-not-allowed disabled:bg-surface disabled:text-secondary disabled:shadow-none"
+            className="v2-btn v2-btn-primary px-5 py-2 text-sm disabled:cursor-not-allowed disabled:bg-surface disabled:text-secondary disabled:shadow-none"
           >
             {state.step === 10 ? "Generate Prompt" : "Next →"}
           </button>

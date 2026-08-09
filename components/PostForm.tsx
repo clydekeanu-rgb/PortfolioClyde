@@ -55,7 +55,7 @@ export function PostForm({ post, action }: PostFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="title" className="mb-2 block text-sm text-secondary">
+        <label htmlFor="title" className="mb-2 block text-sm text-[var(--v2-muted)]">
           Title
         </label>
         <input
@@ -65,12 +65,12 @@ export function PostForm({ post, action }: PostFormProps) {
           required
           value={title}
           onChange={(event) => handleTitleChange(event.target.value)}
-          className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          className="site-input"
         />
       </div>
 
       <div>
-        <label htmlFor="slug" className="mb-2 block text-sm text-secondary">
+        <label htmlFor="slug" className="mb-2 block text-sm text-[var(--v2-muted)]">
           Slug
         </label>
         <input
@@ -83,12 +83,12 @@ export function PostForm({ post, action }: PostFormProps) {
             setSlugEdited(true);
             setSlug(event.target.value);
           }}
-          className="w-full rounded-md border border-border bg-surface px-4 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-accent"
+          className="site-input v2-mono"
         />
       </div>
 
       <div>
-        <label htmlFor="excerpt" className="mb-2 block text-sm text-secondary">
+        <label htmlFor="excerpt" className="mb-2 block text-sm text-[var(--v2-muted)]">
           Excerpt
         </label>
         <textarea
@@ -97,12 +97,12 @@ export function PostForm({ post, action }: PostFormProps) {
           rows={3}
           value={excerpt}
           onChange={(event) => setExcerpt(event.target.value)}
-          className="w-full rounded-md border border-border bg-surface px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          className="site-input"
         />
       </div>
 
       <div>
-        <label className="mb-2 block text-sm text-secondary">Content</label>
+        <label className="mb-2 block text-sm text-[var(--v2-muted)]">Content</label>
         <RichTextEditor content={content} onChange={setContent} />
       </div>
 
@@ -116,20 +116,20 @@ export function PostForm({ post, action }: PostFormProps) {
         Published
       </label>
 
-      {error ? <p className="text-sm text-syntax-keyword">{error}</p> : null}
+      {error ? <p className="text-sm text-[var(--color-error)]">{error}</p> : null}
 
       <div className="flex gap-3">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-md bg-accent px-5 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow disabled:opacity-60"
+          className="v2-btn v2-btn-primary px-5 py-2 text-sm disabled:opacity-60"
         >
           {isSubmitting ? "Saving..." : post ? "Update post" : "Create post"}
         </button>
         <button
           type="button"
           onClick={() => router.push("/admin/")}
-          className="rounded-md border border-border px-5 py-2 text-sm text-secondary transition-colors hover:text-foreground"
+          className="rounded-md border border-border px-5 py-2 text-sm text-[var(--v2-muted)] transition-colors hover:text-foreground"
         >
           Cancel
         </button>

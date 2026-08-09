@@ -29,7 +29,11 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="email" className="mb-2 block text-sm text-secondary">
+        <label
+          htmlFor="email"
+          className="mb-2 block text-sm"
+          style={{ color: "var(--v2-muted)" }}
+        >
           Email
         </label>
         <input
@@ -37,7 +41,7 @@ export function LoginForm() {
           name="email"
           type="email"
           required
-          className="w-full rounded-md border border-border bg-background px-4 py-2 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          className="site-input"
           placeholder="clyde@clydeabenojar.site"
         />
       </div>
@@ -45,13 +49,21 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-accent px-5 py-2 text-sm font-semibold text-background transition-shadow hover:shadow-glow disabled:opacity-60"
+        className="v2-btn v2-btn-primary w-full px-5 py-2 text-sm disabled:opacity-60"
       >
         {isSubmitting ? "Sending..." : "Send magic link"}
       </button>
 
-      {message ? <p className="text-sm text-accent-soft">{message}</p> : null}
-      {error ? <p className="text-sm text-syntax-keyword">{error}</p> : null}
+      {message ? (
+        <p className="text-sm" style={{ color: "var(--v2-accent-text)" }}>
+          {message}
+        </p>
+      ) : null}
+      {error ? (
+        <p className="text-sm" style={{ color: "var(--color-error)" }}>
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

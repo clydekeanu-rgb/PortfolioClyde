@@ -68,7 +68,7 @@ export function V2Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(14,15,18,0.4) 0%, rgba(14,15,18,0.55) 50%, var(--v2-bg) 100%)",
+              "linear-gradient(to bottom, rgba(14,15,18,0.1) 0%, rgba(14,15,18,0.2) 50%, var(--v2-bg) 100%)",
           }}
         />
       </div>

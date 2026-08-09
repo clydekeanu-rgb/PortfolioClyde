@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -11,6 +12,11 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
+
+const SideRays = dynamic(() => import("@/components/ui/SideRays"), {
+  ssr: false,
+});
 
 const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
 
@@ -20,6 +26,8 @@ type Project = {
   tags: string[];
   href: string;
   image: string;
+  displayAsLaptop?: boolean;
+  siteUrl?: string;
 };
 
 const projects: Project[] = [
@@ -38,6 +46,8 @@ const projects: Project[] = [
     tags: ["Web app", "CMS"],
     href: "/work/promise-surrogacy/",
     image: "/images/promise-cover.png",
+    displayAsLaptop: true,
+    siteUrl: "pilot.promisesurrogacy.com",
   },
   {
     title: "Konstru",
@@ -46,6 +56,8 @@ const projects: Project[] = [
     tags: ["SaaS", "Web app"],
     href: "/work/konstru/",
     image: "/images/Konstru.png",
+    displayAsLaptop: true,
+    siteUrl: "konstru.clydeabenojar.site",
   },
   {
     title: "The Pickleball Pavilion",
@@ -54,6 +66,8 @@ const projects: Project[] = [
     tags: ["Booking system", "Web app"],
     href: "/work/pickleball-pavilion/",
     image: "/images/PicklePavilion.png",
+    displayAsLaptop: true,
+    siteUrl: "picklepavilion.netlify.app",
   },
   {
     title: "Lumina Studio",
@@ -75,8 +89,29 @@ export function WorkStack() {
   });
 
   return (
-    <section id="work" className="pt-24">
-      <div className="mx-auto flex max-w-6xl items-end justify-between gap-6 px-6">
+    <section id="work" className="relative pt-24">
+      {!reduceMotion && (
+        <div
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+          aria-hidden="true"
+        >
+          <SideRays
+            speed={2.5}
+            rayColor1="#EAB308"
+            rayColor2="#96c8ff"
+            intensity={2}
+            spread={2}
+            origin="top-right"
+            tilt={0}
+            saturation={1.5}
+            blend={0.75}
+            falloff={1.6}
+            opacity={1.0}
+          />
+        </div>
+      )}
+
+      <div className="relative z-10 mx-auto flex max-w-6xl items-end justify-between gap-6 px-6">
         <motion.h2
           className="v2-display text-[clamp(2rem,4vw,3rem)]"
           initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -99,7 +134,7 @@ export function WorkStack() {
         </Link>
       </div>
 
-      <div ref={containerRef} className="relative mt-4">
+      <div ref={containerRef} className="relative z-10 mt-4">
         {projects.map((project, index) => (
           <StackCard
             key={project.title}
@@ -179,14 +214,23 @@ function StackCard({
               background: "var(--v2-elevated)",
             }}
           >
-            <Image
-              src={project.image}
-              alt={`${project.title} screenshot`}
-              fill
-              quality={70}
-              sizes="(max-width: 768px) 92vw, 620px"
-              className="object-cover object-top"
-            />
+            {project.displayAsLaptop ? (
+              <LaptopBrowserMockup
+                src={project.image}
+                alt={`${project.title} screenshot`}
+                url={project.siteUrl}
+                sizes="(max-width: 768px) 92vw, 620px"
+              />
+            ) : (
+              <Image
+                src={project.image}
+                alt={`${project.title} screenshot`}
+                fill
+                quality={70}
+                sizes="(max-width: 768px) 92vw, 620px"
+                className="object-cover object-top"
+              />
+            )}
           </div>
         </div>
       </motion.article>

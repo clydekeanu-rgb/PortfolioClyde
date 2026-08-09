@@ -2,10 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
-import { FloatingGlassNav } from "@/components/FloatingGlassNav";
+import {
+  LaptopBrowserMockup,
+  LAPTOP_MOCKUP_SLUGS,
+} from "@/components/LaptopBrowserMockup";
+import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
 import type { Metadata } from "next";
+
+function browserUrl(liveUrl?: string) {
+  if (!liveUrl || liveUrl.startsWith("/")) return undefined;
+  return liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+}
 
 type CaseStudyPageProps = {
   params: { slug: string };
@@ -44,46 +53,68 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
   }
 
   return (
-    <>
-      <FloatingGlassNav />
-      <main className="min-h-screen pt-24">
-        <article className="py-16">
-          <div className="mx-auto max-w-5xl px-6">
+    <SitePage variant="work">
+      <main className="min-h-[100dvh] pt-24">
+        <article className="py-24">
+          <div className="mx-auto max-w-6xl px-6">
             <Link
               href="/work/"
-              className="font-mono text-sm text-secondary transition-colors hover:text-accent"
+              className="v2-mono text-sm transition-colors hover:text-[var(--v2-text)]"
+              style={{ color: "var(--v2-muted)" }}
             >
               {"← Back to projects"}
             </Link>
 
             <Reveal>
               <header className="mt-8">
-                <p className="font-mono text-sm text-accent">{study.tagline}</p>
-                <h1 className="mt-3 text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+                <p className="v2-eyebrow" style={{ color: "var(--v2-accent-text)" }}>
+                  {study.tagline}
+                </p>
+                <h1 className="v2-display mt-3 text-[clamp(2.25rem,5vw,3.5rem)]">
                   {study.title}
                 </h1>
 
-                <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-md border border-border bg-surface shadow-soft">
-                  <Image
-                    src={study.coverImage}
-                    alt={study.title}
-                    fill
-                    priority
-                    sizes="(min-width: 1024px) 1024px, 100vw"
-                    className="object-cover"
-                  />
+                <div
+                  className="relative mt-8 aspect-[16/10] overflow-hidden rounded-xl border bg-surface"
+                  style={{ borderColor: "var(--v2-border)" }}
+                >
+                  {LAPTOP_MOCKUP_SLUGS.has(study.slug) ? (
+                    <LaptopBrowserMockup
+                      src={study.coverImage}
+                      alt={study.title}
+                      url={browserUrl(study.liveUrl)}
+                      priority
+                      sizes="(min-width: 1024px) 1024px, 100vw"
+                    />
+                  ) : (
+                    <Image
+                      src={study.coverImage}
+                      alt={study.title}
+                      fill
+                      priority
+                      sizes="(min-width: 1024px) 1024px, 100vw"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               </header>
             </Reveal>
 
             <Reveal>
               <div className="mt-10">
-                <p className="font-mono text-sm text-secondary">{study.role}</p>
+                <p className="v2-mono text-sm" style={{ color: "var(--v2-muted)" }}>
+                  {study.role}
+                </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {study.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-secondary"
+                      className="v2-mono rounded-full border px-3 py-1 text-xs"
+                      style={{
+                        borderColor: "var(--v2-border)",
+                        color: "var(--v2-muted)",
+                        background: "var(--v2-surface)",
+                      }}
                     >
                       {tech}
                     </span>
@@ -91,7 +122,10 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                 </div>
               </div>
 
-              <p className="mt-10 max-w-3xl font-readable text-lg leading-[1.8] text-secondary">
+              <p
+                className="mt-10 max-w-[65ch] text-lg leading-relaxed"
+                style={{ color: "var(--v2-muted)" }}
+              >
                 {study.overview}
               </p>
             </Reveal>
@@ -101,7 +135,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                 const isRight = index % 2 === 1;
 
                 return (
-                  <Reveal key={section.heading} delay={index * 0.08}>
+                  <Reveal key={section.heading} delay={index * 0.06}>
                     <div
                       className={[
                         "flex w-full flex-col gap-6",
@@ -110,7 +144,10 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                       ].join(" ")}
                     >
                       {section.image ? (
-                        <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-border bg-surface shadow-soft md:w-[52%] lg:w-[50%]">
+                        <div
+                          className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-xl border bg-surface md:w-[52%] lg:w-[50%]"
+                          style={{ borderColor: "var(--v2-border)" }}
+                        >
                           <Image
                             src={section.image}
                             alt={section.heading}
@@ -130,16 +167,20 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                             : "md:items-start md:text-left",
                         ].join(" ")}
                       >
-                        <h2 className="font-mono text-2xl font-bold leading-tight text-foreground sm:text-3xl">
+                        <h2 className="v2-display text-2xl sm:text-3xl">
                           {section.heading}
                         </h2>
                         <div
                           className={[
-                            "mt-4 h-0.5 w-40 bg-primary sm:w-52",
+                            "mt-4 h-px w-40 sm:w-52",
                             isRight ? "md:ml-auto" : "",
                           ].join(" ")}
+                          style={{ background: "var(--v2-accent)" }}
                         />
-                        <p className="mt-4 max-w-[55ch] font-readable text-base leading-[1.7] text-secondary sm:text-lg">
+                        <p
+                          className="mt-4 max-w-[55ch] text-base leading-relaxed sm:text-lg"
+                          style={{ color: "var(--v2-muted)" }}
+                        >
                           {section.body}
                         </p>
                       </div>
@@ -163,9 +204,9 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                             target: "_blank",
                             rel: "noopener noreferrer",
                           })}
-                      className="inline-flex rounded-md bg-accent px-5 py-3 text-sm font-semibold text-background transition-shadow hover:shadow-glow"
+                      className="v2-btn v2-btn-primary px-5 py-3 text-sm"
                     >
-                      &gt; {link.label}
+                      {link.label}
                     </a>
                   );
                 })}
@@ -180,11 +221,11 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                         target: "_blank",
                         rel: "noopener noreferrer",
                       })}
-                  className="inline-flex rounded-md bg-accent px-5 py-3 text-sm font-semibold text-background transition-shadow hover:shadow-glow"
+                  className="v2-btn v2-btn-primary px-5 py-3 text-sm"
                 >
                   {study.liveUrl.toLowerCase().endsWith(".apk")
-                    ? "> download_apk()"
-                    : "> visit_live_site()"}
+                    ? "Download APK"
+                    : "Visit live site"}
                 </a>
               </Reveal>
             ) : null}
@@ -192,6 +233,6 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
         </article>
       </main>
       <Footer />
-    </>
+    </SitePage>
   );
 }

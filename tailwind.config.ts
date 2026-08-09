@@ -33,10 +33,11 @@ const config: Config = {
         },
         accent: {
           DEFAULT: "var(--primary)",
-          soft: "#E879FF",
+          soft: "var(--v2-accent-text)",
           foreground: "var(--primary-foreground)",
         },
-        surface: "#2F2B3A",
+        surface: "var(--v2-surface)",
+        elevated: "var(--v2-elevated)",
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
@@ -44,9 +45,9 @@ const config: Config = {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
-        "syntax-string": "#FACC15",
-        "syntax-keyword": "#F472B6",
-        "syntax-comment": "#6B7280",
+        "syntax-string": "var(--color-syntax-string)",
+        "syntax-keyword": "var(--color-syntax-keyword)",
+        "syntax-comment": "var(--color-syntax-comment)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -54,25 +55,31 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-geist-sans)",
+          "var(--font-sans)",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
         mono: [
+          "var(--font-geist-mono)",
           "var(--font-mono)",
-          "Fira Code",
           "ui-monospace",
           "SFMono-Regular",
           "monospace",
         ],
         readable: [
+          "var(--font-geist-sans)",
           "var(--font-sans)",
-          "Inter",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",
         ],
       },
       boxShadow: {
-        glow: "0 0 34px rgba(192, 73, 255, 0.22)",
-        soft: "0 18px 60px rgba(0, 0, 0, 0.35)",
+        glow: "0 8px 32px rgba(5, 6, 10, 0.45)",
+        soft: "0 18px 60px rgba(5, 6, 10, 0.35)",
       },
       animation: {
         "shimmer-slide":

@@ -1,51 +1,60 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { SectionHeading } from "@/components/Reveal";
+import { cn } from "@/lib/utils";
 
-type SectionHeadingProps = {
+type SectionHeadingCompatProps = {
   children: string;
   center?: boolean;
 };
 
-export function SectionHeading({ children, center = false }: SectionHeadingProps) {
-  const reduceMotion = useReducedMotion();
-  const label = `${children} />`;
-  const characters = label.split("");
+/** @deprecated Prefer importing SectionHeading from Reveal or using SitePageHeader. */
+export function SectionHeadingCompat({
+  children,
+  center = false,
+}: SectionHeadingCompatProps) {
+  return <SectionHeading center={center}>{children}</SectionHeading>;
+}
 
+export { SectionHeading };
+
+type SitePageHeaderProps = {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  center?: boolean;
+  className?: string;
+};
+
+export function SitePageHeader({
+  eyebrow,
+  title,
+  description,
+  center = false,
+  className,
+}: SitePageHeaderProps) {
   return (
-    <div className={center ? "text-center" : ""}>
-      <motion.h2
-        className="font-mono text-xl font-semibold tracking-normal text-foreground"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.7 }}
-        variants={{
-          hidden: {},
-          show: {
-            transition: { staggerChildren: reduceMotion ? 0 : 0.03 },
-          },
-        }}
-        aria-label={label}
+    <div className={cn(center && "text-center", className)}>
+      <SectionHeading center={center}>{eyebrow}</SectionHeading>
+      <h1
+        className={cn(
+          "v2-display mt-4 text-[clamp(2rem,4vw,3rem)]",
+          center && "mx-auto",
+        )}
       >
-        {characters.map((char, index) => {
-          const isAccent = char === "/" || char === ">";
-          return (
-            <motion.span
-              key={`${char}-${index}`}
-              className={isAccent ? "text-accent" : "text-foreground"}
-              variants={{
-                hidden: reduceMotion
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: 0, y: 8 },
-                show: { opacity: 1, y: 0 },
-              }}
-              aria-hidden="true"
-            >
-              {char}
-            </motion.span>
-          );
-        })}
-      </motion.h2>
+        {title}
+      </h1>
+      {description ? (
+        <p
+          className={cn(
+            "mt-4 max-w-2xl text-base leading-relaxed sm:text-lg",
+            center && "mx-auto",
+          )}
+          style={{ color: "var(--v2-muted)" }}
+        >
+          {description}
+        </p>
+      ) : null}
     </div>
   );
 }

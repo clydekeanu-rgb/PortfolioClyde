@@ -3,9 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useReducedMotion } from "motion/react";
-import { BlurFade } from "@/components/ui/blur-fade";
-import { BorderBeam } from "@/components/ui/border-beam";
+import { Reveal } from "@/components/Reveal";
 
 export type Project = {
   title: string;
@@ -25,16 +23,12 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
-  const reduceMotion = useReducedMotion();
   const isRight = index % 2 === 1;
   const number = project.number ?? String(index).padStart(2, "0");
 
   return (
-    <BlurFade
-      inView
+    <Reveal
       delay={index * 0.06}
-      offset={28}
-      direction={isRight ? "right" : "left"}
       className={[
         "relative flex w-full",
         isRight ? "md:justify-end" : "md:justify-start",
@@ -54,11 +48,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       >
         <div
           className={[
-            "relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-border bg-surface shadow-soft",
-            "transition-[border-color,box-shadow] duration-500 ease-out",
-            "group-hover:border-accent/80 group-hover:shadow-[0_0_34px_rgba(124,58,237,0.34)]",
+            "relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-xl border bg-surface",
+            "transition-colors duration-200 group-hover:border-[var(--v2-accent)]/40",
             "md:w-[52%] lg:w-[50%]",
           ].join(" ")}
+          style={{ borderColor: "var(--v2-border)" }}
         >
           <Image
             src={project.image}
@@ -67,17 +61,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             sizes="(min-width: 1024px) 50vw, (min-width: 768px) 52vw, 100vw"
             className="object-cover transition-transform duration-500 ease-out group-hover:motion-safe:scale-105"
           />
-          {!reduceMotion && (
-            <BorderBeam
-              size={90}
-              duration={10}
-              delay={index * 0.4}
-              colorFrom="#7C3AED"
-              colorTo="#A78BFA"
-              borderWidth={1.25}
-              className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            />
-          )}
         </div>
 
         <div
@@ -87,20 +70,26 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             isRight ? "md:items-end md:text-right" : "md:items-start md:text-left",
           ].join(" ")}
         >
-          <p className="font-mono text-sm text-accent">{project.subtitle}</p>
+          <p className="v2-eyebrow" style={{ color: "var(--v2-accent-text)" }}>
+            {project.subtitle}
+          </p>
 
-          <h3 className="mt-2 font-mono text-2xl font-bold leading-tight text-foreground sm:text-3xl lg:text-4xl">
+          <h3 className="v2-display mt-2 text-2xl sm:text-3xl lg:text-4xl">
             {project.title}
           </h3>
 
           <div
             className={[
-              "mt-4 h-0.5 w-40 bg-accent sm:w-52",
+              "mt-4 h-px w-40 sm:w-52",
               isRight ? "md:ml-auto" : "",
             ].join(" ")}
+            style={{ background: "var(--v2-accent)" }}
           />
 
-          <p className="mt-4 max-w-[55ch] font-readable text-base leading-[1.7] text-secondary sm:text-lg">
+          <p
+            className="mt-4 max-w-[55ch] text-base leading-relaxed sm:text-lg"
+            style={{ color: "var(--v2-muted)" }}
+          >
             {project.description}
           </p>
 
@@ -113,7 +102,12 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-secondary"
+                className="v2-mono rounded-full border px-3 py-1 text-xs"
+                style={{
+                  borderColor: "var(--v2-border)",
+                  background: "var(--v2-surface)",
+                  color: "var(--v2-muted)",
+                }}
               >
                 {tag}
               </span>
@@ -122,20 +116,19 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
           <div
             className={[
-              "mt-6 flex items-center gap-3 font-mono text-sm font-semibold",
+              "mt-6 flex items-center gap-3 text-sm font-medium",
               isRight ? "md:justify-end" : "",
             ].join(" ")}
+            style={{ color: "var(--v2-accent-text)" }}
           >
-            <span className="text-secondary transition-colors duration-300 group-hover:text-accent">
-              {number}
-            </span>
+            <span className="v2-mono">{number}</span>
             <ArrowRight
-              className="h-4 w-4 text-secondary transition-all duration-300 group-hover:text-accent group-hover:motion-safe:translate-x-1"
+              className="h-4 w-4 transition-transform duration-200 group-hover:motion-safe:translate-x-1"
               aria-hidden="true"
             />
           </div>
         </div>
       </Link>
-    </BlurFade>
+    </Reveal>
   );
 }

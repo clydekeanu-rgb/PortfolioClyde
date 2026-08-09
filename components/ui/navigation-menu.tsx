@@ -16,9 +16,11 @@ export type AnimatedNavItem = {
 };
 
 const defaultNavItems: AnimatedNavItem[] = [
-  { name: "Work", href: "#work" },
-  { name: "About", href: "#about" },
-  { name: "Contact", href: "#contact" },
+  { name: "Work", href: "/work/" },
+  { name: "Free Tools", href: "/free-tools/" },
+  { name: "Blog", href: "/blog/" },
+  { name: "About", href: "/#about" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 const EXPAND_SCROLL_THRESHOLD = 80;
@@ -107,7 +109,7 @@ type AnimatedNavFramerProps = {
 export function AnimatedNavFramer({
   items = defaultNavItems,
   brand = "Clyde Abenojar",
-  brandHref = "/v2",
+  brandHref = "/",
   className,
 }: AnimatedNavFramerProps) {
   const reduceMotion = useReducedMotion();

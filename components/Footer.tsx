@@ -1,12 +1,17 @@
 export function Footer() {
   return (
-    <footer className="rw-footer py-8">
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono">
+    <footer className="border-t py-8" style={{ borderColor: "var(--v2-border)" }}>
+      <div
+        className="v2-mono mx-auto flex max-w-6xl flex-col gap-2 px-6 text-sm sm:flex-row sm:items-center sm:justify-between"
+        style={{ color: "var(--v2-faint)" }}
+      >
+        <p>
           {"// "}&copy; {new Date().getFullYear()} Clyde Abenojar
         </p>
-        <p className="font-mono">clydeabenojar.site</p>
+        <p>clydeabenojar.site</p>
       </div>
     </footer>
   );
 }
+
+export { Footer as V2Footer };

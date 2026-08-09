@@ -1,20 +1,10 @@
 import type { Metadata } from "next";
-import { Fira_Code, Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
+import { SiteNav } from "@/components/SiteNav";
 import { ThemeProvider } from "@/components/theme-provider";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clydeabenojar.site"),
@@ -52,15 +42,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${firaCode.variable}`}
+      className={`dark ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
         <link rel="preconnect" href="https://cdn.simpleicons.org" />
       </head>
-      <body className={`${inter.className} railway antialiased`}>
+      <body className={`${GeistSans.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <Analytics />
+          <SiteNav />
           {children}
         </ThemeProvider>
       </body>

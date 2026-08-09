@@ -41,7 +41,7 @@ export function V2Nav() {
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link
-          href="/v2"
+          href="/"
           className="text-[0.9375rem] font-semibold tracking-tight"
           style={{ color: "var(--v2-text)" }}
         >
