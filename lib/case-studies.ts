@@ -206,6 +206,37 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
+    slug: "ch-services",
+    title: "C.H Services",
+    tagline: "Property Maintenance Marketing Site",
+    coverImage: "/images/ch-services-cover.png",
+    liveUrl: "https://mockup1.clydeabenojar.site",
+    role: "End-to-end design & AI-assisted development",
+    techStack: ["Next.js", "TypeScript", "Tailwind"],
+    overview:
+      "A prospect mockup for a Kent property-maintenance business: a trust-led landing page with services, before/after proof, customer reviews, and free-quote lead capture — built to turn local homeowners into booked jobs.",
+    sections: [
+      {
+        heading: "Trust-Led Hero & Positioning",
+        body:
+          "The first viewport leads with protection messaging over real site photography, then spells out why Kent homes and businesses choose a small, insured, hands-on team — reliable, detailed, and focused on catching issues before they become costly repairs.",
+        image: "/images/ch-services-cover.png",
+      },
+      {
+        heading: "Services Catalog & Before/After Proof",
+        body:
+          "A full services catalog covers everyday upkeep through specialist roofline, gutter, and solar care, paired with an interactive before-and-after slider so prospects can see the difference preventative exterior work actually makes.",
+        image: "/images/ch-services-before-after.png",
+      },
+      {
+        heading: "Social Proof & Free-Quote Lead Capture",
+        body:
+          "Facebook reviews and founder storytelling build confidence, then a structured free-quote form captures name, contact, property, and service interest so Cameron’s team can respond with a clear next step — no obligation.",
+        image: "/images/ch-services-lead.png",
+      },
+    ],
+  },
+  {
     slug: "lumina-studio",
     title: "Lumina Studio",
     tagline: "Personal AI Image Studio",

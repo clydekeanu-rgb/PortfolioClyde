@@ -2,6 +2,7 @@ export const LAPTOP_MOCKUP_SLUGS = new Set([
   "promise-surrogacy",
   "konstru",
   "pickleball-pavilion",
+  "ch-services",
 ]);
 
 export function usesLaptopMockup(slug: string) {
