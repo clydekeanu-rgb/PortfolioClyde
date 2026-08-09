@@ -2,19 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
-import {
-  LaptopBrowserMockup,
-  LAPTOP_MOCKUP_SLUGS,
-} from "@/components/LaptopBrowserMockup";
+import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
+import { browserUrl, usesLaptopMockup } from "@/lib/laptop-mockups";
 import type { Metadata } from "next";
-
-function browserUrl(liveUrl?: string) {
-  if (!liveUrl || liveUrl.startsWith("/")) return undefined;
-  return liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
-}
 
 type CaseStudyPageProps = {
   params: { slug: string };
@@ -78,7 +71,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                   className="relative mt-8 aspect-[16/10] overflow-hidden rounded-xl border bg-surface"
                   style={{ borderColor: "var(--v2-border)" }}
                 >
-                  {LAPTOP_MOCKUP_SLUGS.has(study.slug) ? (
+                  {usesLaptopMockup(study.slug) ? (
                     <LaptopBrowserMockup
                       src={study.coverImage}
                       alt={study.title}

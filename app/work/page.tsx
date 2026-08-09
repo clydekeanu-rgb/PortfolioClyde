@@ -1,20 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
-import {
-  LaptopBrowserMockup,
-  LAPTOP_MOCKUP_SLUGS,
-} from "@/components/LaptopBrowserMockup";
+import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { SitePageHeader } from "@/components/SectionHeading";
 import { caseStudies } from "@/lib/case-studies";
+import { browserUrl, usesLaptopMockup } from "@/lib/laptop-mockups";
 import type { Metadata } from "next";
-
-function browserUrl(liveUrl?: string) {
-  if (!liveUrl || liveUrl.startsWith("/")) return undefined;
-  return liveUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
-}
 
 export const metadata: Metadata = {
   title: "Work | Clyde Abenojar",
@@ -58,7 +51,7 @@ export default function WorkPage() {
                         .join(" ")}
                       style={{ borderColor: "var(--v2-border)" }}
                     >
-                      {LAPTOP_MOCKUP_SLUGS.has(study.slug) ? (
+                      {usesLaptopMockup(study.slug) ? (
                         <LaptopBrowserMockup
                           src={study.coverImage}
                           alt={study.title}

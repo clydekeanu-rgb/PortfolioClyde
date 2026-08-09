@@ -3,12 +3,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export const LAPTOP_MOCKUP_SLUGS = new Set([
-  "promise-surrogacy",
-  "konstru",
-  "pickleball-pavilion",
-]);
-
 type LaptopBrowserMockupProps = {
   src: string;
   alt: string;
