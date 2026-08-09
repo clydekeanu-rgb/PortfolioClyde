@@ -19,7 +19,8 @@ In the Sheet: **Extensions → Apps Script**. Replace the default code with:
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
+    var raw = (e && e.postData && e.postData.contents) ? e.postData.contents : "{}";
+    var data = JSON.parse(raw);
 
     sheet.appendRow([
       data.timestamp || new Date().toISOString(),
@@ -44,6 +45,8 @@ function doPost(e) {
 }
 ```
 
+Important: open the script from **the Sheet** via **Extensions → Apps Script** (bound project). A standalone script without the Sheet attached will fail on `getActiveSpreadsheet()`.
+
 Save the project.
 
 ## 3. Deploy the web app
@@ -52,7 +55,9 @@ Save the project.
 2. Type: **Web app**
 3. Execute as: **Me**
 4. Who has access: **Anyone**
-5. Deploy and copy the **Web app URL**
+5. Deploy and copy the **Web app URL** (must end in `/exec`, not `/dev`)
+
+If you change the script later, create a **New deployment** again — editing alone does not update the live `/exec` URL.
 
 ## 4. Set the env var
 
@@ -62,14 +67,18 @@ Locally (`.env.local`) and on Vercel:
 GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 ```
 
-Redeploy after adding the Vercel env var.
+Redeploy after adding the Vercel env var. Without this, the form shows “Lead capture is not configured yet.”
 
 ## 5. Smoke test
 
 ```bash
-curl -X POST http://localhost:3000/api/lead/ \
+curl -i -X POST http://localhost:3000/api/lead/ \
   -H "Content-Type: application/json" \
-  -d "{\"type\":\"message\",\"name\":\"Test\",\"email\":\"you@example.com\",\"message\":\"Hello\"}"
+  -d "{\"type\":\"discovery\",\"name\":\"Test\",\"email\":\"you@example.com\",\"preferredDate\":\"2026-08-12\",\"preferredTime\":\"10:00\",\"timezone\":\"Asia/Manila\",\"message\":\"Hello\"}"
 ```
 
-A new row should appear in the Sheet within a few seconds.
+Expect HTTP 200 and `{ "ok": true }`, plus a new row in the Sheet within a few seconds.
+
+### Common failure: success UI but empty sheet
+
+Older webhook code followed Apps Script’s 302 redirect as a GET, so `doPost` never ran. The API now re-POSTs to the redirect URL. Redeploy the site after pulling that fix.
