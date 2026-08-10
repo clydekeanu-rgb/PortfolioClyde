@@ -20,6 +20,7 @@ export function SiteNav() {
   return (
     <AnimatedNavFramer
       brand="Clyde Abenojar"
+      mobileBrand="Clyde"
       brandHref="/"
       items={navItems}
     />
