@@ -87,6 +87,14 @@ const projects: Project[] = [
     href: "/work/portfolio-lead-assistant/",
     image: "/images/portfolio-lead-assistant.png",
   },
+  {
+    title: "AI Fulfillment Pipeline",
+    blurb:
+      "Multi-trigger n8n Cloud workflow: form intake, LLM + AI QA loops, async API callbacks, Slack human approval, Gmail delivery, and overdue reminders.",
+    tags: ["Automation", "n8n", "Human QA"],
+    href: "/work/song-automation-tool/",
+    image: "/images/Songautomation.png",
+  },
 ];
 
 export function WorkStack() {

@@ -233,7 +233,11 @@ export const servicePages: ServicePage[] = [
         body: "Dedupe, notify-me alerts, and mark-messaged updates keep the loop safe. You stay in control of anything the FAQ draft cannot answer.",
       },
     ],
-    caseStudySlugs: ["portfolio-lead-assistant", "la-purisima-resort"],
+    caseStudySlugs: [
+      "portfolio-lead-assistant",
+      "la-purisima-resort",
+      "song-automation-tool",
+    ],
     ctaLabel: "Automate my lead follow-up",
     ctaSubject: "Lead automation inquiry",
     faqs: [
@@ -251,6 +255,62 @@ export const servicePages: ServicePage[] = [
         question: "Can this plug into my existing form and sheet?",
         answer:
           "Usually yes. We map your columns (type, email, message status) and deploy a flow that matches how you already capture leads — including portfolio-style message + discovery forms.",
+      },
+    ],
+  },
+  {
+    slug: "ai-workflow-automation",
+    title: "AI Workflow & Ops Automation",
+    shortTitle: "AI workflow automation",
+    tagline: "n8n pipelines with LLM steps and human QA",
+    description:
+      "Production n8n Cloud workflows for AI-assisted operations: intake forms, generation + QA loops, async API callbacks, Slack human approval, delivery, and escalation — scoped so operators stay in control.",
+    heroTitle: "AI ops pipelines that generate, check, and hand off to humans.",
+    heroBody:
+      "For automation buyers who need more than a single Zap: multi-trigger n8n workflows that keep shared state, retry safely, escalate on limits, and pause for Slack approval before anything reaches a customer.",
+    whoFor: [
+      "Operators fulfilling AI-assisted orders or content jobs at volume",
+      "Teams that need human-in-the-loop QA before email or client delivery",
+      "Founders who want one maintainable production workflow instead of fragmented Zaps",
+    ],
+    outcomes: [
+      "A single n8n Cloud workflow with form, webhook, and schedule triggers",
+      "LLM generation with guideline-backed AI QA and prompt rotation",
+      "Async external APIs with callback handling, retries, and hard escalation",
+      "Slack approve/reject/edit loops plus Gmail delivery and audit trails",
+    ],
+    process: [
+      {
+        heading: "Map the status machine",
+        body: "We define intake fields, retry counters, escalate rules, and what a human must approve before delivery — so the canvas matches the real operation.",
+      },
+      {
+        heading: "Build the production pipeline",
+        body: "Form intake, sheet state, OpenRouter agents, HTTP APIs, Slack send-and-wait, Gmail, and reminders ship as one grouped workflow — not a chain of brittle Execute hops.",
+      },
+      {
+        heading: "Harden for handoff",
+        body: "Credentials, publish checklist, and clone-ready paths mean you can run, observe, and later duplicate the pipeline when demand grows.",
+      },
+    ],
+    caseStudySlugs: ["song-automation-tool", "portfolio-lead-assistant"],
+    ctaLabel: "Scope my automation pipeline",
+    ctaSubject: "AI workflow automation inquiry",
+    faqs: [
+      {
+        question: "Is this Zapier, Make, or n8n?",
+        answer:
+          "I typically ship production ops pipelines on n8n Cloud — especially when you need multi-trigger workflows, AI agents, Slack human QA, and shared sheet or database state in one place.",
+      },
+      {
+        question: "Can humans still approve before customers get anything?",
+        answer:
+          "Yes. Slack send-and-wait forms support approve, reject, edit, and escalate paths with counters so bad work does not loop forever.",
+      },
+      {
+        question: "Will this work with APIs that call back later?",
+        answer:
+          "Yes. Async jobs use a dedicated webhook path, acknowledge quickly, then resume the project from shared state — including retries when the provider fails.",
       },
     ],
   },

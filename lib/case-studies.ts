@@ -329,33 +329,47 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "song-automation-tool",
-    title: "Song Automation Tool",
-    tagline: "Automated Song Generation Pipeline",
+    title: "AI Fulfillment Pipeline",
+    tagline: "n8n production workflow with human QA",
     coverImage: "/images/Songautomation.png",
-    liveUrl: "/song-generator/",
-    role: "End-to-end design & AI-assisted development",
-    techStack: ["Suno AI", "Automation Pipeline"],
+    role: "End-to-end automation design & build",
+    techStack: [
+      "n8n Cloud",
+      "OpenRouter",
+      "Google Sheets",
+      "Slack",
+      "Gmail",
+      "HTTP APIs",
+    ],
     overview:
-      "Generating a good AI song isn't one step — it's lyrics, QA, generation, and catching glitches, usually done manually across separate tools. I automated the whole chain.",
-    seoTitle: "Automated AI song generation pipeline with QA and glitch checks",
+      "AI content fulfillment is rarely one API call — operators need intake, generation, QA loops, async callbacks, human approval, delivery, and escalation when something stalls. I built a single n8n Cloud production workflow with multiple triggers so the full order path is visible, maintainable, and ready to clone for volume later.",
+    seoTitle:
+      "n8n AI fulfillment pipeline — intake, QA loops, human approval, delivery",
     seoDescription:
-      "Lyrics generation, Suno song creation, Kanban job board, and automated audio glitch detection in one pipeline.",
+      "Multi-trigger n8n Cloud workflow: form intake, LLM generation with AI QA, async audio callbacks, Slack human QA, Gmail delivery, and overdue reminders.",
     sections: [
       {
-        heading: "Lyrics Generation & QA",
+        heading: "Intake → Shared State",
         body:
-          "Input a story or idea and get back lyrics, run through an automated QA pass before generation even starts.",
+          "A public form creates the job record in Google Sheets — client details, brief, preferences, and counters for retries. Sheet state is the source of truth so every later stage can resume without brittle payload-only handoffs.",
         image: "/images/song-lyrics.png",
       },
       {
-        heading: "Song Generation",
-        body: "Lyrics feed into Suno AI to generate the actual track.",
+        heading: "LLM Generation + AI QA Loops",
+        body:
+          "OpenRouter generates structured output from rotated prompt packs and guideline rules. Failed AI QA rotates prompts and retries up to a hard limit, then escalates instead of silently burning tokens or shipping bad work.",
         image: "/images/song-generation.png",
       },
       {
-        heading: "Kanban Job Board & Glitch Detection",
+        heading: "Async API + Human QA",
         body:
-          "Every job is tracked through a Kanban-style board, with an automated audio glitch check catching generation artifacts before a track is considered done.",
+          "Approved jobs submit to an external generation API with a dedicated callback webhook. Completions land in Slack send-and-wait forms so a human can approve, reject lyrics or audio, edit copy, or escalate — with separate reject caps and automatic overdue pings.",
+        image: "/images/Songautomation.png",
+      },
+      {
+        heading: "Deliver, Escalate, Remind",
+        body:
+          "Approvals download the asset, email the client via Gmail, and post an audit trail to Slack. Failures and max retries mark the job escalated. A 12-hour schedule on the same workflow nudges anything still waiting in human QA past 24 hours — no separate cron workflow to keep in sync.",
         image: "/images/song-kanban.png",
       },
     ],

@@ -10,7 +10,7 @@ const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
 const outcomes = [
   "Booking sites that take inquiries without living in Messenger",
   "SaaS and calculators with real auth, payments, and dashboards",
-  "Lead capture wired to Sheets, HubSpot, or automation",
+  "Lead capture and AI ops pipelines on n8n with human QA",
 ];
 
 const segments = [
@@ -35,6 +35,17 @@ const segments = [
     ],
     serviceHref: "/services/web-apps-saas/",
     serviceLabel: "Web apps & SaaS",
+  },
+  {
+    title: "For automation buyers",
+    body: "n8n Cloud pipelines with LLM steps, Slack human QA, retries, and delivery — built as one production workflow.",
+    proofs: [
+      { label: "AI Fulfillment Pipeline", href: "/work/song-automation-tool/" },
+      { label: "Lead Assistant", href: "/work/portfolio-lead-assistant/" },
+      { label: "La Purisima bot", href: "/work/la-purisima-resort/" },
+    ],
+    serviceHref: "/services/ai-workflow-automation/",
+    serviceLabel: "AI workflow automation",
   },
   {
     title: "For construction & trades",
@@ -82,7 +93,7 @@ export function AudienceSegments() {
           </ul>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 md:grid-cols-3">
+        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {segments.map((segment, index) => (
             <motion.div
               key={segment.title}
