@@ -182,6 +182,122 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </div>
           </div>
 
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            <div>
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                CTA Events
+              </h3>
+              {stats.topCtaEvents.length === 0 ? (
+                <p className="mt-3 text-sm text-secondary">No CTA data yet.</p>
+              ) : (
+                <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-border bg-surface">
+                      <tr>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Event
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Count
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.topCtaEvents.map((row) => (
+                        <tr
+                          key={row.eventName}
+                          className="border-b border-border/70"
+                        >
+                          <td className="px-4 py-2 font-mono text-foreground">
+                            {row.eventName}
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {row.count}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                CTAs by Page
+              </h3>
+              {stats.ctaByPath.length === 0 ? (
+                <p className="mt-3 text-sm text-secondary">No CTA data yet.</p>
+              ) : (
+                <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-border bg-surface">
+                      <tr>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Page
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Count
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.ctaByPath.map((row) => (
+                        <tr key={row.path} className="border-b border-border/70">
+                          <td className="px-4 py-2 font-mono text-foreground">
+                            {row.path}
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {row.count}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="font-mono text-sm font-semibold text-secondary">
+                CTAs by Case Study
+              </h3>
+              {stats.ctaByProject.length === 0 ? (
+                <p className="mt-3 text-sm text-secondary">No project attribution yet.</p>
+              ) : (
+                <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="border-b border-border bg-surface">
+                      <tr>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Project
+                        </th>
+                        <th className="px-4 py-2 font-mono text-secondary">
+                          Count
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.ctaByProject.map((row) => (
+                        <tr
+                          key={row.project}
+                          className="border-b border-border/70"
+                        >
+                          <td className="px-4 py-2 font-mono text-foreground">
+                            {row.project}
+                          </td>
+                          <td className="px-4 py-2 text-secondary">
+                            {row.count}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
           {stats.recentVisits.length > 0 ? (
             <div className="mt-6">
               <h3 className="font-mono text-sm font-semibold text-secondary">

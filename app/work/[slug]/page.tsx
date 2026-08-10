@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
+import { PrimaryCta } from "@/components/PrimaryCta";
 import { Reveal } from "@/components/Reveal";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
 import {
@@ -31,23 +32,27 @@ export async function generateMetadata({
   }
 
   const url = `https://clydeabenojar.site/work/${study.slug}/`;
+  const title = study.seoTitle
+    ? `${study.seoTitle} | Clyde Abenojar`
+    : `${study.title} | Clyde Abenojar`;
+  const description = study.seoDescription ?? study.overview;
 
   return {
-    title: `${study.title} | Clyde Abenojar`,
-    description: study.overview,
+    title,
+    description,
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: study.title,
-      description: study.overview,
+      title,
+      description,
       url,
       images: [{ url: study.coverImage }],
     },
     twitter: {
       card: "summary_large_image",
-      title: study.title,
-      description: study.overview,
+      title,
+      description,
       images: [study.coverImage],
     },
   };
@@ -272,19 +277,27 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                   reply with a clear next step.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <PrimaryCta
+                    className="px-5 py-3 text-sm"
+                    project={study.slug}
+                    source="case_study"
+                  />
                   <a
                     href={projectInquiryMailto(
                       projectInquirySubject(study.title),
                     )}
-                    className="v2-btn v2-btn-primary px-5 py-3 text-sm"
-                  >
-                    Start a project
-                  </a>
-                  <Link
-                    href="/services/"
                     className="v2-btn v2-btn-outline px-5 py-3 text-sm"
                   >
-                    View all services
+                    Email about {study.title}
+                  </a>
+                </div>
+                <div className="mt-4">
+                  <Link
+                    href="/services/"
+                    className="v2-mono text-sm transition-colors hover:text-[var(--v2-text)]"
+                    style={{ color: "var(--v2-muted)" }}
+                  >
+                    View all services →
                   </Link>
                 </div>
               </div>

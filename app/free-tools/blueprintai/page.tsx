@@ -3,15 +3,17 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
 import { BlueprintAIApp } from "@/components/BlueprintAIApp";
+import { ToolHireCta } from "@/components/ToolHireCta";
+import { getFreeTool } from "@/lib/free-tools";
+
+const tool = getFreeTool("blueprintai")!;
 
 export const metadata: Metadata = {
-  title: "BlueprintAI | Clyde Abenojar",
-  description:
-    "A guided wizard for turning architectural concepts into polished photorealistic render prompts.",
+  title: tool.seoTitle,
+  description: tool.seoDescription,
   openGraph: {
-    title: "BlueprintAI | Clyde Abenojar",
-    description:
-      "A guided wizard for turning architectural concepts into polished photorealistic render prompts.",
+    title: tool.seoTitle,
+    description: tool.seoDescription,
     url: "https://clydeabenojar.site/free-tools/blueprintai/",
   },
 };
@@ -30,6 +32,12 @@ export default function BlueprintAIPage() {
           </Link>
 
           <BlueprintAIApp />
+
+          <ToolHireCta
+            audience={tool.audience}
+            hireLine={tool.hireLine}
+            toolSlug={tool.slug}
+          />
         </div>
       </main>
       <Footer />

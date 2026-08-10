@@ -3,15 +3,17 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
 import { PromptGenApp } from "@/components/PromptGenApp";
+import { ToolHireCta } from "@/components/ToolHireCta";
+import { getFreeTool } from "@/lib/free-tools";
+
+const tool = getFreeTool("promptgen")!;
 
 export const metadata: Metadata = {
-  title: "PromptGen | Clyde Abenojar",
-  description:
-    "A guided wizard for building structured AI image-generation prompts for product photography.",
+  title: tool.seoTitle,
+  description: tool.seoDescription,
   openGraph: {
-    title: "PromptGen | Clyde Abenojar",
-    description:
-      "A guided wizard for building structured AI image-generation prompts for product photography.",
+    title: tool.seoTitle,
+    description: tool.seoDescription,
     url: "https://clydeabenojar.site/free-tools/promptgen/",
   },
 };
@@ -30,6 +32,12 @@ export default function PromptGenPage() {
           </Link>
 
           <PromptGenApp />
+
+          <ToolHireCta
+            audience={tool.audience}
+            hireLine={tool.hireLine}
+            toolSlug={tool.slug}
+          />
         </div>
       </main>
       <Footer />

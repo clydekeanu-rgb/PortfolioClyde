@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
+import { PrimaryCta } from "@/components/PrimaryCta";
 import { Reveal } from "@/components/Reveal";
 import { SitePageHeader } from "@/components/SectionHeading";
-import { projectInquiryMailto } from "@/lib/contact";
 import { servicePages } from "@/lib/service-pages";
 
 export const metadata: Metadata = {
@@ -82,12 +82,7 @@ export default function ServicesPage() {
 
             <Reveal className="mt-16">
               <div className="text-center">
-                <a
-                  href={projectInquiryMailto()}
-                  className="v2-btn v2-btn-primary px-5 py-3 text-sm"
-                >
-                  Start a project
-                </a>
+                <PrimaryCta className="px-5 py-3 text-sm" source="services_index" />
               </div>
             </Reveal>
           </div>

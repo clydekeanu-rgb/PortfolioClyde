@@ -12,6 +12,7 @@ type MagneticButtonProps = {
   href: string;
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 };
 
 /**
@@ -23,6 +24,7 @@ export function MagneticButton({
   href,
   className,
   children,
+  onClick,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const reduceMotion = useReducedMotion();
@@ -50,6 +52,7 @@ export function MagneticButton({
       href={href}
       className={className}
       style={{ x: springX, y: springY }}
+      onClick={onClick}
       onPointerMove={handlePointerMove}
       onPointerLeave={reset}
     >

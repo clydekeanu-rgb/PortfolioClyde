@@ -15,6 +15,9 @@ export type CaseStudy = {
   techStack: string[];
   overview: string;
   sections: CaseStudySection[];
+  /** Buyer-intent page title (omit brand suffix — metadata adds it). */
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -38,6 +41,9 @@ export const caseStudies: CaseStudy[] = [
     ],
     overview:
       "Small construction and site teams still run payroll on notebooks, chat threads, and spreadsheets — easy to lose a day, double-count a cash advance, or mix up crews across jobs. I built PasahodPH end-to-end as a local-first Android app: multi-project crews, swipe attendance, advances, overtime, and live pay for the current period — no cloud account required.",
+    seoTitle: "Offline payroll app for construction site crews | PasahodPH",
+    seoDescription:
+      "Local-first Android payroll for multi-project crews: swipe attendance, advances, overtime, and live pay — built end-to-end for Philippine site teams.",
     sections: [
       {
         heading: "Projects & Crews",
@@ -85,6 +91,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     overview:
       "Rebuilt a full surrogacy agency marketing site from a legacy Wix export into a modern, content-managed Next.js application. The site serves intended parents and surrogate candidates across 46 routed pages, with editable content via TinaCMS, per-deploy localization in English, Spanish, and Chinese, and secure form pipelines that feed leads into Google Sheets and HubSpot.",
+    seoTitle:
+      "Surrogacy agency website rebuild — 46 pages, 3 languages, HubSpot leads",
+    seoDescription:
+      "Wix-to-Next.js rebuild for a surrogacy agency: TinaCMS, EN/ES/ZH localization, Turnstile-protected forms into Sheets and HubSpot.",
     sections: [
       {
         heading: "Content CMS",
@@ -116,6 +126,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Next.js", "Supabase", "GSAP", "ScrollTrigger", "Tailwind CSS"],
     overview:
       "Cebu's pickleball boom needed a venue that felt as premium as the sport's audience — not just a court schedule slapped onto a template. I designed and built the full experience end-to-end: from first scroll to booked court.",
+    seoTitle: "Pickleball venue booking website with live court reservations",
+    seoDescription:
+      "Scrollytelling venue site plus live court booking and admin dashboard for The Pickleball Pavilion in Cebu.",
     sections: [
       {
         heading: "Landing Page",
@@ -147,6 +160,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Next.js", "Supabase", "PayMongo", "Tailwind CSS"],
     overview:
       "Contractors and homeowners in the Philippines often price a build off rough estimates or manual spreadsheets — slow, and easy to get wrong. I built Konstru end-to-end to fix that.",
+    seoTitle: "Philippine construction BOQ calculator SaaS | Konstru",
+    seoDescription:
+      "Construction cost calculator with 16+ modules, PHP-priced BOQ output, PayMongo subscriptions, and a contractor dashboard.",
     sections: [
       {
         heading: "Landing Page & Pricing",
@@ -184,6 +200,9 @@ export const caseStudies: CaseStudy[] = [
     ],
     overview:
       "A resort and events venue needed more than a brochure site — they needed a way to handle booking inquiries without hiring someone to sit on Messenger all day. I built the site and the automation behind it.",
+    seoTitle: "Resort booking website with AI Messenger bot | La Purisima",
+    seoDescription:
+      "Inquiry site plus Gemini/Qwen Messenger bot and Google Sheets/Calendar sync for a resort and events venue.",
     sections: [
       {
         heading: "Landing Page & Inquiry Form",
@@ -215,6 +234,10 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Next.js", "TypeScript", "Tailwind"],
     overview:
       "A prospect mockup for a Kent property-maintenance business: a trust-led landing page with services, before/after proof, customer reviews, and free-quote lead capture — built to turn local homeowners into booked jobs.",
+    seoTitle:
+      "Property maintenance website mockup — marketing site & lead form | C.H Services",
+    seoDescription:
+      "Trust-led Kent property maintenance marketing site with services catalog, before/after proof, reviews, and free-quote lead capture.",
     sections: [
       {
         heading: "Trust-Led Hero & Positioning",
@@ -246,6 +269,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["n8n", "Google Sheets", "Gmail", "OpenRouter"],
     overview:
       "Contact forms on this portfolio write leads to Google Sheets. An n8n Cloud workflow picks them up, skips rows already messaged, routes by type (discovery vs message), sends Gmail acknowledgements and owner alerts, drafts FAQ replies with OpenRouter for general inquiries, then marks each lead handled — so follow-up happens without manual triage.",
+    seoTitle: "n8n portfolio lead automation — auto-reply and booking alerts",
+    seoDescription:
+      "Sheets-triggered n8n workflow that acknowledges discovery calls, AI-drafts FAQ replies, and notifies the owner without duplicate messages.",
     sections: [
       {
         heading: "Sheet Trigger & Dedupe",
@@ -277,6 +303,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Qwen", "Wan AI", "Next.js"],
     overview:
       "Most AI image tools make you write a fresh prompt every time, with no way to keep a character consistent across images. Lumina Studio solves that.",
+    seoTitle: "Personal AI image studio with character consistency | Lumina",
+    seoDescription:
+      "Text-to-image and image-to-image studio with character fusion and a built-in prompt builder.",
     sections: [
       {
         heading: "Text-to-Image & Image-to-Image",
@@ -308,6 +337,9 @@ export const caseStudies: CaseStudy[] = [
     techStack: ["Suno AI", "Automation Pipeline"],
     overview:
       "Generating a good AI song isn't one step — it's lyrics, QA, generation, and catching glitches, usually done manually across separate tools. I automated the whole chain.",
+    seoTitle: "Automated AI song generation pipeline with QA and glitch checks",
+    seoDescription:
+      "Lyrics generation, Suno song creation, Kanban job board, and automated audio glitch detection in one pipeline.",
     sections: [
       {
         heading: "Lyrics Generation & QA",

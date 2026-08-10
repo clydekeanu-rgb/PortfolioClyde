@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { DISCOVERY_TIME_OPTIONS } from "@/lib/lead";
+import { useContactContext } from "@/lib/contact-context";
+import { trackCta } from "@/lib/analytics/track-cta";
 
 type Status = "idle" | "pending" | "success" | "error";
 
@@ -15,6 +17,7 @@ function todayIsoDate() {
 }
 
 export function DiscoveryCallForm() {
+  const contactCtx = useContactContext();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const minDate = useMemo(() => todayIsoDate(), []);
@@ -33,6 +36,13 @@ export function DiscoveryCallForm() {
 
     const form = event.currentTarget;
     const data = new FormData(form);
+    let message = String(data.get("message") ?? "");
+    if (contactCtx.project && !message.includes(contactCtx.project)) {
+      message = `${message}\n\n[From case study: ${contactCtx.project}]`.trim();
+    }
+    if (contactCtx.service && !message.includes(contactCtx.service)) {
+      message = `${message}\n\n[From service: ${contactCtx.service}]`.trim();
+    }
 
     try {
       const res = await fetch("/api/lead/", {
@@ -45,12 +55,17 @@ export function DiscoveryCallForm() {
           preferredDate: data.get("preferredDate"),
           preferredTime: data.get("preferredTime"),
           timezone: data.get("timezone"),
-          message: data.get("message"),
+          message,
           website: data.get("website"),
         }),
       });
 
       if (res.status === 204) {
+        trackCta("lead_submit", "/api/lead", {
+          type: "discovery",
+          project: contactCtx.project ?? null,
+          service: contactCtx.service ?? null,
+        });
         setStatus("success");
         form.reset();
         return;
@@ -71,6 +86,11 @@ export function DiscoveryCallForm() {
         return;
       }
 
+      trackCta("lead_submit", "/api/lead", {
+        type: "discovery",
+        project: contactCtx.project ?? null,
+        service: contactCtx.service ?? null,
+      });
       setStatus("success");
       form.reset();
     } catch {
@@ -211,6 +231,8 @@ export function DiscoveryCallForm() {
           id="discovery-note"
           name="message"
           rows={3}
+          key={contactCtx.note || "empty"}
+          defaultValue={contactCtx.note}
           placeholder="Optional: what should we cover on the call?"
           className="site-input min-h-[5rem] resize-y"
           disabled={status === "pending"}

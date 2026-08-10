@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
+import { PrimaryCta } from "@/components/PrimaryCta";
 import { Reveal } from "@/components/Reveal";
 import { SitePageHeader } from "@/components/SectionHeading";
 import { caseStudies } from "@/lib/case-studies";
@@ -117,6 +118,26 @@ export default function WorkPage() {
                 </Reveal>
               ))}
             </div>
+
+            <Reveal className="mt-20">
+              <div className="text-center">
+                <p
+                  className="v2-eyebrow"
+                  style={{ color: "var(--v2-accent-text)" }}
+                >
+                  Next step
+                </p>
+                <h2 className="v2-display mt-3 text-2xl sm:text-3xl">
+                  Want something like these shipped for you?
+                </h2>
+                <div className="mt-8 flex justify-center">
+                  <PrimaryCta
+                    className="px-5 py-3 text-sm"
+                    source="work_index"
+                  />
+                </div>
+              </div>
+            </Reveal>
           </div>
         </section>
       </main>

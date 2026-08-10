@@ -1,10 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { LaptopBrowserMockup } from "@/components/LaptopBrowserMockup";
 import { SitePage } from "@/components/PageBackdrop";
+import { PrimaryCta } from "@/components/PrimaryCta";
 import { Reveal } from "@/components/Reveal";
 import { getCaseStudy } from "@/lib/case-studies";
 import { projectInquiryMailto } from "@/lib/contact";
@@ -14,6 +11,10 @@ import {
   servicePages,
   type ServicePage,
 } from "@/lib/service-pages";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type ServiceDetailPageProps = {
   params: { slug: string };
@@ -143,10 +144,15 @@ export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
                 >
                   {service.heroBody}
                 </p>
-                <div className="mt-8">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <PrimaryCta
+                    className="px-5 py-3 text-sm"
+                    service={service.slug}
+                    source="service_hero"
+                  />
                   <a
                     href={projectInquiryMailto(service.ctaSubject)}
-                    className="v2-btn v2-btn-primary px-5 py-3 text-sm"
+                    className="v2-btn v2-btn-outline px-5 py-3 text-sm"
                   >
                     {service.ctaLabel}
                   </a>
@@ -345,9 +351,14 @@ export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
                   whether it&apos;s a fit and a clear next step.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <PrimaryCta
+                    className="px-5 py-3 text-sm"
+                    service={service.slug}
+                    source="service_footer"
+                  />
                   <a
                     href={projectInquiryMailto(service.ctaSubject)}
-                    className="v2-btn v2-btn-primary px-5 py-3 text-sm"
+                    className="v2-btn v2-btn-outline px-5 py-3 text-sm"
                   >
                     {service.ctaLabel}
                   </a>

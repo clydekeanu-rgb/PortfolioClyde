@@ -3,15 +3,17 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
 import { CharGenApp } from "@/components/CharGenApp";
+import { ToolHireCta } from "@/components/ToolHireCta";
+import { getFreeTool } from "@/lib/free-tools";
+
+const tool = getFreeTool("chargen")!;
 
 export const metadata: Metadata = {
-  title: "CharGen | Clyde Abenojar",
-  description:
-    "A guided wizard for building Philippines-realism scene descriptions and image prompts.",
+  title: tool.seoTitle,
+  description: tool.seoDescription,
   openGraph: {
-    title: "CharGen | Clyde Abenojar",
-    description:
-      "A guided wizard for building Philippines-realism scene descriptions and image prompts.",
+    title: tool.seoTitle,
+    description: tool.seoDescription,
     url: "https://clydeabenojar.site/free-tools/chargen/",
   },
 };
@@ -30,6 +32,12 @@ export default function CharGenPage() {
           </Link>
 
           <CharGenApp />
+
+          <ToolHireCta
+            audience={tool.audience}
+            hireLine={tool.hireLine}
+            toolSlug={tool.slug}
+          />
         </div>
       </main>
       <Footer />

@@ -3,13 +3,14 @@
 import { usePathname } from "next/navigation";
 import { AnimatedNavFramer } from "@/components/ui/navigation-menu";
 
+import { PRIMARY_CTA_HREF, PRIMARY_CTA_LABEL } from "@/lib/contact";
+
 const navItems = [
   { name: "Work", href: "/work/" },
   { name: "Services", href: "/services/" },
   { name: "Free Tools", href: "/free-tools/" },
   { name: "Blog", href: "/blog/" },
   { name: "About", href: "/#about" },
-  { name: "Contact", href: "/#contact" },
 ];
 
 export function SiteNav() {
@@ -23,6 +24,7 @@ export function SiteNav() {
       mobileBrand="Clyde"
       brandHref="/"
       items={navItems}
+      cta={{ name: PRIMARY_CTA_LABEL, href: PRIMARY_CTA_HREF }}
     />
   );
 }

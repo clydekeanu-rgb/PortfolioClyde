@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
-import { MagneticButton } from "@/components/v2/MagneticButton";
+import { PrimaryCta } from "@/components/PrimaryCta";
 
 const GradientBlinds = dynamic(
   () => import("@/components/ui/GradientBlinds"),
@@ -35,7 +35,10 @@ export function V2Hero() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="v2-hero relative flex min-h-[100dvh] items-center overflow-hidden">
+    <section
+      id="hero-canvas"
+      className="v2-hero relative flex min-h-[100dvh] items-center overflow-hidden"
+    >
       <div className="absolute inset-0 z-0" aria-hidden="true">
         {reduceMotion ? (
           <div
@@ -81,7 +84,7 @@ export function V2Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.9 }}
           >
-            {"// full-stack builder, AI-assisted"}
+            {"// Clyde Abenojar · AI-assisted web builder"}
           </motion.p>
 
           <h1 className="v2-display mt-6 text-[clamp(2.75rem,6vw,4.5rem)]">
@@ -120,11 +123,12 @@ export function V2Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.7, ease: EASE_OUT_STRONG }}
           >
-            <MagneticButton href="#work" className="v2-btn v2-btn-primary">
+            <PrimaryCta
+              className="px-5 py-3 text-sm"
+              source="hero"
+            />
+            <a href="#work" className="v2-btn v2-btn-outline">
               View work
-            </MagneticButton>
-            <a href="#contact" className="v2-btn v2-btn-outline">
-              Start a project
             </a>
           </motion.div>
         </div>

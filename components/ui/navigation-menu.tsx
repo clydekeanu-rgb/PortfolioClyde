@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { trackCta } from "@/lib/analytics/track-cta";
 
 export type AnimatedNavItem = {
   name: string;
@@ -136,6 +137,7 @@ type AnimatedNavFramerProps = {
   mobileBrand?: string;
   brandHref?: string;
   className?: string;
+  cta?: AnimatedNavItem;
 };
 
 export function AnimatedNavFramer({
@@ -144,6 +146,7 @@ export function AnimatedNavFramer({
   mobileBrand = "Clyde",
   brandHref = "/",
   className,
+  cta,
 }: AnimatedNavFramerProps) {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
@@ -270,6 +273,22 @@ export function AnimatedNavFramer({
                   {item.name}
                 </motion.a>
               ))}
+              {cta ? (
+                <motion.a
+                  href={cta.href}
+                  variants={itemVariants}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    trackCta("cta_click", cta.href, {
+                      source: "nav",
+                      label: cta.name,
+                    });
+                  }}
+                  className="v2-btn v2-btn-primary ml-1 whitespace-nowrap px-3 py-1.5 text-xs"
+                >
+                  {cta.name}
+                </motion.a>
+              ) : null}
             </motion.div>
 
             {/* Mobile hamburger (expanded only) */}
@@ -322,6 +341,22 @@ export function AnimatedNavFramer({
                   {item.name}
                 </a>
               ))}
+              {cta ? (
+                <a
+                  href={cta.href}
+                  role="menuitem"
+                  className="mx-3 mt-1 mb-1 block rounded-full bg-[var(--v2-accent)] px-5 py-2.5 text-center text-sm font-medium text-white"
+                  onClick={() => {
+                    trackCta("cta_click", cta.href, {
+                      source: "nav_mobile",
+                      label: cta.name,
+                    });
+                    setMenuOpen(false);
+                  }}
+                >
+                  {cta.name}
+                </a>
+              ) : null}
             </div>
           ) : null}
         </div>

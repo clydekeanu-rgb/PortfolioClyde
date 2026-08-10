@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useContactContext } from "@/lib/contact-context";
+import { trackCta } from "@/lib/analytics/track-cta";
 
 type Status = "idle" | "pending" | "success" | "error";
 
 export function LeaveMessageForm() {
+  const contactCtx = useContactContext();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -16,6 +19,13 @@ export function LeaveMessageForm() {
 
     const form = event.currentTarget;
     const data = new FormData(form);
+    let message = String(data.get("message") ?? "");
+    if (contactCtx.project && !message.includes(contactCtx.project)) {
+      message = `${message}\n\n[From case study: ${contactCtx.project}]`.trim();
+    }
+    if (contactCtx.service && !message.includes(contactCtx.service)) {
+      message = `${message}\n\n[From service: ${contactCtx.service}]`.trim();
+    }
 
     try {
       const res = await fetch("/api/lead/", {
@@ -25,12 +35,17 @@ export function LeaveMessageForm() {
           type: "message",
           name: data.get("name"),
           email: data.get("email"),
-          message: data.get("message"),
+          message,
           website: data.get("website"),
         }),
       });
 
       if (res.status === 204) {
+        trackCta("lead_submit", "/api/lead", {
+          type: "message",
+          project: contactCtx.project ?? null,
+          service: contactCtx.service ?? null,
+        });
         setStatus("success");
         form.reset();
         return;
@@ -51,6 +66,11 @@ export function LeaveMessageForm() {
         return;
       }
 
+      trackCta("lead_submit", "/api/lead", {
+        type: "message",
+        project: contactCtx.project ?? null,
+        service: contactCtx.service ?? null,
+      });
       setStatus("success");
       form.reset();
     } catch {
@@ -61,11 +81,20 @@ export function LeaveMessageForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-xl border px-5 py-8 text-left" style={{ borderColor: "var(--v2-border)", background: "rgba(14,15,18,0.72)" }}>
+      <div
+        className="rounded-xl border px-5 py-8 text-left"
+        style={{
+          borderColor: "var(--v2-border)",
+          background: "rgba(14,15,18,0.72)",
+        }}
+      >
         <p className="v2-eyebrow" style={{ color: "var(--v2-accent-text)" }}>
           Message sent
         </p>
-        <p className="mt-3 text-base leading-relaxed" style={{ color: "var(--v2-muted)" }}>
+        <p
+          className="mt-3 text-base leading-relaxed"
+          style={{ color: "var(--v2-muted)" }}
+        >
           Thanks — I&apos;ll read it and reply soon.
         </p>
         <button
@@ -126,12 +155,17 @@ export function LeaveMessageForm() {
           name="message"
           required
           rows={5}
+          key={contactCtx.note || "empty"}
+          defaultValue={contactCtx.note}
           placeholder="What are you trying to ship?"
           className="site-input min-h-[8rem] resize-y"
           disabled={status === "pending"}
         />
 
-        <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+          aria-hidden="true"
+        >
           <label htmlFor="message-website">Company website</label>
           <input
             id="message-website"
