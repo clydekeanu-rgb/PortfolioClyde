@@ -331,7 +331,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "song-automation-tool",
     title: "AI Fulfillment Pipeline",
     tagline: "n8n production workflow with human QA",
-    coverImage: "/images/Songautomation.png",
+    coverImage: "/images/ai-fulfillment-pipeline.png",
     role: "End-to-end automation design & build",
     techStack: [
       "n8n Cloud",
@@ -352,25 +352,25 @@ export const caseStudies: CaseStudy[] = [
         heading: "Intake → Shared State",
         body:
           "A public form creates the job record in Google Sheets — client details, brief, preferences, and counters for retries. Sheet state is the source of truth so every later stage can resume without brittle payload-only handoffs.",
-        image: "/images/song-lyrics.png",
+        image: "/images/ai-fulfillment-intake.png",
       },
       {
         heading: "LLM Generation + AI QA Loops",
         body:
           "OpenRouter generates structured output from rotated prompt packs and guideline rules. Failed AI QA rotates prompts and retries up to a hard limit, then escalates instead of silently burning tokens or shipping bad work.",
-        image: "/images/song-generation.png",
+        image: "/images/ai-fulfillment-llm-qa.png",
       },
       {
         heading: "Async API + Human QA",
         body:
           "Approved jobs submit to an external generation API with a dedicated callback webhook. Completions land in Slack send-and-wait forms so a human can approve, reject lyrics or audio, edit copy, or escalate — with separate reject caps and automatic overdue pings.",
-        image: "/images/Songautomation.png",
+        image: "/images/ai-fulfillment-human-qa.png",
       },
       {
         heading: "Deliver, Escalate, Remind",
         body:
           "Approvals download the asset, email the client via Gmail, and post an audit trail to Slack. Failures and max retries mark the job escalated. A 12-hour schedule on the same workflow nudges anything still waiting in human QA past 24 hours — no separate cron workflow to keep in sync.",
-        image: "/images/song-kanban.png",
+        image: "/images/ai-fulfillment-deliver.png",
       },
     ],
   },

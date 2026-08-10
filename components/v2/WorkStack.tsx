@@ -77,7 +77,7 @@ const projects: Project[] = [
       "Multi-trigger n8n Cloud workflow: form intake, LLM + AI QA loops, async API callbacks, Slack human approval, Gmail delivery, and overdue reminders.",
     tags: ["Automation", "n8n", "Human QA"],
     href: "/work/song-automation-tool/",
-    image: "/images/Songautomation.png",
+    image: "/images/ai-fulfillment-pipeline.png",
   },
   {
     title: "More work",
