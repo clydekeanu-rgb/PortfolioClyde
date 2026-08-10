@@ -59,7 +59,7 @@ export const servicePages: ServicePage[] = [
     caseStudySlugs: [
       "pickleball-pavilion",
       "la-purisima-resort",
-      "ch-services",
+      "property-maintenance",
     ],
     ctaLabel: "Tell me about your venue",
     ctaSubject: "Booking website inquiry",

@@ -29,6 +29,16 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/work/ch-services",
+        destination: "/work/property-maintenance/",
+        permanent: true,
+      },
+      {
+        source: "/work/ch-services/",
+        destination: "/work/property-maintenance/",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

@@ -5,6 +5,8 @@ Do not publish from this file alone — draft in the blog CMS when ready.
 
 Primary CTA on every post: **Book a call** → `/#contact`.
 
+**Status (Aug 2026):** Ideas **2–5** are drafted as unpublished CMS posts. Load/verify via [`seed-blog-drafts-2-5.sql`](./seed-blog-drafts-2-5.sql) in the Supabase SQL editor (or `npx tsx scripts/seed-blog-drafts-2-5.ts` with real Supabase env). Idea **1** was drafted in chat — paste into admin when ready. Keep `published = false` until you review.
+
 ---
 
 ## 1. How much a small business website costs (and what you actually get)
@@ -14,7 +16,7 @@ Primary CTA on every post: **Book a call** → `/#contact`.
 | **Target query** | small business website cost / how much does a website cost for a local business |
 | **Funnel stage** | Attract → Convert |
 | **GEO angle** | Quotable pricing model + deliverable list AI can cite |
-| **Internal links** | `/services/booking-websites/`, `/work/ch-services/`, `/work/la-purisima-resort/`, `/#contact` |
+| **Internal links** | `/services/booking-websites/`, `/work/property-maintenance/`, `/work/la-purisima-resort/`, `/#contact` |
 
 **Outline**
 
@@ -28,6 +30,8 @@ Primary CTA on every post: **Book a call** → `/#contact`.
 ---
 
 ## 2. What “AI-assisted development” means when you hire me
+
+**CMS:** draft · slug `what-ai-assisted-development-means-when-you-hire-me`
 
 | Field | Value |
 |--------|--------|
@@ -49,6 +53,8 @@ Primary CTA on every post: **Book a call** → `/#contact`.
 
 ## 3. Wix or Squarespace to a custom Next.js site — when it’s worth it
 
+**CMS:** draft · slug `wix-squarespace-to-nextjs-when-its-worth-it`
+
 | Field | Value |
 |--------|--------|
 | **Target query** | migrate Wix to Next.js / leave Squarespace for custom site |
@@ -69,6 +75,8 @@ Primary CTA on every post: **Book a call** → `/#contact`.
 
 ## 4. Building a booking website for a local venue
 
+**CMS:** draft · slug `building-a-booking-website-for-a-local-venue`
+
 | Field | Value |
 |--------|--------|
 | **Target query** | booking website for venue / court booking website / resort inquiry website |
@@ -88,6 +96,8 @@ Primary CTA on every post: **Book a call** → `/#contact`.
 ---
 
 ## 5. Construction software that matches how PH contractors actually estimate
+
+**CMS:** draft · slug `construction-software-ph-contractors-estimate`
 
 | Field | Value |
 |--------|--------|

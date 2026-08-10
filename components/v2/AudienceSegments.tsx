@@ -18,7 +18,7 @@ const segments = [
     title: "For local businesses",
     body: "Marketing sites, booking, and lead forms that turn visitors into booked jobs.",
     proofs: [
-      { label: "C.H Services", href: "/work/ch-services/" },
+      { label: "Property Maintenance Site", href: "/work/property-maintenance/" },
       { label: "Pickleball Pavilion", href: "/work/pickleball-pavilion/" },
       { label: "La Purisima", href: "/work/la-purisima-resort/" },
     ],

@@ -25,9 +25,11 @@ type Project = {
   blurb: string;
   tags: string[];
   href: string;
-  image: string;
+  image?: string;
   displayAsLaptop?: boolean;
   siteUrl?: string;
+  ctaLabel?: string;
+  archivePanel?: boolean;
 };
 
 const projects: Project[] = [
@@ -70,30 +72,21 @@ const projects: Project[] = [
     siteUrl: "picklepavilion.netlify.app",
   },
   {
-    title: "C.H Services",
-    blurb:
-      "Prospect mockup for a Kent property-maintenance firm: services, before/after proof, reviews, and free-quote lead capture.",
-    tags: ["Marketing site", "Lead gen"],
-    href: "/work/ch-services/",
-    image: "/images/ch-services-cover.png",
-    displayAsLaptop: true,
-    siteUrl: "mockup1.clydeabenojar.site",
-  },
-  {
-    title: "Portfolio Lead Assistant",
-    blurb:
-      "n8n Cloud automation on this portfolio: Sheet-triggered lead routing, discovery acknowledgements, AI FAQ replies via OpenRouter, and Gmail owner alerts.",
-    tags: ["Automation", "n8n"],
-    href: "/work/portfolio-lead-assistant/",
-    image: "/images/portfolio-lead-assistant.png",
-  },
-  {
     title: "AI Fulfillment Pipeline",
     blurb:
       "Multi-trigger n8n Cloud workflow: form intake, LLM + AI QA loops, async API callbacks, Slack human approval, Gmail delivery, and overdue reminders.",
     tags: ["Automation", "n8n", "Human QA"],
     href: "/work/song-automation-tool/",
     image: "/images/Songautomation.png",
+  },
+  {
+    title: "More work",
+    blurb:
+      "Property maintenance mockup, Portfolio Lead Assistant, Lumina, La Purisima, and the rest of the case studies live on the full work page.",
+    tags: ["Case studies"],
+    href: "/work/",
+    ctaLabel: "View all work",
+    archivePanel: true,
   },
 ];
 
@@ -179,6 +172,7 @@ function StackCard({
   progress: MotionValue<number>;
 }) {
   const reduceMotion = useReducedMotion();
+  const ctaLabel = project.ctaLabel ?? "Case study";
 
   // Earlier cards settle at a smaller scale as later cards stack on top.
   const targetScale = 1 - (total - 1 - index) * 0.045;
@@ -216,7 +210,7 @@ function StackCard({
                 className="group inline-flex items-center gap-1 text-[0.9375rem] font-medium"
                 style={{ color: "var(--v2-accent-text)" }}
               >
-                Case study
+                {ctaLabel}
                 <ArrowUpRight
                   className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   strokeWidth={2}
@@ -232,14 +226,39 @@ function StackCard({
               background: "var(--v2-elevated)",
             }}
           >
-            {project.displayAsLaptop ? (
+            {project.archivePanel ? (
+              <Link
+                href={project.href}
+                className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center transition-colors hover:bg-[var(--v2-surface)]"
+              >
+                <p
+                  className="v2-display text-2xl sm:text-3xl"
+                  style={{ color: "var(--v2-text)" }}
+                >
+                  View all projects
+                </p>
+                <p
+                  className="max-w-[28ch] text-sm leading-relaxed"
+                  style={{ color: "var(--v2-muted)" }}
+                >
+                  Browse every case study on the work page.
+                </p>
+                <span
+                  className="mt-2 inline-flex items-center gap-1 text-sm font-medium"
+                  style={{ color: "var(--v2-accent-text)" }}
+                >
+                  Go to /work
+                  <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+                </span>
+              </Link>
+            ) : project.displayAsLaptop && project.image ? (
               <LaptopBrowserMockup
                 src={project.image}
                 alt={`${project.title} screenshot`}
                 url={project.siteUrl}
                 sizes="(max-width: 768px) 92vw, 620px"
               />
-            ) : (
+            ) : project.image ? (
               <Image
                 src={project.image}
                 alt={`${project.title} screenshot`}
@@ -248,7 +267,7 @@ function StackCard({
                 sizes="(max-width: 768px) 92vw, 620px"
                 className="object-cover object-top"
               />
-            )}
+            ) : null}
           </div>
         </div>
       </motion.article>

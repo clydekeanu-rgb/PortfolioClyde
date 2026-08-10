@@ -92,8 +92,8 @@ export function CapabilitiesBento() {
                 className="mt-2 text-[0.9375rem] leading-relaxed"
                 style={{ color: "var(--v2-muted)" }}
               >
-                Image studios, content pipelines, and prompt-driven systems
-                that non-technical users can actually operate.
+                Prompt-driven products and n8n ops pipelines — generation, QA
+                loops, and human approval before anything ships to a customer.
               </p>
             </div>
           </motion.div>

@@ -225,8 +225,8 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
-    slug: "ch-services",
-    title: "C.H Services",
+    slug: "property-maintenance",
+    title: "Property Maintenance Site",
     tagline: "Property Maintenance Marketing Site",
     coverImage: "/images/ch-services-cover.png",
     liveUrl: "https://mockup1.clydeabenojar.site",
@@ -235,7 +235,7 @@ export const caseStudies: CaseStudy[] = [
     overview:
       "A prospect mockup for a Kent property-maintenance business: a trust-led landing page with services, before/after proof, customer reviews, and free-quote lead capture — built to turn local homeowners into booked jobs.",
     seoTitle:
-      "Property maintenance website mockup — marketing site & lead form | C.H Services",
+      "Property maintenance website mockup — marketing site and lead form",
     seoDescription:
       "Trust-led Kent property maintenance marketing site with services catalog, before/after proof, reviews, and free-quote lead capture.",
     sections: [
@@ -254,7 +254,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Social Proof & Free-Quote Lead Capture",
         body:
-          "Facebook reviews and founder storytelling build confidence, then a structured free-quote form captures name, contact, property, and service interest so Cameron’s team can respond with a clear next step — no obligation.",
+          "Facebook reviews and founder storytelling build confidence, then a structured free-quote form captures name, contact, property, and service interest so the team can respond with a clear next step — no obligation.",
         image: "/images/ch-services-lead.png",
       },
     ],
