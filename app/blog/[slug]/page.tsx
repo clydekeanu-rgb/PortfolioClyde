@@ -95,12 +95,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </header>
             </Reveal>
 
-            <Reveal>
-              <div
-                className="blog-prose mt-10"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-            </Reveal>
+            <div
+              className="blog-prose mt-10"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             <hr className="mt-12" style={{ borderColor: "var(--v2-border)" }} />
 
