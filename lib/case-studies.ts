@@ -237,6 +237,37 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
+    slug: "portfolio-lead-assistant",
+    title: "Portfolio Lead Assistant",
+    tagline: "n8n Auto-Reply & Booking Automation",
+    coverImage: "/images/portfolio-lead-assistant.png",
+    liveUrl: "/#contact",
+    role: "End-to-end automation design & build",
+    techStack: ["n8n", "Google Sheets", "Gmail", "OpenRouter"],
+    overview:
+      "Contact forms on this portfolio write leads to Google Sheets. An n8n Cloud workflow picks them up, skips rows already messaged, routes by type (discovery vs message), sends Gmail acknowledgements and owner alerts, drafts FAQ replies with OpenRouter for general inquiries, then marks each lead handled — so follow-up happens without manual triage.",
+    sections: [
+      {
+        heading: "Sheet Trigger & Dedupe",
+        body:
+          "New form submissions land as Sheet rows. The workflow triggers on rowAdded, then filters out anything already marked messaged so the same lead never gets a duplicate auto-reply.",
+        image: "/images/portfolio-lead-assistant.png",
+      },
+      {
+        heading: "Discovery Path",
+        body:
+          "Discovery-call requests get a confirmation email to the visitor, a notify-me alert to my inbox, and a Sheet update that marks the row messaged — so booking intent is acknowledged in minutes.",
+        image: "/images/portfolio-lead-assistant.png",
+      },
+      {
+        heading: "Message Path with AI FAQ Reply",
+        body:
+          "General messages route through an AI agent on OpenRouter that drafts an FAQ-style reply, then Gmail sends that reply, notifies me, and marks the Sheet row complete — keeping human handoff for anything the draft cannot cover.",
+        image: "/images/portfolio-lead-assistant.png",
+      },
+    ],
+  },
+  {
     slug: "lumina-studio",
     title: "Lumina Studio",
     tagline: "Personal AI Image Studio",

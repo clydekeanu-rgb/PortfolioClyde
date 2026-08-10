@@ -198,6 +198,62 @@ export const servicePages: ServicePage[] = [
       },
     ],
   },
+  {
+    slug: "lead-automation",
+    title: "Lead Auto-Reply & Booking Assistants",
+    shortTitle: "Lead automation",
+    tagline: "n8n Cloud follow-up that runs while you work",
+    description:
+      "Form → sheet → typed routes for discovery vs message: Gmail acknowledgements, owner alerts, and AI FAQ drafts via OpenRouter — built so leads get a reply without manual triage.",
+    heroTitle: "Auto-reply and booking assistants that clear your inbox queue.",
+    heroBody:
+      "For founders and freelancers who lose hours sorting contact forms: an n8n Cloud workflow that watches new leads, skips duplicates, confirms discovery calls, drafts FAQ replies, and notifies you when something needs a human.",
+    whoFor: [
+      "Portfolio and agency sites that collect message + booking leads in one sheet",
+      "Operators who want acknowledgement emails without living in Gmail",
+      "Teams ready to add AI FAQ drafts with a clear human handoff",
+    ],
+    outcomes: [
+      "Sheet-triggered automation that starts when a lead lands",
+      "Separate paths for discovery bookings vs general messages",
+      "Visitor acknowledgements plus owner notifications by email",
+      "AI-assisted FAQ replies with rows marked messaged so nothing double-sends",
+    ],
+    process: [
+      {
+        heading: "Map the lead types",
+        body: "We define discovery vs message fields, what “already messaged” means, and which replies should be canned vs AI-drafted.",
+      },
+      {
+        heading: "Build the n8n Cloud flow",
+        body: "Sheet trigger, filters, routers, Gmail nodes, and an OpenRouter-backed agent ship as a maintainable workflow — not a one-off Zap.",
+      },
+      {
+        heading: "Harden and hand off",
+        body: "Dedupe, notify-me alerts, and mark-messaged updates keep the loop safe. You stay in control of anything the FAQ draft cannot answer.",
+      },
+    ],
+    caseStudySlugs: ["portfolio-lead-assistant", "la-purisima-resort"],
+    ctaLabel: "Automate my lead follow-up",
+    ctaSubject: "Lead automation inquiry",
+    faqs: [
+      {
+        question: "Does this run on n8n Cloud?",
+        answer:
+          "Yes. The portfolio assistant is an n8n Cloud workflow wired to Google Sheets and Gmail, with OpenRouter for AI drafting on the message path.",
+      },
+      {
+        question: "Will every message get an AI reply?",
+        answer:
+          "Only the message route uses the FAQ agent. Discovery bookings get a confirmation acknowledgement. You still get a notify-me email so you can take over when needed.",
+      },
+      {
+        question: "Can this plug into my existing form and sheet?",
+        answer:
+          "Usually yes. We map your columns (type, email, message status) and deploy a flow that matches how you already capture leads — including portfolio-style message + discovery forms.",
+      },
+    ],
+  },
 ];
 
 export function getServicePage(slug: string): ServicePage | undefined {

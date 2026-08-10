@@ -202,16 +202,19 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
               <Reveal className="mt-20 flex flex-wrap gap-3">
                 {study.liveLinks.map((link) => {
                   const isApk = link.href.toLowerCase().endsWith(".apk");
+                  const isExternal = /^https?:\/\//i.test(link.href);
                   return (
                     <a
                       key={link.href}
                       href={link.href}
                       {...(isApk
                         ? { download: true }
-                        : {
-                            target: "_blank",
-                            rel: "noopener noreferrer",
-                          })}
+                        : isExternal
+                          ? {
+                              target: "_blank",
+                              rel: "noopener noreferrer",
+                            }
+                          : {})}
                       className="v2-btn v2-btn-primary px-5 py-3 text-sm"
                     >
                       {link.label}
@@ -225,15 +228,21 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                   href={study.liveUrl}
                   {...(study.liveUrl.toLowerCase().endsWith(".apk")
                     ? { download: true }
-                    : {
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                      })}
+                    : /^https?:\/\//i.test(study.liveUrl)
+                      ? {
+                          target: "_blank",
+                          rel: "noopener noreferrer",
+                        }
+                      : {})}
                   className="v2-btn v2-btn-primary px-5 py-3 text-sm"
                 >
                   {study.liveUrl.toLowerCase().endsWith(".apk")
                     ? "Download APK"
-                    : "Visit live site"}
+                    : study.liveUrl.startsWith("/#")
+                      ? "See it on the contact forms"
+                      : study.liveUrl.startsWith("/")
+                        ? "Open tool"
+                        : "Visit live site"}
                 </a>
               </Reveal>
             ) : null}

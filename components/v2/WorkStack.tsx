@@ -80,12 +80,12 @@ const projects: Project[] = [
     siteUrl: "mockup1.clydeabenojar.site",
   },
   {
-    title: "Lumina Studio",
+    title: "Portfolio Lead Assistant",
     blurb:
-      "A personal AI image studio: text-to-image, image-to-image, and consistent character fusion with a built-in prompt builder.",
-    tags: ["AI tool", "Web app"],
-    href: "/work/lumina-studio/",
-    image: "/images/lumina.png",
+      "n8n Cloud automation on this portfolio: Sheet-triggered lead routing, discovery acknowledgements, AI FAQ replies via OpenRouter, and Gmail owner alerts.",
+    tags: ["Automation", "n8n"],
+    href: "/work/portfolio-lead-assistant/",
+    image: "/images/portfolio-lead-assistant.png",
   },
 ];
 
