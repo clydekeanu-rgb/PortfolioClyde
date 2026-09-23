@@ -18,9 +18,9 @@ const segments = [
     title: "For local businesses",
     body: "Marketing sites, booking, and lead forms that turn visitors into booked jobs.",
     proofs: [
+      { label: "Curated Pages", href: "/work/curated-pages/" },
       { label: "Property Maintenance Site", href: "/work/property-maintenance/" },
       { label: "Pickleball Pavilion", href: "/work/pickleball-pavilion/" },
-      { label: "La Purisima", href: "/work/la-purisima-resort/" },
     ],
     serviceHref: "/services/booking-websites/",
     serviceLabel: "Booking websites",
@@ -29,9 +29,9 @@ const segments = [
     title: "For SaaS & product founders",
     body: "Web apps with auth, billing, and the admin tools you need to operate.",
     proofs: [
+      { label: "Klayd Music Player", href: "/work/klayd-music-player/" },
       { label: "Konstru", href: "/work/konstru/" },
       { label: "PasahodPH", href: "/work/pasahodph/" },
-      { label: "Lead Assistant", href: "/work/portfolio-lead-assistant/" },
     ],
     serviceHref: "/services/web-apps-saas/",
     serviceLabel: "Web apps & SaaS",
@@ -51,6 +51,7 @@ const segments = [
     title: "For construction & trades",
     body: "Estimating tools and ops software that match how crews actually work.",
     proofs: [
+      { label: "Archiwyn 3D", href: "/work/archiwyn/" },
       { label: "Konstru BOQ", href: "/work/konstru/" },
       { label: "PasahodPH payroll", href: "/work/pasahodph/" },
     ],

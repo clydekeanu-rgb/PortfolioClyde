@@ -34,6 +34,26 @@ type Project = {
 
 const projects: Project[] = [
   {
+    title: "Klayd Music Player",
+    blurb:
+      "An ad-free YouTube Music web player: dual-player crossfade engine, real-time dynamic canvas palette extraction, synced lyrics, and offline state persistence.",
+    tags: ["Web app", "Audio streaming"],
+    href: "/work/klayd-music-player/",
+    image: "/images/klayd-music-player-cover.png",
+    displayAsLaptop: true,
+    siteUrl: "music.clydeabenojar.site",
+  },
+  {
+    title: "Curated Pages",
+    blurb:
+      "Bespoke digital stationery and celebration websites: interactive invitations with acoustic soundtracks, day-of seat plans, and memory ledgers.",
+    tags: ["Digital stationery", "WebGL"],
+    href: "/work/curated-pages/",
+    image: "/images/curated-pages-cover.png",
+    displayAsLaptop: true,
+    siteUrl: "curated-pages.com",
+  },
+  {
     title: "PasahodPH",
     blurb:
       "Offline-first Android payroll for site crews: swipe attendance, cash advances, overtime, and live salary computed on-device with no cloud login.",
@@ -52,26 +72,6 @@ const projects: Project[] = [
     siteUrl: "pilot.promisesurrogacy.com",
   },
   {
-    title: "Konstru",
-    blurb:
-      "A construction cost calculator SaaS with auth, a subscription paywall, and a bill-of-materials engine priced in PHP.",
-    tags: ["SaaS", "Web app"],
-    href: "/work/konstru/",
-    image: "/images/Konstru.png",
-    displayAsLaptop: true,
-    siteUrl: "konstru.clydeabenojar.site",
-  },
-  {
-    title: "The Pickleball Pavilion",
-    blurb:
-      "A scrollytelling venue site with real-time court availability, online booking, and an admin dashboard for Cebu's premier pickleball venue.",
-    tags: ["Booking system", "Web app"],
-    href: "/work/pickleball-pavilion/",
-    image: "/images/PicklePavilion.png",
-    displayAsLaptop: true,
-    siteUrl: "picklepavilion.netlify.app",
-  },
-  {
     title: "AI Fulfillment Pipeline",
     blurb:
       "Multi-trigger n8n Cloud workflow: form intake, LLM + AI QA loops, async API callbacks, Slack human approval, Gmail delivery, and overdue reminders.",
@@ -82,7 +82,7 @@ const projects: Project[] = [
   {
     title: "More work",
     blurb:
-      "Property maintenance mockup, Portfolio Lead Assistant, Lumina, La Purisima, and the rest of the case studies live on the full work page.",
+      "Archiwyn, Konstru, The Pickleball Pavilion, Lead Assistant, Lumina, and the rest of the case studies live on the full work page.",
     tags: ["Case studies"],
     href: "/work/",
     ctaLabel: "View all work",

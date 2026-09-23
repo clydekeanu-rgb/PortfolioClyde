@@ -22,6 +22,149 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
+    slug: "klayd-music-player",
+    title: "Klayd Music Player",
+    tagline: "Ad-free YouTube Music streaming web app",
+    coverImage: "/images/klayd-music-player-cover.png",
+    liveUrl: "https://music.clydeabenojar.site",
+    liveLinks: [
+      { label: "Live Player", href: "https://music.clydeabenojar.site" },
+      {
+        label: "GitHub Repository",
+        href: "https://github.com/clydekeanu-rgb/klaydmusicplayer",
+      },
+    ],
+    role: "Full-stack architecture, UI design & development",
+    techStack: [
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Vite",
+      "Node.js",
+      "Hono",
+      "InnerTube API",
+      "IndexedDB",
+      "LRCLIB",
+    ],
+    overview:
+      "Most streaming web players depend on paid subscriptions or clutter the interface with ads and telemetry. I built Klayd Music Player as a focused, ad-free streaming client: a dedicated Hono API on Render proxies YouTube Music streams, paired with a mobile-first React SPA featuring dual-engine crossfade, synced lyrics, and offline state persistence.",
+    seoTitle: "Ad-free YouTube Music web player with synced lyrics and crossfade",
+    seoDescription:
+      "React 19 streaming player with dual-engine crossfade, dynamic album canvas theming, synced lyrics, and a Hono Node.js backend.",
+    sections: [
+      {
+        heading: "Dual-Player Engine & Crossfade",
+        body:
+          "Two synchronized audio channels manage playback transitions with configurable crossfades from 0 to 12 seconds. Volume fades smoothly without clipping or audible pauses between tracks.",
+        image: "/images/klayd-music-player-cover.png",
+      },
+      {
+        heading: "Dynamic Album-Art Canvas Theming",
+        body:
+          "HTML5 Canvas quantizes dominant colors directly from active album artwork. The UI injects matching ambient glow variables and background gradients in real time.",
+        image: "/images/klayd-music-player-cover.png",
+      },
+      {
+        heading: "Synced Lyrics & Queue Intelligence",
+        body:
+          "Timestamped lyrics from LRCLIB scroll smoothly in real time with interactive click-to-seek playback. Non-destructive Fisher-Yates shuffling and UpNext queries keep playback continuous.",
+        image: "/images/klayd-music-player-cover.png",
+      },
+    ],
+  },
+  {
+    slug: "curated-pages",
+    title: "Curated Pages",
+    tagline: "Bespoke digital stationery & invitation suites",
+    coverImage: "/images/curated-pages-cover.png",
+    liveUrl: "https://curated-pages.com",
+    liveLinks: [
+      { label: "Main Atelier", href: "https://curated-pages.com" },
+      {
+        label: "Wedding Suite Demo",
+        href: "https://claramateo.curated-pages.com",
+      },
+    ],
+    role: "Founder, creative direction & full-stack development",
+    techStack: [
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "OGL",
+      "Tailwind CSS",
+      "Google Sheets API",
+    ],
+    overview:
+      "Couples and event hosts often spend thousands on paper invitations that get discarded after the event. Curated Pages is an atelier for bespoke digital stationery: interactive invitation websites with curated soundtracks, real-time RSVP tracking, day-of guest seat locators, and permanent photo ledgers.",
+    seoTitle: "Bespoke digital invitation websites & wedding stationery suites",
+    seoDescription:
+      "Digital invitation suite atelier: ambient WebGL effects, custom audio soundtracks, seat plans, and automated Google Sheets RSVP sync.",
+    sections: [
+      {
+        heading: "The Three-Stage Event Journey",
+        body:
+          "Each project transitions smoothly across three milestones: pre-event interactive website invitation, day-of schedule and seat plan locator, and post-event memory ledger.",
+        image: "/images/curated-pages-cover.png",
+      },
+      {
+        heading: "Atmospheric Canvas & Soundscapes",
+        body:
+          "Editorial serif typography blends with subtle OGL ambient shaders and acoustic soundtrack controls, giving digital stationery the tactile weight of handcrafted paper.",
+        image: "/images/curated-pages-demo1.jpg",
+      },
+      {
+        heading: "Interactive RSVP & Guest Operations",
+        body:
+          "Guests submit meal preferences, party sizes, and notes through hardened forms. Data syncs instantly into client Google Sheets for live attendance counts.",
+        image: "/images/curated-pages-demo2.jpg",
+      },
+    ],
+  },
+  {
+    slug: "archiwyn",
+    title: "Archiwyn",
+    tagline: "AI architectural visualization studio",
+    coverImage: "/images/archiwyn-cover.png",
+    liveUrl: "https://archiwyn.com",
+    liveLinks: [
+      { label: "Live Platform", href: "https://archiwyn.com" },
+    ],
+    role: "Product design & AI systems development",
+    techStack: [
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Vite",
+      "Generative AI",
+      "Supabase",
+    ],
+    overview:
+      "Architects and property developers spend days waiting for 3D render farms or manual drafting passes. Archiwyn turns concept sketches, elevations, and massing models into photorealistic architectural visualizations in seconds, keeping design thinking intact.",
+    seoTitle: "AI architectural rendering platform for sketches and massing models",
+    seoDescription:
+      "Architectural visualization studio: converts sketches and CAD plans to photoreal renders with localized canvas inpainting and private workspaces.",
+    sections: [
+      {
+        heading: "Sketch to Photoreal Rendering",
+        body:
+          "Custom diffusion pipelines interpret linework, depth, and spatial geometry to produce lighting-accurate daylight and night renders for client presentations.",
+        image: "/images/archiwyn-cover.png",
+      },
+      {
+        heading: "Liquid Glass Studio Workspace",
+        body:
+          "A dark workstation interface provides canvas inpainting, material prompt adjustments, and reference image guidance without leaving the browser.",
+        image: "/images/archiwyn-cover.png",
+      },
+      {
+        heading: "Workspaces & Presentation Exports",
+        body:
+          "Multi-project management, authenticated client workspaces, usage tracking, and high-resolution exports designed for design reviews and pitch decks.",
+        image: "/images/archiwyn-cover.png",
+      },
+    ],
+  },
+  {
     slug: "pasahodph",
     title: "PasahodPH",
     tagline: "Offline Payroll for Site Crews",
