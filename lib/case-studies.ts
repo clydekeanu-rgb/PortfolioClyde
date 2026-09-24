@@ -440,7 +440,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "lumina-studio",
     title: "Lumina Studio",
     tagline: "Personal AI Image Studio",
-    coverImage: "/images/lumina.png",
+    coverImage: "/images/lumina-cover.png",
     liveUrl: "https://lumina.clydeabenojar.site",
     role: "End-to-end design & AI-assisted development",
     techStack: ["Qwen", "Wan AI", "Next.js"],
