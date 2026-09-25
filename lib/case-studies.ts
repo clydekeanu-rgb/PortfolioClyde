@@ -9,6 +9,7 @@ export type CaseStudy = {
   title: string;
   tagline: string;
   coverImage: string;
+  heroImage?: string;
   liveUrl?: string;
   liveLinks?: { label: string; href: string }[];
   role: string;
@@ -25,7 +26,8 @@ export const caseStudies: CaseStudy[] = [
     slug: "klayd-music-player",
     title: "Klayd Music Player",
     tagline: "Ad-free YouTube Music streaming web app",
-    coverImage: "/images/klayd-music-player-cover.png",
+    coverImage: "/images/klayd-music-player-hero.jpg",
+    heroImage: "/images/klayd-music-player-hero.jpg",
     liveUrl: "https://music.clydeabenojar.site",
     liveLinks: [
       { label: "Live Player", href: "https://music.clydeabenojar.site" },
@@ -56,19 +58,19 @@ export const caseStudies: CaseStudy[] = [
         heading: "Dual-Player Engine & Crossfade",
         body:
           "Two synchronized audio channels manage playback transitions with configurable crossfades from 0 to 12 seconds. Volume fades smoothly without clipping or audible pauses between tracks.",
-        image: "/images/klayd-music-player-cover.png",
+        image: "/images/klayd-music-player-crossfade.png",
       },
       {
         heading: "Dynamic Album-Art Canvas Theming",
         body:
           "HTML5 Canvas quantizes dominant colors directly from active album artwork. The UI injects matching ambient glow variables and background gradients in real time.",
-        image: "/images/klayd-music-player-cover.png",
+        image: "/images/klayd-music-player-theming.png",
       },
       {
         heading: "Synced Lyrics & Queue Intelligence",
         body:
           "Timestamped lyrics from LRCLIB scroll smoothly in real time with interactive click-to-seek playback. Non-destructive Fisher-Yates shuffling and UpNext queries keep playback continuous.",
-        image: "/images/klayd-music-player-cover.png",
+        image: "/images/klayd-music-player-lyrics.png",
       },
     ],
   },
@@ -76,7 +78,8 @@ export const caseStudies: CaseStudy[] = [
     slug: "curated-pages",
     title: "Curated Pages",
     tagline: "Bespoke digital stationery & invitation suites",
-    coverImage: "/images/curated-pages-cover.png",
+    coverImage: "/images/curated-pages-hero.jpg",
+    heroImage: "/images/curated-pages-hero.jpg",
     liveUrl: "https://curated-pages.com",
     liveLinks: [
       { label: "Main Atelier", href: "https://curated-pages.com" },
@@ -104,7 +107,7 @@ export const caseStudies: CaseStudy[] = [
         heading: "The Three-Stage Event Journey",
         body:
           "Each project transitions smoothly across three milestones: pre-event interactive website invitation, day-of schedule and seat plan locator, and post-event memory ledger.",
-        image: "/images/curated-pages-cover.png",
+        image: "/images/curated-pages-journey.png",
       },
       {
         heading: "Atmospheric Canvas & Soundscapes",
@@ -124,7 +127,8 @@ export const caseStudies: CaseStudy[] = [
     slug: "archiwyn",
     title: "Archiwyn",
     tagline: "AI architectural visualization studio",
-    coverImage: "/images/archiwyn-cover.png",
+    coverImage: "/images/archiwyn-hero.jpg",
+    heroImage: "/images/archiwyn-hero.jpg",
     liveUrl: "https://archiwyn.com",
     liveLinks: [
       { label: "Live Platform", href: "https://archiwyn.com" },
@@ -148,19 +152,19 @@ export const caseStudies: CaseStudy[] = [
         heading: "Sketch to Photoreal Rendering",
         body:
           "Custom diffusion pipelines interpret linework, depth, and spatial geometry to produce lighting-accurate daylight and night renders for client presentations.",
-        image: "/images/archiwyn-cover.png",
+        image: "/images/archiwyn-workspace.png",
       },
       {
         heading: "Liquid Glass Studio Workspace",
         body:
           "A dark workstation interface provides canvas inpainting, material prompt adjustments, and reference image guidance without leaving the browser.",
-        image: "/images/archiwyn-cover.png",
+        image: "/images/archiwyn-workspace.png",
       },
       {
         heading: "Workspaces & Presentation Exports",
         body:
           "Multi-project management, authenticated client workspaces, usage tracking, and high-resolution exports designed for design reviews and pitch decks.",
-        image: "/images/archiwyn-cover.png",
+        image: "/images/archiwyn-workspace.png",
       },
     ],
   },

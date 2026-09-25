@@ -1,6 +1,4 @@
 export const LAPTOP_MOCKUP_SLUGS = new Set([
-  "klayd-music-player",
-  "curated-pages",
   "archiwyn",
   "promise-surrogacy",
   "konstru",

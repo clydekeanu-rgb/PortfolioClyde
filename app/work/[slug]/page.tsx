@@ -47,13 +47,13 @@ export async function generateMetadata({
       title,
       description,
       url,
-      images: [{ url: study.coverImage }],
+      images: [{ url: study.heroImage ?? study.coverImage }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [study.coverImage],
+      images: [study.heroImage ?? study.coverImage],
     },
   };
 }
@@ -64,6 +64,8 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
   if (!study) {
     notFound();
   }
+
+  const heroImage = study.heroImage ?? study.coverImage;
 
   return (
     <SitePage variant="work">
@@ -93,7 +95,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                 >
                   {usesLaptopMockup(study.slug) ? (
                     <LaptopBrowserMockup
-                      src={study.coverImage}
+                      src={heroImage}
                       alt={study.title}
                       url={browserUrl(study.liveUrl)}
                       priority
@@ -101,7 +103,7 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
                     />
                   ) : (
                     <Image
-                      src={study.coverImage}
+                      src={heroImage}
                       alt={study.title}
                       fill
                       priority

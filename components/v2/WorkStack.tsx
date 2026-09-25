@@ -39,8 +39,7 @@ const projects: Project[] = [
       "An ad-free YouTube Music web player: dual-player crossfade engine, real-time dynamic canvas palette extraction, synced lyrics, and offline state persistence.",
     tags: ["Web app", "Audio streaming"],
     href: "/work/klayd-music-player/",
-    image: "/images/klayd-music-player-cover.png",
-    displayAsLaptop: true,
+    image: "/images/klayd-music-player-hero.jpg",
     siteUrl: "music.clydeabenojar.site",
   },
   {
@@ -49,8 +48,7 @@ const projects: Project[] = [
       "Bespoke digital stationery and celebration websites: interactive invitations with acoustic soundtracks, day-of seat plans, and memory ledgers.",
     tags: ["Digital stationery", "WebGL"],
     href: "/work/curated-pages/",
-    image: "/images/curated-pages-cover.png",
-    displayAsLaptop: true,
+    image: "/images/curated-pages-hero.jpg",
     siteUrl: "curated-pages.com",
   },
   {
