@@ -11,63 +11,69 @@ export type FreeTool = Project & {
 export const freeTools: FreeTool[] = [
   {
     slug: "promptgen",
-    title: "PromptGen",
-    subtitle: "Product Photography Prompt Builder",
+    title: "AI Prompt Studio",
+    subtitle: "Universal AI Prompt Builder",
     description:
-      "A guided wizard that builds structured AI image-generation prompts for product photography — category, presentation style, model details, shot setup, background, lighting, mood, and output size — then generates a copyable JSON spec and prompt preview.",
-    tags: ["Free Tool", "AI Prompt Builder"],
+      "An all-in-one structured prompt generator for Product Photography, Architectural Renders, and Realistic Characters. Switch modes instantly, fine-tune angles, materials, and lighting, and generate copy-ready prompts for Midjourney, Imagen, and FLUX.",
+    tags: ["Free Tool", "AI Prompt Builder", "Multi-Mode"],
     href: "/free-tools/promptgen/",
     external: false,
     liveUrl: "/free-tools/promptgen/",
-    image: "/images/promptgen.png",
+    image: "/images/promptgen.jpg",
     number: "00",
     audience:
-      "E-commerce brands, product marketers, and studios who need consistent AI product-photo prompts without rewriting from scratch.",
-    hireLine: "Need PromptGen-style tooling built into your product or workflow?",
-    seoTitle: "Free AI product photography prompt builder | PromptGen",
+      "E-commerce brands, 3D visualizers, and creators who need fast, structured AI prompts without wrestling syntax from scratch.",
+    hireLine: "Need custom AI prompt builders or specialized workflow tools for your team?",
+    seoTitle: "Free AI Prompt Builder | Product, Architecture & Character Studio",
     seoDescription:
-      "Guided wizard for structured Midjourney/Imagen product-photo prompts — free tool by Clyde Abenojar. Need this in your product? Book a call.",
+      "Structured AI prompt generator for Midjourney & Imagen. Build photorealistic prompts for products, architectural renders, and characters with Clyde Abenojar's free studio.",
   },
   {
-    slug: "blueprintai",
-    title: "BlueprintAI",
-    subtitle: "Architectural Render Prompt Builder",
+    slug: "background-remover",
+    title: "Background Remover",
+    subtitle: "In-Browser AI Background Removal",
     description:
-      "A guided wizard for turning a building concept into a detailed photorealistic-render prompt — architectural style, lighting, camera angle, weather, and scene extras — ready to paste into Midjourney, Imagen, or any image model.",
-    tags: ["Free Tool", "AI Prompt Builder"],
-    href: "/free-tools/blueprintai/",
+      "Free, private background removal powered by BiRefNet running entirely in your browser via WebGPU/WASM. No image uploads, zero server latency, and full-resolution transparent PNG export.",
+    tags: ["Free Tool", "AI Vision", "Client-Side", "BiRefNet"],
+    href: "/free-tools/background-remover/",
     external: false,
-    liveUrl: "/free-tools/blueprintai/",
-    image: "/images/blueprintai.png",
+    liveUrl: "/free-tools/background-remover/",
+    image: "/images/background-remover.jpg",
     number: "01",
     audience:
-      "Architects, developers, and visualization freelancers who want photorealistic building renders without wrestling prompt syntax.",
-    hireLine: "Want a custom render or design prompt tool for your firm?",
-    seoTitle: "Free architectural render prompt builder | BlueprintAI",
+      "Designers, creators, and sellers who want fast, high-fidelity background removal without uploading private media to third-party servers.",
+    hireLine: "Need on-device AI or custom vision models integrated into your web app?",
+    seoTitle: "Free In-Browser Background Remover | 100% Private Client-Side AI",
     seoDescription:
-      "Turn building concepts into detailed AI render prompts — free tool by Clyde Abenojar. Need a custom version for your team? Book a call.",
+      "Remove backgrounds from photos entirely inside your browser with BiRefNet. Private, client-side WebGPU processing with transparent PNG export.",
   },
   {
-    slug: "chargen",
-    title: "CharGen",
-    subtitle: "Philippines-Realism Prompt Builder",
+    slug: "qr-generator",
+    title: "QR Code Studio",
+    subtitle: "Client-Side Custom QR Generator",
     description:
-      "A streamlined prompt builder for crafting localized scene descriptions and image prompts with a focused set of style, pose, location, and expression controls.",
-    tags: ["Free Tool", "Prompt Builder"],
-    href: "/free-tools/chargen/",
+      "Free, private, fully customizable QR code generator with live camera scannability verification. Create branded codes for URLs, Wi-Fi, vCards, WhatsApp, and more with custom dots, logos, and frame banners.",
+    tags: ["Free Tool", "QR Generator", "Client-Side", "Vector SVG"],
+    href: "/free-tools/qr-generator/",
     external: false,
-    liveUrl: "/free-tools/chargen/",
-    image: "/images/promptgen.png",
+    liveUrl: "/free-tools/qr-generator/",
+    image: "/images/qr-generator.jpg",
     number: "02",
     audience:
-      "Creators and marketers who need Philippines-realistic character and scene prompts with local context.",
-    hireLine: "Need a localized prompt or content tool built for your brand?",
-    seoTitle: "Free Philippines-realism image prompt builder | CharGen",
+      "Designers, businesses, and event organizers who need high-resolution, branded QR codes with guaranteed real-world camera scannability.",
+    hireLine: "Need branded QR generation or visual tooling integrated into your platform?",
+    seoTitle: "Free Custom QR Code Generator | Client-Side & High Resolution",
     seoDescription:
-      "Build localized PH-realistic scene and character prompts — free tool by Clyde Abenojar. Want this customized for your workflow? Book a call.",
+      "Create custom styled QR codes with gradients, logos, and frames directly in your browser. Real-time scannability check with PNG and SVG export.",
   },
 ];
 
 export function getFreeTool(slug: string): FreeTool | undefined {
-  return freeTools.find((tool) => tool.slug === slug);
+  const direct = freeTools.find((tool) => tool.slug === slug);
+  if (direct) return direct;
+  // Aliases for merged prompt generators
+  if (slug === "blueprintai" || slug === "chargen" || slug === "prompt-generator") {
+    return freeTools.find((tool) => tool.slug === "promptgen");
+  }
+  return undefined;
 }

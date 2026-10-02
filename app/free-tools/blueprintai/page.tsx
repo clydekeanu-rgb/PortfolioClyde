@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
-import { BlueprintAIApp } from "@/components/BlueprintAIApp";
+import { PromptStudioApp } from "@/components/PromptStudioApp";
 import { ToolHireCta } from "@/components/ToolHireCta";
 import { getFreeTool } from "@/lib/free-tools";
 
@@ -31,7 +31,7 @@ export default function BlueprintAIPage() {
             {"← Back to free tools"}
           </Link>
 
-          <BlueprintAIApp />
+          <PromptStudioApp initialMode="architecture" />
 
           <ToolHireCta
             audience={tool.audience}

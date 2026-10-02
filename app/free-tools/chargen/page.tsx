@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { SitePage } from "@/components/PageBackdrop";
-import { CharGenApp } from "@/components/CharGenApp";
+import { PromptStudioApp } from "@/components/PromptStudioApp";
 import { ToolHireCta } from "@/components/ToolHireCta";
 import { getFreeTool } from "@/lib/free-tools";
 
@@ -31,7 +31,7 @@ export default function CharGenPage() {
             {"← Back to free tools"}
           </Link>
 
-          <CharGenApp />
+          <PromptStudioApp initialMode="character" />
 
           <ToolHireCta
             audience={tool.audience}
