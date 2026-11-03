@@ -335,7 +335,7 @@ const ProfileCardComponent = ({
       style={cardStyle}
     >
       <div ref={shellRef} className="pc-card-shell">
-        <section className="pc-card">
+        <div className="pc-card">
           <div className="pc-inside">
             <div className="pc-content pc-avatar-content">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -343,7 +343,7 @@ const ProfileCardComponent = ({
                 className="avatar"
                 src={avatarUrl}
                 alt={`${name || "User"} avatar`}
-                loading="lazy"
+                fetchPriority="high"
                 onError={(e) => {
                   const t = e.target as HTMLImageElement;
                   t.style.display = "none";
@@ -352,12 +352,12 @@ const ProfileCardComponent = ({
             </div>
             <div className="pc-content">
               <div className="pc-details">
-                <h3>{name}</h3>
+                <div className="pc-name">{name}</div>
                 <p>{title}</p>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

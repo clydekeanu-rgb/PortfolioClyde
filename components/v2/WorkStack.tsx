@@ -131,7 +131,7 @@ export function WorkStack() {
           Selected work
         </motion.h2>
         <Link
-          href="/work"
+          href="/work/"
           className="group mb-2 inline-flex shrink-0 items-center gap-1 text-[0.9375rem] font-medium transition-colors"
           style={{ color: "var(--v2-muted)" }}
         >

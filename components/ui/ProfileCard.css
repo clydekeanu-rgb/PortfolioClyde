@@ -109,7 +109,8 @@
   padding-inline: 1rem;
 }
 
-.pc-details h3 {
+.pc-details h3,
+.pc-details .pc-name {
   font-weight: 600;
   margin: 0;
   font-size: min(4.5svh, 2.35em);
@@ -145,7 +146,8 @@
     bottom: 1em;
   }
 
-  .pc-details h3 {
+  .pc-details h3,
+  .pc-details .pc-name {
     font-size: min(4svh, 2.1em);
   }
 
@@ -164,7 +166,8 @@
     bottom: 0.85em;
   }
 
-  .pc-details h3 {
+  .pc-details h3,
+  .pc-details .pc-name {
     font-size: min(3.5svh, 1.75em);
   }
 
@@ -180,7 +183,8 @@
     max-height: 272px;
   }
 
-  .pc-details h3 {
+  .pc-details h3,
+  .pc-details .pc-name {
     font-size: min(3svh, 1.4em);
   }
 

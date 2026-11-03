@@ -1,0 +1,29 @@
+# Clyde Abenojar - AI-assisted Web Builder & Full Stack Developer
+
+> Clyde Abenojar builds web apps, AI automation tools, and production business websites. Scoped carefully, built fast, and shipped as working software people actually use.
+
+## Core Capabilities
+- **Web Apps & SaaS:** Full-stack development with Next.js 14, React 18, TypeScript, Tailwind CSS, and Supabase (PostgreSQL, Auth, Storage, Edge Functions).
+- **AI Automation & Pipelines:** n8n workflow orchestration, LLM inference pipelines, automated lead intake, human-in-the-loop Slack QA, and prompt engineering.
+- **Booking & Business Websites:** High-converting landing pages, customer portals, custom forms, and appointment systems for local businesses and trades.
+- **3D Modeling & Visualization:** Architectural visualization, interactive WebGL 3D viewports, and custom 3D web experiences.
+
+## Key Links & Routes
+- Homepage: https://clydeabenojar.site/
+- Portfolio & Case Studies: https://clydeabenojar.site/work/
+- Services & Offerings: https://clydeabenojar.site/services/
+- 3D Architectural Visualizations: https://clydeabenojar.site/3d/
+- Blog & Technical Insights: https://clydeabenojar.site/blog/
+- Free Tools & Utilities: https://clydeabenojar.site/free-tools/
+  - AI Prompt Studio: https://clydeabenojar.site/free-tools/promptgen/
+  - Background Remover (BiRefNet): https://clydeabenojar.site/free-tools/background-remover/
+  - QR Code Studio: https://clydeabenojar.site/free-tools/qr-generator/
+
+## Tech Stack
+- Frontend: Next.js (App Router), React, TypeScript, Tailwind CSS, Framer Motion, OGL / WebGL.
+- Backend & Database: Node.js, Supabase, PostgreSQL, REST APIs.
+- AI & Automation: n8n, OpenAI, Claude, Midjourney, WebGPU / BiRefNet on-device vision models.
+
+## Contact & Work Inquiries
+- Location: Philippines (available for remote projects worldwide)
+- Discovery Calls & Inquiries: https://clydeabenojar.site/#contact

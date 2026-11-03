@@ -1,4 +1,5 @@
 import { caseStudies } from "@/lib/case-studies";
+import { freeTools } from "@/lib/free-tools";
 import { servicePages } from "@/lib/service-pages";
 import { adminSupabase } from "@/lib/supabase/admin";
 import type { MetadataRoute } from "next";
@@ -28,6 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
   }));
 
+  const toolUrls = freeTools.map((tool) => ({
+    url: `${SITE}/free-tools/${tool.slug}/`,
+    lastModified: new Date(),
+  }));
+
   return [
     {
       url: `${SITE}/`,
@@ -44,6 +50,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...serviceUrls,
     {
+      url: `${SITE}/3d/`,
+      lastModified: new Date(),
+    },
+    {
       url: `${SITE}/blog/`,
       lastModified: new Date(),
     },
@@ -51,10 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE}/free-tools/`,
       lastModified: new Date(),
     },
-    {
-      url: `${SITE}/free-tools/promptgen/`,
-      lastModified: new Date(),
-    },
+    ...toolUrls,
     {
       url: `${SITE}/free-tools/blueprintai/`,
       lastModified: new Date(),

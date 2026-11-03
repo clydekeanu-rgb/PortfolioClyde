@@ -146,7 +146,7 @@ export function CapabilitiesBento() {
             className="md:col-span-3"
           >
             <Link
-              href="/3d"
+              href="/3d/"
               className="v2-card group relative flex h-full overflow-hidden transition-all duration-300 hover:border-[var(--v2-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]"
             >
               <Image
