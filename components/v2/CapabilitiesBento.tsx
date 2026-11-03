@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Check, Loader2, Play } from "lucide-react";
+import { ArrowUpRight, Check, Loader2, Play } from "lucide-react";
 
 const EASE_OUT_STRONG = [0.23, 1, 0.32, 1] as const;
 
@@ -139,40 +140,54 @@ export function CapabilitiesBento() {
             </div>
           </motion.div>
 
-          {/* E: 3D modeling (image cell) */}
+          {/* E: 3D modeling (image cell, linked to /3d) */}
           <motion.div
             variants={cellVariants}
-            className="v2-card relative overflow-hidden md:col-span-3"
+            className="md:col-span-3"
           >
-            <Image
-              src="/images/capability-3d-rendering.png"
-              alt="Architectural 3D rendering of a modern residence at dusk"
-              fill
-              quality={70}
-              sizes="(max-width: 768px) 92vw, 520px"
-              className="object-cover object-center"
-            />
-            <div
-              className="relative flex h-full min-h-[13rem] flex-col justify-end p-7"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(14,15,18,0.92) 28%, rgba(14,15,18,0.35) 70%, rgba(14,15,18,0.15))",
-              }}
+            <Link
+              href="/3d"
+              className="v2-card group relative flex h-full overflow-hidden transition-all duration-300 hover:border-[var(--v2-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]"
             >
-              <h3
-                className="text-xl font-semibold tracking-tight"
-                style={{ color: "var(--v2-text)" }}
+              <Image
+                src="/images/capability-3d-rendering.png"
+                alt="Architectural 3D rendering of a modern residence at dusk"
+                fill
+                quality={70}
+                sizes="(max-width: 768px) 92vw, 520px"
+                className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+              <div
+                className="relative flex h-full min-h-[13rem] w-full flex-col justify-end p-7"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(14,15,18,0.92) 28%, rgba(14,15,18,0.35) 70%, rgba(14,15,18,0.15))",
+                }}
               >
-                3D modeling &amp; rendering
-              </h3>
-              <p
-                className="mt-2 text-[0.9375rem] leading-relaxed"
-                style={{ color: "var(--v2-muted)" }}
-              >
-                Architectural rendering and 3D visuals for projects that need
-                more than the browser.
-              </p>
-            </div>
+                <div className="flex items-center justify-between gap-2">
+                  <h3
+                    className="text-xl font-semibold tracking-tight transition-colors group-hover:text-[var(--v2-accent-text)]"
+                    style={{ color: "var(--v2-text)" }}
+                  >
+                    3D modeling &amp; rendering
+                  </h3>
+                  <span
+                    className="inline-flex items-center gap-1 text-xs font-medium transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    style={{ color: "var(--v2-accent-text)" }}
+                    aria-hidden="true"
+                  >
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </div>
+                <p
+                  className="mt-2 text-[0.9375rem] leading-relaxed"
+                  style={{ color: "var(--v2-muted)" }}
+                >
+                  Architectural rendering and 3D visuals for projects that need
+                  more than the browser.
+                </p>
+              </div>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

@@ -16,7 +16,7 @@ const navItems = [
 export function SiteNav() {
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/3d")) return null;
 
   return (
     <AnimatedNavFramer
