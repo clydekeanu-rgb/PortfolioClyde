@@ -16,7 +16,18 @@ export function Footer() {
           source="footer"
           className="sm:text-right"
         />
-        <p>clydeabenojar.site</p>
+        <div className="flex items-center gap-4">
+          <a
+            href="/llms.txt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-[var(--v2-text)]"
+          >
+            llms.txt
+          </a>
+          <span>·</span>
+          <p>clydeabenojar.site</p>
+        </div>
       </div>
     </footer>
   );

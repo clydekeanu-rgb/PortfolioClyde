@@ -64,6 +64,8 @@ export default function RootLayout({
     >
       <head>
         <link rel="preconnect" href="https://cdn.simpleicons.org" />
+        <link rel="help" type="text/plain" href="/llms.txt" title="LLM summary" />
+        <link rel="help" type="text/plain" href="/llms-full.txt" title="Full LLM context" />
         <JsonLd />
       </head>
       <body className={`${GeistSans.className} antialiased`}>

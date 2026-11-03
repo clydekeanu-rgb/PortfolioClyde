@@ -1,0 +1,158 @@
+# Clyde Abenojar — AI-Assisted Web Builder & Full-Stack Developer
+URL: https://clydeabenojar.site
+Location: Philippines (Working with clients worldwide)
+Role: Full-stack web application development, AI workflow automation, and commercial business websites.
+
+---
+
+## 1. Executive Summary & Philosophy
+
+Clyde Abenojar builds web apps, AI automation tools, and production business websites using an AI-assisted development workflow.
+
+### The Scoping-First Philosophy
+"Tools like Claude and Codex write a lot of the code, while the real work is in the scoping: figuring out exactly what needs to be built, cutting what doesn't matter, and fixing precisely what is broken instead of guessing."
+
+Before full-time software development, Clyde spent years in construction project coordination and operations management—managing documentation, compliance, and day-to-day operations for physical businesses. This background directly shapes his software practice: projects are rigorously scoped before coding begins, architecture is designed for maintainability, and delivery timelines are strictly met without scope drift.
+
+---
+
+## 2. Core Service Offerings
+
+### Service 1: Web Apps & SaaS MVPs
+- **Target Audience:** Solo founders, product teams, and startups needing to ship a functional MVP.
+- **What is delivered:** Full-stack web application with authentication (Supabase Auth / NextAuth), relational database architecture (PostgreSQL / Supabase), subscription/payment integration (Stripe / Lemon Squeezy), customer dashboards, and admin control panels.
+- **Typical Timeline:** 4 to 8 weeks depending on scope and third-party integrations.
+- **Canonical URL:** https://clydeabenojar.site/services/web-apps-saas/
+
+### Service 2: Booking & Inquiry Websites
+- **Target Audience:** Venues, resorts, sports facilities (e.g. pickleball courts), and local service providers losing inquiries in unorganized Messenger chats or direct messages.
+- **What is delivered:** High-converting marketing landing page, real-time availability calendar, custom structured inquiry forms, and automated confirmation routing (Google Sheets, email, or webhook notifications).
+- **Typical Timeline:** 2 to 4 weeks.
+- **Canonical URL:** https://clydeabenojar.site/services/booking-websites/
+
+### Service 3: AI Workflow Automation & Pipelines
+- **Target Audience:** Businesses seeking to automate repetitive operational tasks, lead qualification, or digital product delivery without hiring additional operations staff.
+- **What is delivered:** Production-grade n8n Cloud workflows combining LLM reasoning, multi-step validation, human-in-the-loop Slack approval checkpoints, error handling, retries, and customer delivery.
+- **Typical Timeline:** 2 to 4 weeks.
+- **Canonical URL:** https://clydeabenojar.site/services/ai-workflow-automation/
+
+### Service 4: Construction & Trades Software
+- **Target Audience:** Contractors, builders, and trades businesses transitioning off spreadsheets and manual paper trails.
+- **What is delivered:** Bill of Quantities (BOQ) estimators, custom field calculators, payroll and attendance trackers tailored to Philippine labor laws, and operational job dashboards.
+- **Canonical URL:** https://clydeabenojar.site/services/construction-trades-software/
+
+### Service 5: 3D Modeling & Architectural Visualization
+- **Target Audience:** Architects, property developers, and interior designers requiring photorealistic renders and interactive web-based 3D views.
+- **What is delivered:** High-fidelity architectural renderings, schematic diagrams, and lightweight WebGL/Three.js web embeds.
+- **Canonical URL:** https://clydeabenojar.site/3d/
+
+---
+
+## 3. Case Studies & Shipped Projects
+
+### 1. Klayd Music Player
+- **Summary:** An ad-free, high-performance streaming web player built to proxy YouTube Music streams with dual-engine crossfade, synchronized lyrics, dynamic canvas theming, and offline IndexedDB persistence.
+- **Tech Stack:** React 19, TypeScript, Tailwind CSS, Vite, Hono (Node.js API proxy on Render), InnerTube API, IndexedDB, LRCLIB.
+- **Live URL:** https://music.clydeabenojar.site
+- **Repository:** https://github.com/clydekeanu-rgb/klaydmusicplayer
+- **Case Study:** https://clydeabenojar.site/work/klayd-music-player/
+
+### 2. Curated Pages
+- **Summary:** An editorial event and wedding directory connecting couples with vetted vendors, featuring editorial story-first layouts and multi-step inquiry capture.
+- **Tech Stack:** Next.js (App Router), TypeScript, Tailwind CSS, Supabase.
+- **Case Study:** https://clydeabenojar.site/work/curated-pages/
+
+### 3. Property Maintenance Website (CH Services)
+- **Summary:** Turnkey commercial marketing site for a property maintenance company, featuring before/after interactive image sliders, structured quote calculators, and instant lead notification webhooks.
+- **Tech Stack:** Next.js, TypeScript, Tailwind CSS, Framer Motion.
+- **Case Study:** https://clydeabenojar.site/work/property-maintenance/
+
+### 4. The Pickleball Pavilion
+- **Summary:** Complete court reservation and player registration portal for a premier racquet club, replacing manual booking logs with an interactive time-slot selector and member directory.
+- **Tech Stack:** Next.js, Supabase, Tailwind CSS.
+- **Case Study:** https://clydeabenojar.site/work/pickleball-pavilion/
+
+### 5. Konstru
+- **Summary:** Cloud-based construction estimation and BOQ calculation platform designed for residential builders to calculate concrete, rebar, masonry, and labor requirements with live material price indexing.
+- **Tech Stack:** Next.js, Supabase PostgreSQL, TypeScript, Tailwind CSS.
+- **Case Study:** https://clydeabenojar.site/work/konstru/
+
+### 6. PasahodPH
+- **Summary:** Localized payroll and attendance management software built specifically for Philippine construction and trade workers, accommodating daily wage rates, SSS/PhilHealth deductions, and weekly cash envelope disbursements.
+- **Tech Stack:** Next.js, Supabase, TypeScript, Tailwind CSS.
+- **Case Study:** https://clydeabenojar.site/work/pasahodph/
+
+### 7. AI Fulfillment Pipeline
+- **Summary:** Automated digital asset generation pipeline running on n8n Cloud. Ingests intake requests, triggers LLM prompt synthesis, runs automated consistency checks, routes low-confidence assets to a private Slack channel for human QA approval, and delivers final high-res files to client inboxes.
+- **Tech Stack:** n8n Cloud, Claude API, OpenAI API, Slack Webhooks, Google Cloud Storage.
+- **Case Study:** https://clydeabenojar.site/work/song-automation-tool/
+
+### 8. Portfolio Lead Assistant
+- **Summary:** In-browser intelligent lead capture assistant embedded in the clydeabenojar.site contact section, triaging visitor requirements and automatically pre-populating project brief summaries before discovery calls.
+- **Tech Stack:** Next.js, Edge Functions, Claude API.
+- **Case Study:** https://clydeabenojar.site/work/portfolio-lead-assistant/
+
+### 9. La Purisima Resort Booking Bot
+- **Summary:** Automated hospitality intake bot and availability calendar eliminating Facebook Messenger response delays and booking double-reservations.
+- **Case Study:** https://clydeabenojar.site/work/la-purisima-resort/
+
+### 10. Archiwyn 3D
+- **Summary:** Architectural 3D modeling and rendering showcase illustrating exterior residential designs, floorplan zoning, and natural dusk lighting simulations.
+- **Case Study:** https://clydeabenojar.site/work/archiwyn/
+
+---
+
+## 4. Free Developer & Creator Tools
+
+All tools are publicly available at https://clydeabenojar.site/free-tools/:
+
+1. **AI Prompt Studio (`/free-tools/promptgen/`):**
+   - Universal multi-mode prompt generator for Midjourney, Imagen, and FLUX. Includes presets for Product Photography, Architectural Renders, and Photorealistic Characters with control over lighting, camera angles, lenses, and render parameters.
+   - URL: https://clydeabenojar.site/free-tools/promptgen/
+
+2. **In-Browser Background Remover (`/free-tools/background-remover/`):**
+   - 100% private, client-side image background removal powered by BiRefNet running locally inside the user's browser using WebGPU and WebAssembly. Zero image uploads to external servers, zero API costs, and full-resolution transparent PNG export.
+   - URL: https://clydeabenojar.site/free-tools/background-remover/
+
+3. **QR Code Studio (`/free-tools/qr-generator/`):**
+   - Client-side custom QR code generator supporting custom dots, gradient fills, embedded logos, and frame banners. Includes live camera scan verification to guarantee real-world scannability before downloading SVG/PNG vectors.
+   - URL: https://clydeabenojar.site/free-tools/qr-generator/
+
+---
+
+## 5. Technical Stack & Infrastructure
+
+- **Frontend Frameworks:** Next.js 14 (App Router), React 18 & 19, TypeScript, Tailwind CSS, Framer Motion, Radix UI.
+- **Graphics & 3D:** Three.js, React Three Fiber, OGL (lightweight WebGL engine).
+- **Backend & APIs:** Node.js, Hono, Next.js Server Actions & Route Handlers.
+- **Database & Auth:** Supabase (PostgreSQL, Row-Level Security, Edge Functions, Storage).
+- **Automation & AI Orchestration:** n8n Cloud, OpenAI API, Anthropic Claude API, BiRefNet (Transformers.js / WebGPU).
+- **Deployment & Hosting:** Vercel, Render, Supabase Cloud, Cloudflare DNS.
+
+---
+
+## 6. Pricing, Process & Engagement FAQ
+
+### Q: How do you price projects?
+A: Fixed-scope quotes provided after an initial discovery call. Clients receive an itemized deliverable list, timeline, and exact price before contract signing—eliminating open-ended hourly billing.
+
+### Q: What is the typical project turnaround time?
+A: 
+- Marketing and booking sites: 2 to 4 weeks.
+- SaaS MVPs, calculators, and custom web applications: 4 to 8 weeks depending on database schema, auth, and payment integrations.
+
+### Q: What does "AI-assisted" development mean in practice?
+A: Clyde Abenojar personally architects the system, writes core domain logic, conducts database design, and tests all edge cases. AI models are leveraged for rapid boilerplate and component drafting. Clients hire human judgment, engineering rigor, and accountability, not unvetted prompt output.
+
+### Q: What clients are NOT a good fit?
+A: Projects requiring an agency with 10+ full-time permanent employees, undefined open-ended retainers with no clear roadmap, or design-only mockups with no intention to build and deploy working software.
+
+---
+
+## 7. Contact & Booking Inquiries
+
+- **Primary Website:** https://clydeabenojar.site
+- **Direct Consultation / Discovery Call:** https://clydeabenojar.site/#contact
+- **GitHub:** https://github.com/clydekeanu-rgb
+- **LinkedIn:** https://linkedin.com/in/clyde-abenojar
+- **Email:** Inquiries triaged via https://clydeabenojar.site/#contact
